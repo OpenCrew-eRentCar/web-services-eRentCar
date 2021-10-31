@@ -9,4 +9,7 @@ public class MappingConfiguration {
     public EnhancedModelMapper modelMapper() {
         return new EnhancedModelMapper();
     }
+
+    @Bean
+    public ClientMapper clientMapper() { return new ClientMapper(); }
 }

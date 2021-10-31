@@ -35,19 +35,15 @@ public class Client {
     private String address;
 
     @NotNull
-    @NotBlank
     private Long cellphoneNumber;
 
     @NotNull
-    @NotBlank
     private int averageResponsibility;
 
     @NotNull
-    @NotBlank
     private int responseTime;
 
     @NotNull
-    @NotBlank
     private double rate;
 
     /*

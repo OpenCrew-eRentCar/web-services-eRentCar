@@ -9,20 +9,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ClientMapper {
+public class ClientMapper implements Serializable {
     @Autowired
-    EnhancedModelMapper mapper;
+    private EnhancedModelMapper mapper;
 
     //Object Mapping
 
     public ClientResource toResource(Client model) { return mapper.map(model, ClientResource.class); }
 
-    public Page<ClientResource> modelListToPage(List<ClientResource> modelList, Pageable pageable) {
+    public Page<ClientResource> modelListToPage(List<Client> modelList, Pageable pageable) {
         return new PageImpl<>(mapper.mapList(modelList, ClientResource.class), pageable, modelList.size());
     }
 
-    public Client ToModel(CreateClientResource resource) { return mapper.map(resource, Client.class); }
-    public Client ToModel(UpdateClientResource resource) { return mapper.map(resource, Client.class); }
+    public Client toModel(CreateClientResource resource) { return mapper.map(resource, Client.class); }
+    public Client toModel(UpdateClientResource resource) { return mapper.map(resource, Client.class); }
 }
