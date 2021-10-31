@@ -46,6 +46,9 @@ public class Client {
     @NotBlank
     private int responseTime;
 
+    @NotNull
+    @NotBlank
+    private double rate;
 
     /*
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

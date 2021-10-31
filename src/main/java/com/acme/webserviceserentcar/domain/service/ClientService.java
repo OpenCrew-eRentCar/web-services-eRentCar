@@ -10,7 +10,7 @@ import java.util.List;
 public interface ClientService {
     List<Client> getAll();
     Page<Client> getAll(Pageable pageable);
-    Client getAll(Long clientId);
+    Client getById(Long clientId);
     Client create(Client request);
     Client update(Long clientId, Client request);
     ResponseEntity<?> delete(Long clientId);
