@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.domain.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,12 +47,10 @@ public class Client {
     @NotNull
     private double rate;
 
-    /*
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id, referencedColumnName = "id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "plain_id", referencedColumnName = "id", nullable = false)
     @JsonIgnore
     private Plan plan;
-    */
 
     @NotNull
     @NotBlank
