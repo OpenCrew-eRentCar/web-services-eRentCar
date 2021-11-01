@@ -63,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
                         .withAverageResponsibility(request.getAverageResponsibility())
                         .withResponseTime(request.getResponseTime())
                         .withRate(request.getRate())
+                        .withPlan(request.getPlan())
                         .withEmail(request.getEmail())
                         .withPassword(request.getPassword()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));

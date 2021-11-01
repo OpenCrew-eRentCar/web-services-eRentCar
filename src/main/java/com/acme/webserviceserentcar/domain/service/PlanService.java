@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface PlanRepository {
+public interface PlanService {
     List<Plan> getAll();
     Page<Plan> getAll(Pageable pageable);
     Plan getById(Long planId);
