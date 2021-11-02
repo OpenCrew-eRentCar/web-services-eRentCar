@@ -1,14 +1,10 @@
 package com.acme.webserviceserentcar.resource;
 
 import com.acme.webserviceserentcar.converter.StringListConverter;
-import com.acme.webserviceserentcar.domain.model.entity.Client;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Convert;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,7 +26,4 @@ public class UpdatePlanResource {
 
     @NotNull
     private int price;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Client> clients;
 }

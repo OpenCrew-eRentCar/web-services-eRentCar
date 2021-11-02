@@ -43,6 +43,11 @@ public class ClientsController {
         return mapper.toResource(clientService.update(clientId, mapper.toModel(request)));
     }
 
+    @PutMapping("{clientId}/plan/{planId}")
+    public ClientResource updatePlanClient(@PathVariable Long clientId, @PathVariable Long planId) {
+        return mapper.toResource(clientService.updatePlan(clientId, planId));
+    }
+
     @DeleteMapping("{clientId}")
     public ResponseEntity<?> deleteClient(@PathVariable Long clientId) {
         return clientService.delete(clientId);

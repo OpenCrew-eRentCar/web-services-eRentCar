@@ -1,6 +1,5 @@
 package com.acme.webserviceserentcar.resource;
 
-import com.acme.webserviceserentcar.domain.model.entity.Client;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +12,4 @@ public class PlanResource {
     private String name;
     private List<String> benefits;
     private int price;
-    private List<Client> clients;
 }

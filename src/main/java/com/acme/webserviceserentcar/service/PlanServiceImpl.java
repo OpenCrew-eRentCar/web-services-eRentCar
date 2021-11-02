@@ -57,8 +57,7 @@ public class PlanServiceImpl implements PlanService {
         return planRepository.findById(planId).map(plan ->
                 planRepository.save(plan.withName(request.getName())
                         .withBenefits(request.getBenefits())
-                        .withPrice(request.getPrice())
-                        .withClients(request.getClients()))
+                        .withPrice(request.getPrice()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, planId));
     }
 

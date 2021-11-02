@@ -1,7 +1,6 @@
 package com.acme.webserviceserentcar.resource;
 
 import com.acme.webserviceserentcar.converter.StringListConverter;
-import com.acme.webserviceserentcar.domain.model.entity.Client;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +24,4 @@ public class CreatePlanResource {
 
     @NotNull
     private int price;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Client> clients;
 }

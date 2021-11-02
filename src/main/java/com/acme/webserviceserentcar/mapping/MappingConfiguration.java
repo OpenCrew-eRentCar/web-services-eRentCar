@@ -12,4 +12,7 @@ public class MappingConfiguration {
 
     @Bean
     public ClientMapper clientMapper() { return new ClientMapper(); }
+
+    @Bean
+    public PlanMapper planMapper() { return new PlanMapper(); }
 }

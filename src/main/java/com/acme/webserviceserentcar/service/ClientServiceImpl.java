@@ -1,7 +1,9 @@
 package com.acme.webserviceserentcar.service;
 
 import com.acme.webserviceserentcar.domain.model.entity.Client;
+import com.acme.webserviceserentcar.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.domain.persistence.ClientRepository;
+import com.acme.webserviceserentcar.domain.persistence.PlanRepository;
 import com.acme.webserviceserentcar.domain.service.ClientService;
 import com.acme.webserviceserentcar.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.exception.ResourceValidationException;
@@ -19,13 +21,14 @@ import java.util.Set;
 public class ClientServiceImpl implements ClientService {
     private static final String ENTITY = "Client";
     private final ClientRepository clientRepository;
+    private final PlanRepository planRepository;
     private final Validator validator;
 
-    public ClientServiceImpl(ClientRepository clientRepository, Validator validator) {
+    public ClientServiceImpl(ClientRepository clientRepository, PlanRepository planRepository, Validator validator) {
         this.clientRepository = clientRepository;
+        this.planRepository = planRepository;
         this.validator = validator;
     }
-
 
     @Override
     public List<Client> getAll() { return clientRepository.findAll(); }
@@ -66,6 +69,18 @@ public class ClientServiceImpl implements ClientService {
                         .withPlan(request.getPlan())
                         .withEmail(request.getEmail())
                         .withPassword(request.getPassword()))
+        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
+    }
+
+    @Override
+    public Client updatePlan(Long clientId, Long planId) {
+        Plan plan;
+
+        if (planId == 0) plan = null;
+        else plan = planRepository.findById(planId).orElseThrow(() -> new ResourceNotFoundException("Plan", planId));
+
+        return clientRepository.findById(clientId).map(client ->
+                clientRepository.save(client.withPlan(plan))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
     }
 
