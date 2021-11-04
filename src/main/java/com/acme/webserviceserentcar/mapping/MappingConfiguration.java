@@ -15,4 +15,7 @@ public class MappingConfiguration {
 
     @Bean
     public PlanMapper planMapper() { return new PlanMapper(); }
+
+    @Bean
+    public CategoryMapper categoryMapper() { return new CategoryMapper(); }
 }
