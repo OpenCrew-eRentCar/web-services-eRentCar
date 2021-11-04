@@ -23,5 +23,5 @@ public class CategoryMapper implements Serializable {
     }
 
     public Category toModel(CreateCategoryResource resource) { return mapper.map(resource, Category.class); }
-    public Category toModel(UpdateClientResource resource) { return mapper.map(resource, Category.class); }
+    public Category toModel(UpdateCategoryResource resource) { return mapper.map(resource, Category.class); }
 }

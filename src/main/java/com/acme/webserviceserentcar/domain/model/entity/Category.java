@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @With
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
