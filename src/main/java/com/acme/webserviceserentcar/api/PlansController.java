@@ -4,7 +4,9 @@ import com.acme.webserviceserentcar.domain.service.PlanService;
 import com.acme.webserviceserentcar.mapping.PlanMapper;
 import com.acme.webserviceserentcar.resource.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,11 @@ public class PlansController {
 
     @Operation(summary = "Get All Plans", description = "Get All Plans on pages", tags = {"Plans"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All Plans returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "All Plans returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PlanResource.class))
+                    ))
     })
     @GetMapping
     public Page<PlanResource> getAllPlans(Pageable pageable) {
@@ -36,7 +42,11 @@ public class PlansController {
 
     @Operation(summary = "Get Plan by Id", description = "Get Plan by Id", tags = {"Plans"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Plan returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Plan returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PlanResource.class)
+                    ))
     })
     @GetMapping("{planId}")
     public PlanResource getPlanById(@PathVariable Long planId) {
@@ -45,7 +55,11 @@ public class PlansController {
 
     @Operation(summary = "Create Plan", description = "Create Plan", tags = {"Plans"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Plan created", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Plan created",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PlanResource.class)
+                    ))
     })
     @PostMapping
     public PlanResource createPlan(@Valid @RequestBody CreatePlanResource request) {
@@ -54,7 +68,11 @@ public class PlansController {
 
     @Operation(summary = "Update Plan", description = "Update Plan", tags = {"Plans"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Plan updated", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Plan updated",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PlanResource.class)
+                    ))
     })
     @PutMapping("{planId}")
     public PlanResource updatePlan(@PathVariable Long planId, @Valid @RequestBody UpdatePlanResource request) {

@@ -4,7 +4,9 @@ import com.acme.webserviceserentcar.domain.service.CategoryService;
 import com.acme.webserviceserentcar.mapping.CategoryMapper;
 import com.acme.webserviceserentcar.resource.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,11 @@ public class CategoryController {
 
     @Operation(summary = "Get All Categories", description = "Get All Categories on pages", tags = {"Categories"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All Categories returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "All Categories returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))
+                    ))
     })
     @GetMapping
     public Page<CategoryResource> getAllCategories(Pageable pageable) {
@@ -36,7 +42,11 @@ public class CategoryController {
 
     @Operation(summary = "Get Category by Id", description = "Get Category by Id", tags = {"Categories"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Category returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResource.class)
+                    ))
     })
     @GetMapping("{categoryId}")
     public CategoryResource getCategoryById(@PathVariable Long categoryId) {
@@ -45,7 +55,11 @@ public class CategoryController {
 
     @Operation(summary = "Create Category", description = "Create Category", tags = {"Categories"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category created", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Category created",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResource.class)
+                    ))
     })
     @PostMapping
     public CategoryResource createCategory(@Valid @RequestBody CreateCategoryResource request) {
@@ -54,7 +68,11 @@ public class CategoryController {
 
     @Operation(summary = "Update Category", description = "Update Category", tags = {"Categories"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category updated", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Category updated",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResource.class)
+                    ))
     })
     @PutMapping("{categoryId}")
     public CategoryResource updateCategory(@PathVariable Long categoryId, @Valid @RequestBody UpdateCategoryResource request) {

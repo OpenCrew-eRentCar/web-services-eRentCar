@@ -2,11 +2,14 @@ package com.acme.webserviceserentcar.api;
 
 import com.acme.webserviceserentcar.domain.service.ClientService;
 import com.acme.webserviceserentcar.mapping.ClientMapper;
+import com.acme.webserviceserentcar.resource.CategoryResource;
 import com.acme.webserviceserentcar.resource.ClientResource;
 import com.acme.webserviceserentcar.resource.CreateClientResource;
 import com.acme.webserviceserentcar.resource.UpdateClientResource;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
@@ -29,7 +32,11 @@ public class ClientsController {
 
     @Operation(summary = "Get All Clients", description = "Get All Clients on pages", tags = {"Clients"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All Clients returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "All Clients returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ClientResource.class))
+                    ))
     })
     @GetMapping
     public Page<ClientResource> getAllClients(Pageable pageable) {
@@ -38,7 +45,11 @@ public class ClientsController {
 
     @Operation(summary = "Get Client By Id", description = "Get Client by Id", tags = {"Clients"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Client returned", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Client returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClientResource.class)
+                    ))
     })
     @GetMapping("{clientId}")
     public ClientResource getClientById(@PathVariable Long clientId) {
@@ -47,7 +58,11 @@ public class ClientsController {
 
     @Operation(summary = "Create Client", description = "Create Client", tags = {"Clients"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Client created", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Client created",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClientResource.class)
+                    ))
     })
     @PostMapping
     public ClientResource createClient(@Valid @RequestBody CreateClientResource request) {
@@ -56,7 +71,11 @@ public class ClientsController {
 
     @Operation(summary = "Update Client", description = "Update Client", tags = {"Clients"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Client updated", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Client updated",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClientResource.class)
+                    ))
     })
     @PutMapping("{clientId}")
     public ClientResource updateClient(@PathVariable Long clientId, @Valid @RequestBody UpdateClientResource request) {
@@ -65,7 +84,11 @@ public class ClientsController {
 
     @Operation(summary = "Update Plan Client", description = "Update Plan Client", tags = {"Clients"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Client Plan updated", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", description = "Client Plan updated",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClientResource.class)
+                    ))
     })
     @PutMapping("{clientId}/plan/{planId}")
     public ClientResource updatePlanClient(@PathVariable Long clientId, @PathVariable Long planId) {
