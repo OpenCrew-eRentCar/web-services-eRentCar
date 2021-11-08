@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.client.domain.model.entity;
 
-import com.acme.webserviceserentcar.rent.domain.entity.Rent;
+import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

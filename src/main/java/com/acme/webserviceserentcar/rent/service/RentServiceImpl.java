@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.rent.service;
 
-import com.acme.webserviceserentcar.rent.domain.entity.Rent;
+import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
