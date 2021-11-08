@@ -17,6 +17,7 @@ public class ClientResource {
     private int responseTime;
     private double rate;
     private Long planId;
+    private Long RentId;
     private String email;
     private String password;
 }

@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.client.domain.model.entity;
 
+import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -52,6 +53,11 @@ public class Client implements Serializable {
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     @JsonIgnore
     private Plan plan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rent_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Rent rent;
 
     @NotNull
     @NotBlank
