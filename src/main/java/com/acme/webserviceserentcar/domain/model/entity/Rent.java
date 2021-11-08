@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ import java.util.List;
 @With
 @Entity
 @Table(name = "rents")
-public class Rent implements Serializable{
+public class Rent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

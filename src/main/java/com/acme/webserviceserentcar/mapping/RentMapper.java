@@ -1,9 +1,8 @@
 package com.acme.webserviceserentcar.mapping;
 
 import com.acme.webserviceserentcar.domain.model.entity.Rent;
-import com.acme.webserviceserentcar.resource.CreateRentResource;
+import com.acme.webserviceserentcar.resource.*;
 import com.acme.webserviceserentcar.resource.RentResource;
-import com.acme.webserviceserentcar.resource.UpdateRentResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
