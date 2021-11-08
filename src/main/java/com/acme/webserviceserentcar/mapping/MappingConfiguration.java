@@ -18,4 +18,7 @@ public class MappingConfiguration {
 
     @Bean
     public CategoryMapper categoryMapper() { return new CategoryMapper(); }
+
+    @Bean
+    public  CarMapper carMapper() {return new CarMapper(); }
 }
