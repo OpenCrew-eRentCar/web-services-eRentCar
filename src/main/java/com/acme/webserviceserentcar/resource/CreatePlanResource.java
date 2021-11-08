@@ -1,8 +1,7 @@
 package com.acme.webserviceserentcar.resource;
 
 import com.acme.webserviceserentcar.converter.StringListConverter;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +11,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@With
 public class CreatePlanResource {
     @NotNull
     @NotBlank

@@ -1,10 +1,12 @@
 package com.acme.webserviceserentcar.resource;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@With
 public class ClientResource {
     private Long id;
     private String names;
