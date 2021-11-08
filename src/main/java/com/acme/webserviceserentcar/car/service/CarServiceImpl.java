@@ -1,12 +1,11 @@
-package com.acme.webserviceserentcar.service;
+package com.acme.webserviceserentcar.car.service;
 
-import com.acme.webserviceserentcar.domain.model.entity.Car;
-import com.acme.webserviceserentcar.domain.model.entity.Client;
-import com.acme.webserviceserentcar.domain.persistence.CarRepository;
-import com.acme.webserviceserentcar.domain.persistence.ClientRepository;
-import com.acme.webserviceserentcar.domain.service.CarService;
-import com.acme.webserviceserentcar.exception.ResourceNotFoundException;
-import com.acme.webserviceserentcar.exception.ResourceValidationException;
+import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
+import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
+import com.acme.webserviceserentcar.car.domain.service.CarService;
+import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
+import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

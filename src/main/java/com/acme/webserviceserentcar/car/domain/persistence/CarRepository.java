@@ -1,6 +1,6 @@
-package com.acme.webserviceserentcar.domain.persistence;
+package com.acme.webserviceserentcar.car.domain.persistence;
 
-import com.acme.webserviceserentcar.domain.model.entity.Car;
+import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

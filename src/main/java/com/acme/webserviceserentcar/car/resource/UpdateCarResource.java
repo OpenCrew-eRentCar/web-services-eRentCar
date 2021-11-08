@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.resource;
+package com.acme.webserviceserentcar.car.resource;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,9 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CreateCarResource {
+public class UpdateCarResource {
+
+    private Long id;
 
     @NotNull
     @NotBlank

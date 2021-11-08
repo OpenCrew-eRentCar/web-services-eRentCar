@@ -1,25 +1,15 @@
-package com.acme.webserviceserentcar.domain.model.entity;
+package com.acme.webserviceserentcar.car.resource;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@With
-@Entity
-@Table(name = "cars")
-public class Car implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CreateCarResource {
 
     @NotNull
     @NotBlank
@@ -61,10 +51,4 @@ public class Car implements Serializable {
 
     @NotNull
     private int rentAmountDay;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clientId", referencedColumnName = "id")
-    @JsonIgnore
-    private Client client;
-
 }
