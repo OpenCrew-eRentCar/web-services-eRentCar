@@ -42,7 +42,7 @@ public class CarController {
         return mapper.modelListToPage(carService.getAll(), pageable);
     }
 
-    @Operation(summary = "Update Car", description = "Updating Car", tags = "{Cars}")
+    @Operation(summary = "Update Car", description = "Updating Car", tags = {"Cars"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Car updated",
                     content = @Content(
