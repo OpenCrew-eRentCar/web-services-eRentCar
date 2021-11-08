@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.test.step.category;
 
-import com.acme.webserviceserentcar.resource.CategoryResource;
-import com.acme.webserviceserentcar.resource.CreateCategoryResource;
+import com.acme.webserviceserentcar.car.resource.CategoryResource;
+import com.acme.webserviceserentcar.car.resource.CreateCategoryResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;

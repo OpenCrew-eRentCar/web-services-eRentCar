@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.test.step.client;
 
-import com.acme.webserviceserentcar.resource.ClientResource;
-import com.acme.webserviceserentcar.resource.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.ClientResource;
+import com.acme.webserviceserentcar.client.resource.CreateClientResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
