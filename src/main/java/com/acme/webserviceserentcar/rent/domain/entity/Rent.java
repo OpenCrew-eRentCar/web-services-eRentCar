@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.domain.model.entity;
+package com.acme.webserviceserentcar.rent.domain.entity;
 
 import lombok.*;
 

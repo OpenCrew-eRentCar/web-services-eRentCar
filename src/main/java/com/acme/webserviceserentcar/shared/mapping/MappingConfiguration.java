@@ -3,6 +3,7 @@ package com.acme.webserviceserentcar.shared.mapping;
 import com.acme.webserviceserentcar.car.mapping.CategoryMapper;
 import com.acme.webserviceserentcar.client.mapping.ClientMapper;
 import com.acme.webserviceserentcar.client.mapping.PlanMapper;
+import com.acme.webserviceserentcar.rent.mapping.RentMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

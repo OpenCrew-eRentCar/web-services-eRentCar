@@ -1,8 +1,10 @@
-package com.acme.webserviceserentcar.api;
+package com.acme.webserviceserentcar.rent.api;
 
-import com.acme.webserviceserentcar.domain.service.RentService;
-import com.acme.webserviceserentcar.mapping.RentMapper;
-import com.acme.webserviceserentcar.resource.*;
+import com.acme.webserviceserentcar.rent.domain.service.RentService;
+import com.acme.webserviceserentcar.rent.mapping.RentMapper;
+import com.acme.webserviceserentcar.rent.resource.CreateRentResource;
+import com.acme.webserviceserentcar.rent.resource.RentResource;
+import com.acme.webserviceserentcar.rent.resource.UpdateRentResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

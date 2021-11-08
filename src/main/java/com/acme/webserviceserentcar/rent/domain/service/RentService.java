@@ -1,6 +1,6 @@
-package com.acme.webserviceserentcar.domain.service;
+package com.acme.webserviceserentcar.rent.domain.service;
 
-import com.acme.webserviceserentcar.domain.model.entity.Rent;
+import com.acme.webserviceserentcar.rent.domain.entity.Rent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

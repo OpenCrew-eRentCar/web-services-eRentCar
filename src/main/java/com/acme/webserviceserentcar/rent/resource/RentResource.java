@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.resource;
+package com.acme.webserviceserentcar.rent.resource;
 
 import lombok.Getter;
 import lombok.Setter;
