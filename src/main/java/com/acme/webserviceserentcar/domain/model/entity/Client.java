@@ -53,6 +53,11 @@ public class Client implements Serializable {
     @JsonIgnore
     private Plan plan;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rent_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Rent rent;
+
     @NotNull
     @NotBlank
     private String email;
