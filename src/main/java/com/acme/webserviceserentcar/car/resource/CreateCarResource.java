@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.car.resource;
 
+import com.acme.webserviceserentcar.car.domain.model.entity.CategoryOfCar;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,17 +18,7 @@ public class CreateCarResource {
     private String address;
 
     @NotNull
-    @NotBlank
-    @Size(max = 10)
-    private String brand;
-
-    @NotNull
     private int year;
-
-    @NotNull
-    @NotBlank
-    @Size(max = 10)
-    private String model;
 
     @NotNull
     private int mileage;
@@ -47,8 +38,8 @@ public class CreateCarResource {
     private String extraInformation;
 
     @NotNull
-    private int rate;
+    private int rentAmountDay;
 
     @NotNull
-    private int rentAmountDay;
+    private CategoryOfCar category;
 }

@@ -1,7 +1,6 @@
 package com.acme.webserviceserentcar.car.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
-import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -21,13 +19,11 @@ import java.util.Set;
 public class CarServiceImpl implements CarService {
     private static final String ENTITY = "Car";
     private final CarRepository carRepository;
-    private final ClientRepository clientRepository;
     private final Validator validator;
 
 
-    public CarServiceImpl(CarRepository carRepository, ClientRepository clientRepository, Validator validator) {
+    public CarServiceImpl(CarRepository carRepository, Validator validator) {
         this.carRepository = carRepository;
-        this.clientRepository = clientRepository;
         this.validator = validator;
     }
 
@@ -42,8 +38,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car getById(Long clientId) {
-        return carRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
+    public Car getById(Long carId) {
+        return carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }
 
     @Override
@@ -57,34 +53,45 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car update(Long clientId, Car request) {
+    public Car update(Long carId, Car request) {
         Set<ConstraintViolation<Car>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
-        return carRepository.findById(clientId).map(car ->
+        return carRepository.findById(carId).map(car ->
                 carRepository.save(car.withAddress(request.getAddress())
-                        .withBrand(request.getBrand())
-                        .withClient(request.getClient())
+                        .withYear(request.getYear())
+                        .withMileage(request.getMileage())
+                        .withSeating(request.getSeating())
+                        .withManual(request.isManual())
                         .withCarValueInDollars(request.getCarValueInDollars())
                         .withExtraInformation(request.getExtraInformation())
-                        .withMileage(request.getMileage())
-                        .withModel(request.getModel())
-                        .withRate(request.getRate())
                         .withRentAmountDay(request.getRentAmountDay())
-                        .withSeating(request.getSeating())
-                        .withYear(request.getYear()))
-        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
-
+                        .withCategory(request.getCategory()))
+        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }
 
     @Override
-    public ResponseEntity<?> delete(Long clientId) {
-        return carRepository.findById(clientId).map(car -> {
-            carRepository.delete(car);
-            return ResponseEntity.ok().build();
-        } ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
+    public Car updateRate(Long carId, int rate) {
+        Car car = carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+
+        if (car.getRate() == 0) {
+            car.setRate(rate);
+        }
+        else {
+            car.setRate((car.getRate() + rate) / 2);
+        }
+
+        carRepository.save(car);
+
+        return car;
     }
 
-
+    @Override
+    public ResponseEntity<?> delete(Long carId) {
+        return carRepository.findById(carId).map(car -> {
+            carRepository.delete(car);
+            return ResponseEntity.ok().build();
+        } ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+    }
 }
