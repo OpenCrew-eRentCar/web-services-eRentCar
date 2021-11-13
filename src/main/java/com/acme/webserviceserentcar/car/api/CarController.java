@@ -77,9 +77,11 @@ public class CarController {
                             schema = @Schema(implementation = CarResource.class)
                     ))
     })
-    @PostMapping("client/{clientId}")
-    public CarResource createCar(@PathVariable Long clientId, @Valid @RequestBody CreateCarResource request) {
-        return mapper.toResource(carService.create(clientId, mapper.toModel(request)));
+    @PostMapping("client/{clientId}/car-model/{carModelId}")
+    public CarResource createCar(@PathVariable Long clientId,
+                                 @PathVariable Long carModelId,
+                                 @Valid @RequestBody CreateCarResource request) {
+        return mapper.toResource(carService.create(clientId, carModelId, mapper.toModel(request)));
     }
 
     @Operation(summary = "Update Car", description = "Updating Car", tags = {"Cars"})

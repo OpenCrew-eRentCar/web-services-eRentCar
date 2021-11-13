@@ -19,4 +19,5 @@ public class CarResource {
     private int rentAmountDay;
     private CategoryOfCar category;
     private Long clientId;
+    private Long carModelId;
 }

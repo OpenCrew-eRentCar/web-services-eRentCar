@@ -12,7 +12,7 @@ public interface CarService {
     Page<Car> getAll(Pageable pageable);
     Page<Car> getAllCarsByClientId(Long clientId, Pageable pageable);
     Car getById(Long carId);
-    Car create(Long clientId, Car request);
+    Car create(Long clientId, Long carModelId, Car request);
     Car update(Long carId, Car request);
     Car updateRate(Long carId, int rate);
     ResponseEntity<?> delete(Long carId);

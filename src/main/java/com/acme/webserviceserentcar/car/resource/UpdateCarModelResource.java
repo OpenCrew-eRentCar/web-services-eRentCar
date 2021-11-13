@@ -17,8 +17,4 @@ public class UpdateCarModelResource {
     @NotBlank
     @Size(max = 50)
     private String name;
-
-    @NotNull
-    @NotBlank
-    private Long carModelId;
 }

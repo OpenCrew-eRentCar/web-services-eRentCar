@@ -61,4 +61,9 @@ public class Car implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @JsonIgnore
     private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_model_id", referencedColumnName = "id")
+    @JsonIgnore
+    private CarModel carModel;
 }

@@ -70,13 +70,9 @@ public class CarModelServiceImpl implements CarModelService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        if (!carBrandRepository.existsById(request.getCarBrand().getId()))
-            throw new ResourceNotFoundException("Car Brand", request.getCarBrand().getId());
-
         return carModelRepository.findById(carModelId).map(carModel ->
                 carModelRepository.save(carModel.withId(request.getId())
-                        .withName(request.getName())
-                        .withCarBrand(request.getCarBrand()))
+                        .withName(request.getName()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carModelId));
     }
 
