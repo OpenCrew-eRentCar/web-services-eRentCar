@@ -1,6 +1,8 @@
 package com.acme.webserviceserentcar.shared.mapping;
 
+import com.acme.webserviceserentcar.car.mapping.CarBrandMapper;
 import com.acme.webserviceserentcar.car.mapping.CarMapper;
+import com.acme.webserviceserentcar.car.mapping.CarModelMapper;
 import com.acme.webserviceserentcar.client.mapping.ClientMapper;
 import com.acme.webserviceserentcar.client.mapping.PlanMapper;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
@@ -25,4 +27,10 @@ public class MappingConfiguration {
 
     @Bean
     public  CarMapper carMapper() {return new CarMapper(); }
+
+    @Bean
+    public CarBrandMapper carBrandMapper() { return new CarBrandMapper(); }
+
+    @Bean
+    public CarModelMapper carModelService() { return new CarModelMapper(); }
 }
