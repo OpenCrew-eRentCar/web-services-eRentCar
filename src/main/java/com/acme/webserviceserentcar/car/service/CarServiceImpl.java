@@ -93,7 +93,8 @@ public class CarServiceImpl implements CarService {
                         .withCarValueInDollars(request.getCarValueInDollars())
                         .withExtraInformation(request.getExtraInformation())
                         .withRentAmountDay(request.getRentAmountDay())
-                        .withCategory(request.getCategory()))
+                        .withCategory(request.getCategory())
+                        .withMechanicCondition(request.getMechanicCondition()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }
 

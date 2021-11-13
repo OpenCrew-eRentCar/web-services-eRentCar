@@ -1,5 +1,7 @@
 package com.acme.webserviceserentcar.car.domain.model.entity;
 
+import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -56,6 +58,10 @@ public class Car implements Serializable {
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private CategoryOfCar category;
+
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private MechanicConditions mechanicCondition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id")

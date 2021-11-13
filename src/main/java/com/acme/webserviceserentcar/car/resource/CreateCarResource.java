@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.resource;
 
-import com.acme.webserviceserentcar.car.domain.model.entity.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,4 +43,7 @@ public class CreateCarResource {
 
     @NotNull
     private CategoryOfCar category;
+
+    @NotNull
+    private MechanicConditions mechanicCondition;
 }

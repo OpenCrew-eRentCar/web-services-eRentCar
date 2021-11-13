@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.car.domain.model.entity;
+package com.acme.webserviceserentcar.car.domain.model.enums;
 
 public enum CategoryOfCar {
     LITTLE,
