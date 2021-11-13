@@ -11,9 +11,8 @@ public interface CarService {
     List<Car> getAll();
     Page<Car> getAll(Pageable pageable);
     Car getById(Long carId);
-    Car create(Car request);
+    Car create(Long clientId, Car request);
     Car update(Long carId, Car request);
     Car updateRate(Long carId, int rate);
     ResponseEntity<?> delete(Long carId);
-
 }

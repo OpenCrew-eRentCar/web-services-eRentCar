@@ -3,6 +3,7 @@ package com.acme.webserviceserentcar.car.service;
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
+import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
@@ -19,11 +20,13 @@ import java.util.Set;
 public class CarServiceImpl implements CarService {
     private static final String ENTITY = "Car";
     private final CarRepository carRepository;
+    private final ClientRepository clientRepository;
     private final Validator validator;
 
 
-    public CarServiceImpl(CarRepository carRepository, Validator validator) {
+    public CarServiceImpl(CarRepository carRepository, ClientRepository clientRepository, Validator validator) {
         this.carRepository = carRepository;
+        this.clientRepository = clientRepository;
         this.validator = validator;
     }
 
@@ -43,13 +46,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car create(Car request) {
+    public Car create(Long clientId, Car request) {
         Set<ConstraintViolation<Car>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        return carRepository.save(request);
+        //return carRepository.save(request);
+        return clientRepository.findById(clientId).map(client -> {
+            request.setClient(client);
+            return carRepository.save(request);
+        }).orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
     }
 
     @Override

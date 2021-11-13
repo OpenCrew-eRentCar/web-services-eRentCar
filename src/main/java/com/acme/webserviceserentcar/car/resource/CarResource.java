@@ -18,5 +18,5 @@ public class CarResource {
     private int rate;
     private int rentAmountDay;
     private CategoryOfCar category;
-    //private Long clientId;
+    private Long clientId;
 }
