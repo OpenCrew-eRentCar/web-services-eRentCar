@@ -30,7 +30,7 @@ public class CarController {
         this.mapper = mapper;
     }
 
-    @Operation(summary = "Get All Cars", description = "Get All Free Cars", tags = {"Cars"})
+    @Operation(summary = "Get All Cars", description = "Get All Cars", tags = {"Cars"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All Cars returned",
                     content = @Content(
@@ -41,6 +41,19 @@ public class CarController {
     @GetMapping
     public Page<CarResource> getAllCars(Pageable pageable) {
         return mapper.modelListToPage(carService.getAll(), pageable);
+    }
+
+    @Operation(summary = "Get All Cars by Client id", description = "Get All Cars by Client id", tags = {"Cars"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All Cars of Client returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = CarResource.class))
+                    ))
+    })
+    @GetMapping("client/{clientId}")
+    public Page<CarResource> getAllCarsByClientId(@PathVariable Long clientId, Pageable pageable) {
+        return carService.getAllCarsByClientId(clientId, pageable).map(mapper::toResource);
     }
 
     @Operation(summary = "Get Car By Id", description = "Get Car by Id", tags = {"Cars"})

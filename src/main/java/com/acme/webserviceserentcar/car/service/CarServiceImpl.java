@@ -41,6 +41,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public Page<Car> getAllCarsByClientId(Long clientId, Pageable pageable) {
+        return carRepository.findByClientId(clientId, pageable);
+    }
+
+    @Override
     public Car getById(Long carId) {
         return carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }

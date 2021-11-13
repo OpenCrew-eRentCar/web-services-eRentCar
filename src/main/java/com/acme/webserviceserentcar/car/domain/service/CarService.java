@@ -10,6 +10,7 @@ import java.util.List;
 public interface CarService {
     List<Car> getAll();
     Page<Car> getAll(Pageable pageable);
+    Page<Car> getAllCarsByClientId(Long clientId, Pageable pageable);
     Car getById(Long carId);
     Car create(Long clientId, Car request);
     Car update(Long carId, Car request);
