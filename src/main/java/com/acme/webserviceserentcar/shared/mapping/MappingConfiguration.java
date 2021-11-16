@@ -3,6 +3,7 @@ package com.acme.webserviceserentcar.shared.mapping;
 import com.acme.webserviceserentcar.car.mapping.CarMapper;
 import com.acme.webserviceserentcar.car.mapping.CategoryMapper;
 import com.acme.webserviceserentcar.client.mapping.ClientMapper;
+import com.acme.webserviceserentcar.client.mapping.CommentMapper;
 import com.acme.webserviceserentcar.client.mapping.PlanMapper;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
 import org.springframework.context.annotation.Bean;
@@ -29,4 +30,7 @@ public class MappingConfiguration {
 
     @Bean
     public  CarMapper carMapper() {return new CarMapper(); }
+
+    @Bean
+    public CommentMapper commentMapper() {return new CommentMapper();}
 }
