@@ -9,11 +9,9 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class UpdateCategoryResource {
-    private Long id;
-
+public class CreateCarBrandResource {
     @NotNull
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 50)
     private String name;
 }

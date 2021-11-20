@@ -20,21 +20,16 @@ public class CarMapper implements Serializable {
     //Object Mapping
 
     public CarResource toResource(Car model) {
-
         return mapper.map(model, CarResource.class);
-
     }
 
     public Page<CarResource> modelListToPage(List<Car> modelList, Pageable pageable) {
-
         return new PageImpl<>(mapper.mapList(modelList, CarResource.class), pageable, modelList.size());
-
     }
 
     public Car toModel(CreateCarResource resource) {
         return mapper.map(resource, Car.class);
     }
-
     public Car toModel(UpdateCarResource resource) {
         return mapper.map(resource, Car.class);
     }
