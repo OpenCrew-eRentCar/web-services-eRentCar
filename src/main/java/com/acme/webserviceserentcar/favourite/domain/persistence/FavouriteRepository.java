@@ -1,4 +1,7 @@
 package com.acme.webserviceserentcar.favourite.domain.persistence;
 
-public interface FavouriteRepository {
+import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
 }
