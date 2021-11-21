@@ -18,6 +18,5 @@ public class ClientResource {
     private double rate;
     private Long planId;
     private Long RentId;
-    private String email;
-    private String password;
+    private Long UserId;
 }

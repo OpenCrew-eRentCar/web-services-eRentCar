@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,6 +41,7 @@ public class CommentsController {
             ))
     })
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public Page<CommentResource> getAllComments(Pageable pageable) {
         return mapper.modelListToPage(commentService.getAll(), pageable);
     }
@@ -53,6 +55,7 @@ public class CommentsController {
             ))
     })
     @GetMapping("{commentId}")
+    @PreAuthorize("hasRole('USER')")
     public CommentResource getCommentById(@PathVariable Long commentId) {
         return mapper.toResource(commentService.getById(commentId));
     }
@@ -66,6 +69,7 @@ public class CommentsController {
                     ))
     })
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public CommentResource createComment(@Valid @RequestBody CreateCommentResource request) {
         return mapper.toResource(commentService.create(mapper.toModel(request)));
     }
@@ -79,6 +83,7 @@ public class CommentsController {
             ))
     })
     @PutMapping("{commentId}")
+    @PreAuthorize("hasRole('USER')")
     public CommentResource updateComment(@PathVariable Long commentId, @Valid @RequestBody UpdateCommentResource request) {
         return mapper.toResource(commentService.update(commentId, mapper.toModel(request)));
     }
@@ -88,6 +93,7 @@ public class CommentsController {
             @ApiResponse(responseCode = "200", description = "Comment was deleted", content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("{commentId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
         return commentService.delete(commentId);
     }

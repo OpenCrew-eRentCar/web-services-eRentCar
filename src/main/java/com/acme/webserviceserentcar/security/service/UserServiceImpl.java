@@ -1,5 +1,7 @@
 package com.acme.webserviceserentcar.security.service;
 
+import com.acme.webserviceserentcar.client.domain.model.entity.Client;
+import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.security.domain.model.entity.Role;
 import com.acme.webserviceserentcar.security.domain.model.enumeration.Roles;
 import com.acme.webserviceserentcar.security.domain.persistence.RoleRepository;
@@ -29,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    ClientRepository clientRepository;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -98,6 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> register(RegisterRequest request) {
 
         if(userRepository.existsByUsername(request.getUsername())) {
@@ -135,9 +142,17 @@ public class UserServiceImpl implements UserService {
                     .withPassword(encoder.encode(request.getPassword()))
                     .withRoles(roles);
 
-            userRepository.save(user);
+            User auxUser;
+            auxUser = userRepository.save(user);
+
             UserResource resource = mapper.map(user, UserResource.class);
             RegisterResponse response = new RegisterResponse(resource);
+
+            // Create a client after create a User
+            Client client = new Client()
+                    .withUser(auxUser);
+            clientRepository.save(client);
+
             return ResponseEntity.ok(response.getResource());
 
         } catch (Exception e) {
