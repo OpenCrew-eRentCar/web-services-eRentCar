@@ -43,9 +43,7 @@ public class ClientAddingStepDefinition {
                 .withCellphoneNumber((long)cellphoneNumber)
                 .withAverageResponsibility(averageResponsibility)
                 .withResponseTime(responseTime)
-                .withRate(rate)
-                .withEmail(email)
-                .withPassword(password);
+                .withRate(rate);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreateClientResource> request = new HttpEntity<>(resource, headers);
@@ -67,9 +65,7 @@ public class ClientAddingStepDefinition {
                 .withCellphoneNumber((long)cellphoneNumber)
                 .withAverageResponsibility(averageResponsibility)
                 .withResponseTime(responseTime)
-                .withRate(rate)
-                .withEmail(email)
-                .withPassword(password);
+                .withRate(rate);
         String value = responseEntity.getBody();
         ObjectMapper mapper = new ObjectMapper();
         ClientResource actualResource;

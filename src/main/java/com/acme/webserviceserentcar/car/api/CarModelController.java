@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class CarModelController {
                     ))
     })
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public Page<CarModelResource> getAllCarModels(Pageable pageable) {
         return mapper.modelListToPage(carModelService.getAll(), pageable);
     }
@@ -51,6 +53,7 @@ public class CarModelController {
                     ))
     })
     @GetMapping("{carModelId}")
+    @PreAuthorize("hasRole('USER')")
     public CarModelResource getCarModelById(@PathVariable Long carModelId) {
         return mapper.toResource(carModelService.getById(carModelId));
     }
@@ -64,6 +67,7 @@ public class CarModelController {
                     ))
     })
     @PostMapping("/car-brands/{carBrandId}")
+    @PreAuthorize("hasRole('USER')")
     public CarModelResource createCarModel(@PathVariable Long carBrandId, @Valid @RequestBody CreateCarModelResource request) {
         return mapper.toResource(carModelService.create(carBrandId, mapper.toModel(request)));
     }
@@ -77,6 +81,7 @@ public class CarModelController {
                     ))
     })
     @PutMapping("{carModelId}")
+    @PreAuthorize("hasRole('USER')")
     public CarModelResource updateCarModel(@PathVariable Long carModelId, @Valid @RequestBody UpdateCarModelResource request) {
         return mapper.toResource(carModelService.update(carModelId, mapper.toModel(request)));
     }
@@ -87,6 +92,7 @@ public class CarModelController {
                     content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("{carModelId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteCarModel(@PathVariable Long carModelId) {
         return carModelService.delete(carModelId);
     }

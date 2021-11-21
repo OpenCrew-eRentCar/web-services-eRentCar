@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.client.domain.model.entity;
 
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
+import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -22,31 +23,20 @@ public class  Client implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotBlank
     @Size(max = 30)
     private String names;
 
-    @NotNull
-    @NotBlank
     @Size(max = 30)
     private String lastNames;
-
-    @NotNull
-    @NotBlank
-    @Size(max = 50)
+    
     private String address;
 
-    @NotNull
     private Long cellphoneNumber;
 
-    @NotNull
     private int averageResponsibility;
 
-    @NotNull
     private int responseTime;
 
-    @NotNull
     private double rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,11 +50,8 @@ public class  Client implements Serializable {
     private Rent rent;
 
     @NotNull
-    @NotBlank
-    private String email;
-
-    @NotNull
-    @NotBlank
-    @Size(min = 8)
-    private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
 }

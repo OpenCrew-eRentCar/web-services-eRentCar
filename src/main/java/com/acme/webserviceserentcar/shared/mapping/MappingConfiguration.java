@@ -7,6 +7,8 @@ import com.acme.webserviceserentcar.client.mapping.ClientMapper;
 import com.acme.webserviceserentcar.client.mapping.CommentMapper;
 import com.acme.webserviceserentcar.client.mapping.PlanMapper;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
+import com.acme.webserviceserentcar.security.mapping.RoleMapper;
+import com.acme.webserviceserentcar.security.mapping.UserMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,4 +39,14 @@ public class MappingConfiguration {
 
     @Bean
     public CarModelMapper carModelService() { return new CarModelMapper(); }
+
+    @Bean
+    public UserMapper userMapper() {
+        return new UserMapper();
+    }
+
+    @Bean
+    public RoleMapper roleMapper() {
+        return new RoleMapper();
+    }
 }

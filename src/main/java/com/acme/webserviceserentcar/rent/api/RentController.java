@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class RentController {
                     ))
     })
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public Page<RentResource> getAllRents(Pageable pageable) {
         return mapper.modelListToPage(rentService.getAll(), pageable);
     }
@@ -52,6 +54,7 @@ public class RentController {
                     ))
     })
     @GetMapping("{rentId}")
+    @PreAuthorize("hasRole('USER')")
     public RentResource getRentById(@PathVariable Long rentId) {
         return mapper.toResource(rentService.getById(rentId));
     }
@@ -66,6 +69,7 @@ public class RentController {
                     ))
     })
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public RentResource createRent(@Valid @RequestBody CreateRentResource request) {
         return mapper.toResource(rentService.create(mapper.toModel(request)));
     }
@@ -80,6 +84,7 @@ public class RentController {
                     ))
     })
     @PutMapping("{rentId}")
+    @PreAuthorize("hasRole('USER')")
     public RentResource updateRent(@PathVariable Long rentId, @Valid @RequestBody UpdateRentResource request) {
         return mapper.toResource(rentService.update(rentId, mapper.toModel(request)));
     }
@@ -90,6 +95,7 @@ public class RentController {
             @ApiResponse(responseCode = "200", description = "Rent deleted", content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("{rentId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteRent(@PathVariable Long rentId) { return rentService.delete(rentId); }
 
 }
