@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.resource;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,12 +9,12 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@With
-public class CreateCategoryResource {
+public class UpdateCarBrandResource {
+    @NotNull
+    private Long id;
+
     @NotNull
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 50)
     private String name;
 }

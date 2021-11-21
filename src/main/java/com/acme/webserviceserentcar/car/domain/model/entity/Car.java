@@ -1,5 +1,7 @@
 package com.acme.webserviceserentcar.car.domain.model.entity;
 
+import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -28,17 +30,7 @@ public class Car implements Serializable {
     private String address;
 
     @NotNull
-    @NotBlank
-    @Size(max = 10)
-    private String brand;
-
-    @NotNull
     private int year;
-
-    @NotNull
-    @NotBlank
-    @Size(max = 10)
-    private String model;
 
     @NotNull
     private int mileage;
@@ -63,9 +55,21 @@ public class Car implements Serializable {
     @NotNull
     private int rentAmountDay;
 
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private CategoryOfCar category;
+
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private MechanicConditions mechanicCondition;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clientId", referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     @JsonIgnore
     private Client client;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_model_id", referencedColumnName = "id")
+    @JsonIgnore
+    private CarModel carModel;
 }

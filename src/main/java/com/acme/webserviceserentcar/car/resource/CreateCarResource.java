@@ -1,7 +1,14 @@
 package com.acme.webserviceserentcar.car.resource;
 
 
+
 import lombok.*;
+
+import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
+import lombok.Getter;
+import lombok.Setter;
+
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,7 +28,7 @@ public class CreateCarResource {
 
     @NotNull
     @NotBlank
-    @Size(max = 10)
+    @Size(max = 15)
     private String brand;
 
     @NotNull
@@ -29,7 +36,7 @@ public class CreateCarResource {
 
     @NotNull
     @NotBlank
-    @Size(max = 10)
+    @Size(max = 15)
     private String model;
 
     @NotNull
@@ -54,4 +61,10 @@ public class CreateCarResource {
 
     @NotNull
     private int rentAmountDay;
+
+    @NotNull
+    private CategoryOfCar category;
+
+    @NotNull
+    private MechanicConditions mechanicCondition;
 }

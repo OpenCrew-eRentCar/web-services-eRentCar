@@ -1,13 +1,12 @@
 package com.acme.webserviceserentcar.car.resource;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@With
-public class CategoryResource {
+public class CarModelResource {
     private Long id;
     private String name;
+    private Long carBrandId;
 }
