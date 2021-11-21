@@ -11,6 +11,6 @@ public interface FavouriteService {
     List<Favourite> getAll();
     Page<Favourite> getAll(Pageable pageable);
     Favourite getById(Long favouriteId);
-    Favourite create(Favourite request);
+    Favourite create(Long clientId, Long carId, Favourite request);
     ResponseEntity<?> delete(Long favouriteId);
 }

@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FavouriteResource {
-    private Long id;
+    private Long clientId;
+    private Long carId;
 }

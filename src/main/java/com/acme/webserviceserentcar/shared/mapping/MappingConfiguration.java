@@ -6,6 +6,7 @@ import com.acme.webserviceserentcar.car.mapping.CarModelMapper;
 import com.acme.webserviceserentcar.client.mapping.ClientMapper;
 import com.acme.webserviceserentcar.client.mapping.CommentMapper;
 import com.acme.webserviceserentcar.client.mapping.PlanMapper;
+import com.acme.webserviceserentcar.favourite.mapping.FavouriteMapper;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
 import com.acme.webserviceserentcar.security.mapping.RoleMapper;
 import com.acme.webserviceserentcar.security.mapping.UserMapper;
@@ -49,4 +50,7 @@ public class MappingConfiguration {
     public RoleMapper roleMapper() {
         return new RoleMapper();
     }
+
+    @Bean
+    public FavouriteMapper favouriteMapper() { return new FavouriteMapper(); }
 }
