@@ -25,11 +25,6 @@ public class Comment implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId", referencedColumnName = "id")
     @JsonIgnore
-    private Client clientId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clientId", referencedColumnName = "id")
-    @JsonIgnore
     private Client clientCommentId;
 
     @NotNull
