@@ -3,6 +3,12 @@ package com.acme.webserviceserentcar.security.api;
 import com.acme.webserviceserentcar.security.domain.service.RoleService;
 import com.acme.webserviceserentcar.security.mapping.RoleMapper;
 import com.acme.webserviceserentcar.security.resource.RoleResource;
+import com.acme.webserviceserentcar.security.resource.UserResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +31,16 @@ public class RolesController {
         this.mapper = mapper;
     }
 
+    @Operation(summary = "Get All Roles", description = "Get All Roles", tags = {"Roles"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Roles returned",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UserResource.class)
+                    ))
+    })
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('INSTRUCTOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getAllRoles(Pageable pageable) {
         Page<RoleResource> resources = mapper.modelListToPage(roleService.getAll(), pageable);
         return ResponseEntity.ok(resources);
