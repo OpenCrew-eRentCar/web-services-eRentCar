@@ -10,6 +10,7 @@ import java.util.List;
 public interface FavouriteService {
     List<Favourite> getAll();
     Page<Favourite> getAll(Pageable pageable);
+    Page<Favourite> getAllFavouritesByClientId(Long clientId, Pageable pageable);
     Favourite getById(Long favouriteId);
     Favourite create(Long clientId, Long carId, Favourite request);
     ResponseEntity<?> delete(Long favouriteId);

@@ -45,6 +45,11 @@ public class FavouriteServiceImpl implements FavouriteService {
     }
 
     @Override
+    public Page<Favourite> getAllFavouritesByClientId(Long clientId, Pageable pageable) {
+        return favouriteRepository.findByClientId(clientId, pageable);
+    }
+
+    @Override
     public Favourite getById(Long favouriteId) {
         return favouriteRepository.findById(favouriteId)
                 .orElseThrow(()-> new ResourceNotFoundException(
