@@ -15,7 +15,9 @@ import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 public class CarResource {
     private Long id;
     private String address;
+    private String brand;
     private int year;
+    private String model;
     private int mileage;
     private int seating;
     private boolean manual;
