@@ -66,8 +66,7 @@ public class ClientServiceImpl implements ClientService {
                         .withAverageResponsibility(request.getAverageResponsibility())
                         .withResponseTime(request.getResponseTime())
                         .withRate(request.getRate())
-                        .withPlan(request.getPlan())
-                        .withRent(request.getRent()))
+                        .withPlan(request.getPlan()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
     }
 

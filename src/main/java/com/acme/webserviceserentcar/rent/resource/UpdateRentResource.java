@@ -14,15 +14,14 @@ public class UpdateRentResource {
 
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String startDate;
 
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String finishDate;
 
-    @NotNull
     @NotBlank
     private int amount;
 }
