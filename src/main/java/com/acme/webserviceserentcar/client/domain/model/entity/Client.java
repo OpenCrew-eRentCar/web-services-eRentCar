@@ -44,11 +44,6 @@ public class  Client implements Serializable {
     @JsonIgnore
     private Plan plan;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rent_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Rent rent;
-
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

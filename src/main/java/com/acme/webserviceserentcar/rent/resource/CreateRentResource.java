@@ -12,15 +12,14 @@ import javax.validation.constraints.Size;
 public class CreateRentResource {
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String startDate;
 
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String finishDate;
 
     @NotNull
-    @NotBlank
     private int amount;
 }

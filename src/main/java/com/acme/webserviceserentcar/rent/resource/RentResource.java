@@ -11,4 +11,6 @@ public class RentResource {
     private String finishDate;
     private int amount;
     private double rate;
+    private Long clientId;
+    private Long carId;
 }

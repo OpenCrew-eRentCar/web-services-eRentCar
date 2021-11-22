@@ -1,5 +1,8 @@
 package com.acme.webserviceserentcar.rent.domain.model.entity;
 
+import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.client.domain.model.entity.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,19 +25,26 @@ public class Rent implements Serializable {
 
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String startDate;
 
     @NotNull
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 15)
     private String finishDate;
 
     @NotNull
-    @NotBlank
     private int amount;
 
-    @NotNull
-    @NotBlank
     private double rate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Car car;
 }

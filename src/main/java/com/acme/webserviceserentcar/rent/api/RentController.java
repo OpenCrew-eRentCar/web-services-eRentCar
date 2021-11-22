@@ -68,10 +68,12 @@ public class RentController {
                             schema = @Schema(implementation = RentResource.class)
                     ))
     })
-    @PostMapping
+    @PostMapping("client/{clientId}/car/{carId}")
     @PreAuthorize("hasRole('USER')")
-    public RentResource createRent(@Valid @RequestBody CreateRentResource request) {
-        return mapper.toResource(rentService.create(mapper.toModel(request)));
+    public RentResource createRent(@PathVariable Long clientId,
+                                   @PathVariable Long carId,
+                                   @Valid @RequestBody CreateRentResource request) {
+        return mapper.toResource(rentService.create(clientId, carId, mapper.toModel(request)));
     }
 
 
@@ -96,6 +98,8 @@ public class RentController {
     })
     @DeleteMapping("{rentId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteRent(@PathVariable Long rentId) { return rentService.delete(rentId); }
+    public ResponseEntity<?> deleteRent(@PathVariable Long rentId) {
+        return rentService.delete(rentId);
+    }
 
 }
