@@ -26,6 +26,5 @@ public class CreateRentResource {
     private int amount;
 
     @NotNull
-    @NotBlank
     private int rate;
 }
