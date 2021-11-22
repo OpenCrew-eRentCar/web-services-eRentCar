@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/plans")
+@CrossOrigin
 public class PlansController {
     private final PlanService planService;
     private final PlanMapper mapper;

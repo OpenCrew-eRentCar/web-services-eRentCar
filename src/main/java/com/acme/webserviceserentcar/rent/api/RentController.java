@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/rents")
+@CrossOrigin
 public class RentController {
     private final RentService rentService;
     private final RentMapper mapper;

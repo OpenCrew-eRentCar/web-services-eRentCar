@@ -19,6 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/car-brands")
+@CrossOrigin
 public class CarBrandController {
     private final CarBrandService carBrandService;
     private final CarBrandMapper mapper;

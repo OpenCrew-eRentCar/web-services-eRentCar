@@ -24,6 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/favourites")
+@CrossOrigin
 public class FavouriteController {
 
     private final FavouriteService favouriteService;

@@ -22,6 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/comments")
+@CrossOrigin
 public class CommentsController {
     private final CommentService commentService;
     private final CommentMapper mapper;
