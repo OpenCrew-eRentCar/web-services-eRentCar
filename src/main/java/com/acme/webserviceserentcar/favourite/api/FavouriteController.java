@@ -74,7 +74,7 @@ public class FavouriteController {
     })
     @GetMapping("client/{clientId}")
     @PreAuthorize("hasRole('USER')")
-    public Page<FavouriteResource> getAllCarsByClientId(@PathVariable Long clientId, Pageable pageable) {
+    public Page<FavouriteResource> getAllFavouritesByClientId(@PathVariable Long clientId, Pageable pageable) {
         return favouriteService.getAllFavouritesByClientId(clientId, pageable).map(mapper::toResource);
     }
 

@@ -99,21 +99,6 @@ public class ClientsController {
         return mapper.toResource(clientService.updatePlan(clientId, planId));
     }
 
-    @Operation(summary = "Update Rent Client", description = "Update Rent Client", tags = {"Clients"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Client Rent updated",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ClientResource.class)
-                    ))
-    })
-
-    @PutMapping("{clientId}/rents/{rentId}")
-    @PreAuthorize("hasRole('USER')")
-    public ClientResource updateRentClient(@PathVariable Long clientId, @PathVariable Long rentId) {
-        return mapper.toResource(clientService.updatePlan(clientId, rentId));
-    }
-
     @Operation(summary = "Delete Plan Client", description = "Delete Plan Client", tags = {"Clients"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Client Plan deleted", content = @Content(mediaType = "application/json"))
