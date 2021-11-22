@@ -43,6 +43,11 @@ public class UpdateCarResource {
     private int rentAmountDay;
 
     @NotNull
+    @NotBlank
+    @Size(max = 300)
+    private String imagePath;
+
+    @NotNull
     private CategoryOfCar category;
 
     @NotNull

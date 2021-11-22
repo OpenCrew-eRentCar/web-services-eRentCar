@@ -27,6 +27,11 @@ public class CarModel implements Serializable {
     @Size(max = 50)
     private String name;
 
+    @NotNull
+    @NotBlank
+    @Size(max = 300)
+    private String imagePath;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_brand_id", referencedColumnName = "id")
     @JsonIgnore

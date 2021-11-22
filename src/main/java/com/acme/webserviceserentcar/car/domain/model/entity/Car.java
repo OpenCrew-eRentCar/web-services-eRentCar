@@ -56,6 +56,10 @@ public class Car implements Serializable {
     private int rentAmountDay;
 
     @NotNull
+    @NotBlank
+    private String imagePath;
+
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private CategoryOfCar category;
 

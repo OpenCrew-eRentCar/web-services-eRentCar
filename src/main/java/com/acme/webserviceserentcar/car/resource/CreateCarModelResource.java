@@ -14,4 +14,9 @@ public class CreateCarModelResource {
     @NotBlank
     @Size(max = 50)
     private String name;
+
+    @NotNull
+    @NotBlank
+    @Size(max = 300)
+    private String imagePath;
 }

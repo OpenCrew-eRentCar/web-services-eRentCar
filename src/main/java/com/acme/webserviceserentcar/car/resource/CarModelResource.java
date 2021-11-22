@@ -8,5 +8,6 @@ import lombok.Setter;
 public class CarModelResource {
     private Long id;
     private String name;
+    private String imagePath;
     private Long carBrandId;
 }

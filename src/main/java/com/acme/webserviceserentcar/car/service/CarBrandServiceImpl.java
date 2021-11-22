@@ -61,7 +61,8 @@ public class CarBrandServiceImpl implements CarBrandService {
 
         return carBrandRepository.findById(carBrandId).map(carBrand ->
                 carBrandRepository.save(carBrand.withId(request.getId())
-                                .withName(request.getName()))
+                                .withName(request.getName())
+                                .withImagePath(request.getImagePath()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carBrandId));
     }
 

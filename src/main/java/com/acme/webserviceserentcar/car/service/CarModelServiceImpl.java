@@ -72,7 +72,8 @@ public class CarModelServiceImpl implements CarModelService {
 
         return carModelRepository.findById(carModelId).map(carModel ->
                 carModelRepository.save(carModel.withId(request.getId())
-                        .withName(request.getName()))
+                        .withName(request.getName())
+                        .withImagePath(request.getImagePath()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carModelId));
     }
 
