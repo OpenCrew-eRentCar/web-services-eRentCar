@@ -26,4 +26,6 @@ public class UpdateClientResource {
     private int responseTime;
 
     private double rate;
+
+    private String imagePath;
 }

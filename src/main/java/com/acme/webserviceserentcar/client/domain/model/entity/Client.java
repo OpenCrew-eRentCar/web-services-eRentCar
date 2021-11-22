@@ -39,6 +39,8 @@ public class  Client implements Serializable {
 
     private double rate;
 
+    private String imagePath;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     @JsonIgnore

@@ -29,5 +29,7 @@ public class CreateClientResource {
 
     private double rate;
 
+    private String imagePath;
+
     private Long userId;
 }

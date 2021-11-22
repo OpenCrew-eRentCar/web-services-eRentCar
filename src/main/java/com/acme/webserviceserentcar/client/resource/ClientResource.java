@@ -16,6 +16,7 @@ public class ClientResource {
     private int averageResponsibility;
     private int responseTime;
     private double rate;
+    private String imagePath;
     private Long planId;
     private Long UserId;
 }
