@@ -40,7 +40,6 @@ public class PlansController {
                     ))
     })
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
     public Page<PlanResource> getAllPlans(Pageable pageable) {
         return mapper.modelListToPage(planService.getAll(), pageable);
     }
@@ -54,7 +53,6 @@ public class PlansController {
                     ))
     })
     @GetMapping("{planId}")
-    @PreAuthorize("hasRole('USER')")
     public PlanResource getPlanById(@PathVariable Long planId) {
         return mapper.toResource(planService.getById(planId));
     }
@@ -68,7 +66,6 @@ public class PlansController {
                     ))
     })
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     public PlanResource createPlan(@Valid @RequestBody CreatePlanResource request) {
         return mapper.toResource(planService.create(mapper.toModel(request)));
     }
@@ -82,7 +79,6 @@ public class PlansController {
                     ))
     })
     @PutMapping("{planId}")
-    @PreAuthorize("hasRole('USER')")
     public PlanResource updatePlan(@PathVariable Long planId, @Valid @RequestBody UpdatePlanResource request) {
         return mapper.toResource(planService.update(planId, mapper.toModel(request)));
     }
@@ -92,6 +88,5 @@ public class PlansController {
             @ApiResponse(responseCode = "200", description = "Plan deleted", content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("{planId}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deletePlan(@PathVariable Long planId) { return planService.delete(planId); }
 }
