@@ -47,16 +47,16 @@ public class RentServiceImpl implements RentService {
     @Override
     public Rent getById(Long rentId) {
         return rentRepository.findById(rentId)
-                .orElseThrow(()-> new ResourceNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY,
                         rentId
                 ));
     }
 
     @Override
-    public Rent create(Long clientId, Long carId,Rent request) {
+    public Rent create(Long clientId, Long carId, Rent request) {
         Set<ConstraintViolation<Rent>> violations = validator.validate(request);
-        if(!violations.isEmpty())
+        if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
         Client client = clientRepository.findById(clientId)
@@ -79,10 +79,14 @@ public class RentServiceImpl implements RentService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        return rentRepository.findById(rentId).map(rent->
-                rentRepository.save(rent.withStartDate(request.getStartDate()))
-                        .withFinishDate(request.getFinishDate()))
-                        .get().withAmount(request.getAmount());
+        return rentRepository.findById(rentId).map(rent ->
+                rentRepository.save(
+                                rent.withStartDate(request.getStartDate())
+                                        .withFinishDate(request.getFinishDate()))
+                        .withAmount(request.getAmount())
+                        .withRate(request.getRate())
+        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, rentId));
+
     }
 
     @Override

@@ -22,4 +22,15 @@ public class UpdateRentResource {
 
     @NotNull
     private int amount;
+
+    @NotNull
+    private double rate;
+
+   /* @NotNull
+    @NotBlank
+    private int clientId;
+
+    @NotNull
+    @NotBlank
+    private double carId;*/
 }
