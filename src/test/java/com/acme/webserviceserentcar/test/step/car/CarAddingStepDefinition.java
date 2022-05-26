@@ -19,10 +19,10 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CarAddingStepDefinition {
-   @Autowired
-   private TestRestTemplate testRestTemplate;
+    @Autowired
+    private TestRestTemplate testRestTemplate;
 
-   @LocalServerPort
+    @LocalServerPort
     private int randomServerPort;
 
     private String endPointPath;
@@ -30,7 +30,8 @@ public class CarAddingStepDefinition {
 
     @Given("The Endpoint {string} is available for cars")
     public void theEndpointIsAvailableForCars(String endPointPath) {
-        this.endPointPath = String.format("http//localhost:%d/api/v1/cars", randomServerPort);
+        //this.endPointPath = String.format("http://localhost:%d/api/v1/cars", 8080);
+        this.endPointPath = endPointPath;
     }
 
     @When("A Car Request is sent with values {string}, {string}, {int}, {string}, {int}, {int}, {int}, {string}, {int}, {int}")

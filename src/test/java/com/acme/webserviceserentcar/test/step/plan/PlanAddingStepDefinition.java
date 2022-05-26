@@ -33,7 +33,8 @@ public class PlanAddingStepDefinition {
 
     @Given("The Endpoint {string} is available for plans")
     public void theEndpointIsAvailableForPlans(String endPointPath) {
-        this.endPointPath = String.format("http://localhost:%d/api/v1/plans", randomServerPort);
+        //this.endPointPath = String.format("http://localhost:%d/api/v1/plans", randomServerPort);
+        this.endPointPath = endPointPath;
     }
 
     @When("A Plan Request is sent with values {string}, {string}, {int}")
