@@ -1,9 +1,9 @@
 package com.acme.webserviceserentcar.client.mapping;
 
 import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
-import com.acme.webserviceserentcar.client.resource.CreatePlanResource;
+import com.acme.webserviceserentcar.client.resource.create.CreatePlanResource;
 import com.acme.webserviceserentcar.client.resource.PlanResource;
-import com.acme.webserviceserentcar.client.resource.UpdatePlanResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdatePlanResource;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
