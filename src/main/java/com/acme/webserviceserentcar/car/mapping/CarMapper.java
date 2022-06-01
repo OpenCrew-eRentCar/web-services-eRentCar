@@ -1,8 +1,8 @@
 package com.acme.webserviceserentcar.car.mapping;
 
 import com.acme.webserviceserentcar.car.resource.CarResource;
-import com.acme.webserviceserentcar.car.resource.CreateCarResource;
-import com.acme.webserviceserentcar.car.resource.UpdateCarResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
+import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
