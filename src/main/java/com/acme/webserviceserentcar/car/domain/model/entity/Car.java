@@ -68,12 +68,19 @@ public class Car implements Serializable {
     private MechanicConditions mechanicCondition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JoinColumn(
+            name = "client_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     @JsonIgnore
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_model_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JoinColumn(
+            name = "car_model_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     private CarModel carModel;
 }
