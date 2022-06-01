@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.client.resource;
+package com.acme.webserviceserentcar.client.resource.create;
 
 import lombok.*;
 

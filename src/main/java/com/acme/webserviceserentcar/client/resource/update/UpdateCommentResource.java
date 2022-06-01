@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.client.resource;
+package com.acme.webserviceserentcar.client.resource.update;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
