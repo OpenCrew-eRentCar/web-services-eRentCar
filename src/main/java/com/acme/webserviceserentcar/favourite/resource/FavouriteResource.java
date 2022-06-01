@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.favourite.resource;
 
+import com.acme.webserviceserentcar.car.resource.CarResource;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,5 +9,5 @@ import lombok.Setter;
 public class FavouriteResource {
     private Long id;
     private Long clientId;
-    private Long carId;
+    private CarResource car;
 }
