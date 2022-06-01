@@ -33,7 +33,7 @@ public class CarModel implements Serializable {
     @Size(max = 300)
     private String imagePath;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "car_model_id",
             referencedColumnName = "id",

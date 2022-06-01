@@ -3,7 +3,9 @@ package com.acme.webserviceserentcar.car.domain.model.entity;
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
+import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -83,4 +86,14 @@ public class Car implements Serializable {
             nullable = false
     )
     private CarModel carModel;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(
+            targetEntity = Favourite.class,
+            mappedBy = "car",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private Set<Favourite> favourites;
 }

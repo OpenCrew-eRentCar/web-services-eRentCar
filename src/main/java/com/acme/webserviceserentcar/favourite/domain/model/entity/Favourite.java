@@ -21,12 +21,19 @@ public class Favourite implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JoinColumn(
+            name = "client_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     @JsonIgnore
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JoinColumn(
+            name = "car_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     private Car car;
 }
