@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.favourite.mapping;
 
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
-import com.acme.webserviceserentcar.favourite.resource.CreateFavouriteResource;
+import com.acme.webserviceserentcar.favourite.resource.create.CreateFavouriteResource;
 import com.acme.webserviceserentcar.favourite.resource.FavouriteResource;
 import com.acme.webserviceserentcar.rent.resource.UpdateRentResource;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
