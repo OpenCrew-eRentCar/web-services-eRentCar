@@ -3,8 +3,8 @@ package com.acme.webserviceserentcar.client.api;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.client.mapping.ClientMapper;
 import com.acme.webserviceserentcar.client.resource.ClientResource;
-import com.acme.webserviceserentcar.client.resource.CreateClientResource;
-import com.acme.webserviceserentcar.client.resource.UpdateClientResource;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateClientResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
