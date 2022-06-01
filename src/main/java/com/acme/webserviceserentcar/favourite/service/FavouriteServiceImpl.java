@@ -44,10 +44,10 @@ public class FavouriteServiceImpl implements FavouriteService {
         return favouriteRepository.findAll(pageable);
     }
 
-    @Override
+    /*@Override
     public Page<Favourite> getAllFavouritesByClientId(Long clientId, Pageable pageable) {
         return favouriteRepository.findByClientId(clientId, pageable);
-    }
+    }*/
 
     @Override
     public Favourite getById(Long favouriteId) {
