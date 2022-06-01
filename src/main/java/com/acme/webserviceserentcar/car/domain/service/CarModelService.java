@@ -12,6 +12,6 @@ public interface CarModelService {
     Page<CarModel> getAll(Pageable pageable);
     CarModel getById(Long carModelId);
     CarModel create(Long carBrandId, CarModel request);
-    CarModel update(Long carModelId, CarModel request);
+    CarModel update(Long carModelId, Long carBrandId, CarModel request);
     ResponseEntity<?> delete(Long carModelId);
 }

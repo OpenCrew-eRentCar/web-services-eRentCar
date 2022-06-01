@@ -64,17 +64,21 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public CarModel update(Long carModelId, CarModel request) {
+    public CarModel update(Long carModelId, Long carBrandId, CarModel request) {
         Set<ConstraintViolation<CarModel>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        return carModelRepository.findById(carModelId).map(carModel ->
-                carModelRepository.save(carModel.withId(request.getId())
-                        .withName(request.getName())
-                        .withImagePath(request.getImagePath()))
-        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carModelId));
+        return carModelRepository.findById(carModelId).map(carModel -> {
+            CarBrand carBrand = carBrandRepository.findById(carBrandId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Car Brand", carBrandId));
+
+            return carModelRepository.save(carModel.withId(request.getId())
+                    .withName(request.getName())
+                    .withImagePath(request.getImagePath())
+                    .withCarBrand(carBrand));
+        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carModelId));
     }
 
     @Override

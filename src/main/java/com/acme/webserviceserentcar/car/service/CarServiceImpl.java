@@ -48,10 +48,10 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAll(pageable);
     }
 
-    @Override
+    /*@Override
     public Page<Car> getAllCarsByClientId(Long clientId, Pageable pageable) {
         return carRepository.findByClientId(clientId, pageable);
-    }
+    }*/
 
     @Override
     public Car getById(Long carId) {
@@ -79,24 +79,29 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car update(Long carId, Car request) {
+    public Car update(Long carId, Long carModelId, Car request) {
         Set<ConstraintViolation<Car>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
-        return carRepository.findById(carId).map(car ->
-                carRepository.save(car.withAddress(request.getAddress())
-                        .withYear(request.getYear())
-                        .withMileage(request.getMileage())
-                        .withSeating(request.getSeating())
-                        .withManual(request.isManual())
-                        .withCarValueInDollars(request.getCarValueInDollars())
-                        .withExtraInformation(request.getExtraInformation())
-                        .withRentAmountDay(request.getRentAmountDay())
-                        .withImagePath(request.getImagePath())
-                        .withCategory(request.getCategory())
-                        .withMechanicCondition(request.getMechanicCondition()))
-        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+
+        return carRepository.findById(carId).map(car -> {
+            CarModel carModel = carModelRepository.findById(carModelId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Car Model", carModelId));
+
+            return carRepository.save(car.withAddress(request.getAddress())
+                    .withYear(request.getYear())
+                    .withMileage(request.getMileage())
+                    .withSeating(request.getSeating())
+                    .withManual(request.isManual())
+                    .withCarValueInDollars(request.getCarValueInDollars())
+                    .withExtraInformation(request.getExtraInformation())
+                    .withRentAmountDay(request.getRentAmountDay())
+                    .withImagePath(request.getImagePath())
+                    .withCategory(request.getCategory())
+                    .withMechanicCondition(request.getMechanicCondition())
+                    .withCarModel(carModel));
+        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }
 
     @Override
@@ -120,6 +125,6 @@ public class CarServiceImpl implements CarService {
         return carRepository.findById(carId).map(car -> {
             carRepository.delete(car);
             return ResponseEntity.ok().build();
-        } ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }
 }
