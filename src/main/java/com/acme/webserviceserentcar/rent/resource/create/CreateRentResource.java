@@ -1,10 +1,11 @@
-package com.acme.webserviceserentcar.rent.resource;
+package com.acme.webserviceserentcar.rent.resource.create;
 
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -13,14 +14,10 @@ import javax.validation.constraints.Size;
 @With
 public class CreateRentResource {
     @NotNull
-    @NotBlank
-    @Size(max = 15)
-    private String startDate;
+    private Date startDate;
 
     @NotNull
-    @NotBlank
-    @Size(max = 15)
-    private String finishDate;
+    private Date finishDate;
 
     @NotNull
     private int amount;
