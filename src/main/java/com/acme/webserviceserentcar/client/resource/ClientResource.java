@@ -2,6 +2,7 @@ package com.acme.webserviceserentcar.client.resource;
 
 import com.acme.webserviceserentcar.car.resource.CarResource;
 import com.acme.webserviceserentcar.favourite.resource.FavouriteResource;
+import com.acme.webserviceserentcar.rent.resource.RentResource;
 import lombok.*;
 
 import java.util.Set;
@@ -25,4 +26,5 @@ public class ClientResource {
     private Long UserId;
     private Set<CarResource> cars;
     private Set<FavouriteResource> favourites;
+    private Set<RentResource> rents;
 }

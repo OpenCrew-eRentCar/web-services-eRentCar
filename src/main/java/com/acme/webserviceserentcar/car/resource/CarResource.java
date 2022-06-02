@@ -5,7 +5,6 @@ import lombok.*;
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +25,5 @@ public class CarResource {
     private CategoryOfCar category;
     private MechanicConditions mechanicConditions;
     private CarModelResource carModel;
+    private Long clientId;
 }
