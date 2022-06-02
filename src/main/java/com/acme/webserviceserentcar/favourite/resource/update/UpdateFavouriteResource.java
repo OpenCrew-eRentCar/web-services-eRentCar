@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.favourite.resource;
+package com.acme.webserviceserentcar.favourite.resource.update;
 
 import lombok.Getter;
 import lombok.Setter;
