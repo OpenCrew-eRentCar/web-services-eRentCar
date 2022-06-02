@@ -80,13 +80,11 @@ public class RentServiceImpl implements RentService {
             throw new ResourceValidationException(ENTITY, violations);
 
         return rentRepository.findById(rentId).map(rent ->
-                rentRepository.save(
-                                rent.withStartDate(request.getStartDate())
-                                        .withFinishDate(request.getFinishDate()))
+                rentRepository.save(rent.withStartDate(request.getStartDate())
+                        .withFinishDate(request.getFinishDate())
                         .withAmount(request.getAmount())
-                        .withRate(request.getRate())
+                        .withRate(request.getRate()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, rentId));
-
     }
 
     @Override
