@@ -6,10 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -24,14 +23,10 @@ public class Rent implements Serializable {
     private Long id;
 
     @NotNull
-    @NotBlank
-    @Size(max = 15)
-    private String startDate;
+    private Date startDate;
 
     @NotNull
-    @NotBlank
-    @Size(max = 15)
-    private String finishDate;
+    private Date finishDate;
 
     @NotNull
     private int amount;
@@ -39,13 +34,20 @@ public class Rent implements Serializable {
     @NotNull
     private double rate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "client_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     @JsonIgnore
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JoinColumn(
+            name = "car_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     private Car car;
 }
