@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.car.domain.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @With
 @Entity
-@Table(name = "car_brands")
+@Table(name = "carBrands")
 public class CarBrand implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +31,13 @@ public class CarBrand implements Serializable {
     @NotBlank
     @Size(max = 300)
     private String imagePath;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(
+            targetEntity = CarModel.class,
+            mappedBy = "carBrand",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private Set<CarModel> carModels;
 }

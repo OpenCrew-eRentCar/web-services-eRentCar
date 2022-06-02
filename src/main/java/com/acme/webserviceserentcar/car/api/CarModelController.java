@@ -3,8 +3,8 @@ package com.acme.webserviceserentcar.car.api;
 import com.acme.webserviceserentcar.car.domain.service.CarModelService;
 import com.acme.webserviceserentcar.car.mapping.CarModelMapper;
 import com.acme.webserviceserentcar.car.resource.CarModelResource;
-import com.acme.webserviceserentcar.car.resource.CreateCarModelResource;
-import com.acme.webserviceserentcar.car.resource.UpdateCarModelResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarModelResource;
+import com.acme.webserviceserentcar.car.resource.update.UpdateCarModelResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,8 +64,9 @@ public class CarModelController {
                             schema = @Schema(implementation = CarModelResource.class)
                     ))
     })
-    @PostMapping("/car-brands/{carBrandId}")
-    public CarModelResource createCarModel(@PathVariable Long carBrandId, @Valid @RequestBody CreateCarModelResource request) {
+    @PostMapping()
+    public CarModelResource createCarModel(@RequestParam(name = "carBrandId") Long carBrandId,
+                                           @Valid @RequestBody CreateCarModelResource request) {
         return mapper.toResource(carModelService.create(carBrandId, mapper.toModel(request)));
     }
 
@@ -79,8 +79,10 @@ public class CarModelController {
                     ))
     })
     @PutMapping("{carModelId}")
-    public CarModelResource updateCarModel(@PathVariable Long carModelId, @Valid @RequestBody UpdateCarModelResource request) {
-        return mapper.toResource(carModelService.update(carModelId, mapper.toModel(request)));
+    public CarModelResource updateCarModel(@PathVariable Long carModelId,
+                                           @RequestParam(name = "carBrandId") Long carBrandId,
+                                           @Valid @RequestBody UpdateCarModelResource request) {
+        return mapper.toResource(carModelService.update(carModelId, carBrandId, mapper.toModel(request)));
     }
 
     @Operation(summary = "Delete Car Model", description = "Delete Car Model", tags = {"CarModels"})

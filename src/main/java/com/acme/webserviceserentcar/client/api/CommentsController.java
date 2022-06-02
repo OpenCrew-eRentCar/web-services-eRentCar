@@ -1,11 +1,10 @@
 package com.acme.webserviceserentcar.client.api;
 
-import com.acme.webserviceserentcar.client.domain.model.entity.Comment;
 import com.acme.webserviceserentcar.client.domain.service.CommentService;
 import com.acme.webserviceserentcar.client.mapping.CommentMapper;
 import com.acme.webserviceserentcar.client.resource.CommentResource;
-import com.acme.webserviceserentcar.client.resource.CreateCommentResource;
-import com.acme.webserviceserentcar.client.resource.UpdateCommentResource;
+import com.acme.webserviceserentcar.client.resource.create.CreateCommentResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateCommentResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

@@ -2,8 +2,8 @@ package com.acme.webserviceserentcar.client.mapping;
 
 import com.acme.webserviceserentcar.client.domain.model.entity.Comment;
 import com.acme.webserviceserentcar.client.resource.CommentResource;
-import com.acme.webserviceserentcar.client.resource.CreateCommentResource;
-import com.acme.webserviceserentcar.client.resource.UpdateCommentResource;
+import com.acme.webserviceserentcar.client.resource.create.CreateCommentResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateCommentResource;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

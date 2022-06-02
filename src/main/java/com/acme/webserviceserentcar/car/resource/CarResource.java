@@ -1,6 +1,5 @@
 package com.acme.webserviceserentcar.car.resource;
 
-
 import lombok.*;
 
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
@@ -15,9 +14,7 @@ import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 public class CarResource {
     private Long id;
     private String address;
-    private String brand;
     private int year;
-    private String model;
     private int mileage;
     private int seating;
     private boolean manual;
@@ -28,6 +25,5 @@ public class CarResource {
     private String imagePath;
     private CategoryOfCar category;
     private MechanicConditions mechanicConditions;
-    private Long clientId;
-    private Long carModelId;
+    private CarModelResource carModel;
 }

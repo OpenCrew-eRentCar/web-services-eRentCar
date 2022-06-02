@@ -1,6 +1,9 @@
 package com.acme.webserviceserentcar.client.resource;
 
+import com.acme.webserviceserentcar.car.resource.CarResource;
 import lombok.*;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,4 +22,5 @@ public class ClientResource {
     private String imagePath;
     private Long planId;
     private Long UserId;
+    private Set<CarResource> cars;
 }
