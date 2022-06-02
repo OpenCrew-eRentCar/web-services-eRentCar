@@ -2,9 +2,9 @@ package com.acme.webserviceserentcar.rent.api;
 
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
-import com.acme.webserviceserentcar.rent.resource.CreateRentResource;
+import com.acme.webserviceserentcar.rent.resource.create.CreateRentResource;
 import com.acme.webserviceserentcar.rent.resource.RentResource;
-import com.acme.webserviceserentcar.rent.resource.UpdateRentResource;
+import com.acme.webserviceserentcar.rent.resource.update.UpdateRentResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -67,9 +66,9 @@ public class RentController {
                             schema = @Schema(implementation = RentResource.class)
                     ))
     })
-    @PostMapping("client/{clientId}/car/{carId}")
-    public RentResource createRent(@PathVariable Long clientId,
-                                   @PathVariable Long carId,
+    @PostMapping()
+    public RentResource createRent(@RequestParam(name = "clientId") Long clientId,
+                                   @RequestParam(name = "carId") Long carId,
                                    @Valid @RequestBody CreateRentResource request) {
         return mapper.toResource(rentService.create(clientId, carId, mapper.toModel(request)));
     }
