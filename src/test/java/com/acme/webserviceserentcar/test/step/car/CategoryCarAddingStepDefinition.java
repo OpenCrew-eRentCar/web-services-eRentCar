@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.test.step.car;
 
 import com.acme.webserviceserentcar.car.resource.CarBrandResource;
-import com.acme.webserviceserentcar.car.resource.CreateCarBrandResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarBrandResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;

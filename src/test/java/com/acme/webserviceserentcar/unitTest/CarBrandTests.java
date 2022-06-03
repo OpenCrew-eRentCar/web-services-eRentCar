@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.unitTest;
 
-import com.acme.webserviceserentcar.car.resource.CreateCarBrandResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarBrandResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

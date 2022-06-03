@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.unitTest;
 
-import com.acme.webserviceserentcar.car.resource.CreateCarModelResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarModelResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class CarModelTests {
     }
     @Test
     void GetCarModelById() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/car-models/3").
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/car-models/1").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -37,13 +37,15 @@ public class CarModelTests {
     }
     @Test
     void CreateCarModel()throws Exception{
-        String name="Toyota";
+        String name="Yaris";
         String imagePath="url";
         CreateCarModelResource createCarModelResource=new CreateCarModelResource();
         createCarModelResource.setName(name);
         createCarModelResource.setImagePath(imagePath);
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.
-                post("http://localhost:8080/api/v1/car-models/car-brands/1").accept(MediaType.APPLICATION_JSON)
+                post("http://localhost:8080/api/v1/car-models")
+                .queryParam("carBrandId", "1")
+                .accept(MediaType.APPLICATION_JSON)
                 .content(objectmapper.writeValueAsString(createCarModelResource))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 

@@ -1,5 +1,5 @@
 package com.acme.webserviceserentcar.unitTest;
-import com.acme.webserviceserentcar.client.resource.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class ClientTests{
     }
     @Test
     void GetClientById()throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/clients/1").
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/clients/3").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -38,8 +38,8 @@ public class ClientTests{
     }
     @Test
     void CreateClient() throws Exception{
-        String names="Sergio45";
-        String lastNames="Guanilo";
+        String names="Sergio653";
+        String lastNames="Guanilo22";
         String address="San Miguel";
         Long cellphoneNumber=123456789L;
         int averageResponsibility=1;
@@ -59,7 +59,7 @@ public class ClientTests{
     }
     @Test
     void DeleteClient() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/clients/3").
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/clients/4").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
        /*String status = mvcResult.getResolvedException().getMessage();

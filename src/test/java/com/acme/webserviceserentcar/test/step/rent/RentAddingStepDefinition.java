@@ -1,11 +1,9 @@
 package com.acme.webserviceserentcar.test.step.rent;
 
-import com.acme.webserviceserentcar.client.resource.CommentResource;
-import com.acme.webserviceserentcar.rent.resource.CreateRentResource;
+import com.acme.webserviceserentcar.rent.resource.create.CreateRentResource;
 import com.acme.webserviceserentcar.rent.resource.RentResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

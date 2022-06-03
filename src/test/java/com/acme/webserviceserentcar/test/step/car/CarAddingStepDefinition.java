@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.test.step.car;
 
 import com.acme.webserviceserentcar.car.resource.CarResource;
-import com.acme.webserviceserentcar.car.resource.CreateCarResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
@@ -38,14 +38,11 @@ public class CarAddingStepDefinition {
     public void aPlanRequestIsSentWithValues(String address, String brand, int year, String model, int mileage, int seating, int carValueInDollars, String extraInformation, int rate, int rentAmountDay) {
         CreateCarResource resource = new CreateCarResource()
                 .withAddress(address)
-                .withBrand(brand)
                 .withYear(year)
-                .withModel(model)
                 .withMileage(mileage)
                 .withSeating(seating)
                 .withCarValueInDollars(carValueInDollars)
                 .withExtraInformation(extraInformation)
-                .withRate(rate)
                 .withRentAmountDay(rentAmountDay);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -63,9 +60,7 @@ public class CarAddingStepDefinition {
     public void aCarResourceWithValues(String address, String brand, int year, String model, int mileage, int seating, int carValueInDollars, String extraInformation, int rate, int rentAmountDay) {
         CarResource expectedResource = new CarResource()
                 .withAddress(address)
-                .withBrand(brand)
                 .withYear(year)
-                .withModel(model)
                 .withMileage(mileage)
                 .withSeating(seating)
                 .withCarValueInDollars(carValueInDollars)

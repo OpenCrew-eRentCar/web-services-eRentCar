@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.test.step.plan;
 
-import com.acme.webserviceserentcar.client.resource.CreatePlanResource;
+import com.acme.webserviceserentcar.client.resource.create.CreatePlanResource;
 import com.acme.webserviceserentcar.client.resource.PlanResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
