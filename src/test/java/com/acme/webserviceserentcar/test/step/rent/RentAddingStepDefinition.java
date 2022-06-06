@@ -16,6 +16,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RentAddingStepDefinition {
@@ -35,9 +38,14 @@ public class RentAddingStepDefinition {
 
     @When("A Rent Request is sent with values {string}, {string}, {int}, {int}")
     public void aRentRequestIsSentWithValues(String startDate, String finishDate, int paymentAmount, int rate) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2022);
+        cal.set(Calendar.MONTH, Calendar.JUNE);
+        cal.set(Calendar.DAY_OF_MONTH, 2);
+
         CreateRentResource resource = new CreateRentResource()
-                .withStartDate(startDate)
-                .withFinishDate(finishDate)
+                .withStartDate(cal.getTime())
+                .withFinishDate(cal.getTime())
                 .withAmount(paymentAmount)
                 .withRate(rate);
         HttpHeaders headers = new HttpHeaders();
@@ -54,9 +62,14 @@ public class RentAddingStepDefinition {
 
     @And("A Rent Resource with values {string}, {string}, {int}, {int}")
     public void aRentResourceWithValues(String startDate, String finishDate, int paymentAmount, int rate) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2022);
+        cal.set(Calendar.MONTH, Calendar.JUNE);
+        cal.set(Calendar.DAY_OF_MONTH, 2);
+
         RentResource expectedResource = new RentResource()
-                .withStartDate(startDate)
-                .withFinishDate(finishDate)
+                .withStartDate(cal.getTime())
+                .withFinishDate(cal.getTime())
                 .withAmount(paymentAmount)
                 .withRate(rate);
         String value = responseEntity.getBody();
