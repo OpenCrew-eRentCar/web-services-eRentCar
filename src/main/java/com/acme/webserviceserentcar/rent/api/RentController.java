@@ -87,7 +87,6 @@ public class RentController {
         return mapper.toResource(rentService.update(rentId, mapper.toModel(request)));
     }
 
-
     @Operation(summary = "Delete Rent", description = "Delete Rent", tags = {"Rents"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rent deleted", content = @Content(mediaType = "application/json"))
@@ -96,5 +95,4 @@ public class RentController {
     public ResponseEntity<?> deleteRent(@PathVariable Long rentId) {
         return rentService.delete(rentId);
     }
-
 }

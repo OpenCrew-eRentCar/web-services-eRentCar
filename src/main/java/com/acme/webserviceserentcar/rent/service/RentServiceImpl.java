@@ -7,6 +7,9 @@ import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
+import com.acme.webserviceserentcar.reservations.domain.model.entity.Reservation;
+import com.acme.webserviceserentcar.reservations.domain.persistence.ReservationRepository;
+import com.acme.webserviceserentcar.reservations.domain.service.ReservationService;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
@@ -26,12 +29,15 @@ public class RentServiceImpl implements RentService {
     private final Validator validator;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
+    private final ReservationService reservationService;
 
-    public RentServiceImpl(RentRepository rentRepository, Validator validator, CarRepository carRepository, ClientRepository clientRepository) {
+    public RentServiceImpl(RentRepository rentRepository, Validator validator, CarRepository carRepository,
+                           ClientRepository clientRepository, ReservationService reservationService) {
         this.rentRepository = rentRepository;
         this.validator = validator;
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
+        this.reservationService = reservationService;
     }
 
     @Override
@@ -69,7 +75,13 @@ public class RentServiceImpl implements RentService {
 
         request.setCar(car);
 
-        return rentRepository.save(request);
+        Rent rent = rentRepository.save(request);
+
+        Reservation reservation = reservationService.create(car.getClient().getId(), rent.getId());
+
+        rent.setReservation(reservation);
+
+        return rentRepository.save(rent);
     }
 
     @Override
