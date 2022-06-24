@@ -11,6 +11,7 @@ public interface ClientService {
     List<Client> getAll();
     Page<Client> getAll(Pageable pageable);
     Client getById(Long clientId);
+    Client getByUserId(Long userId);
     Client create(Client request);
     Client update(Long clientId, Client request);
     Client updatePlan(Long clientId, Long planId);
