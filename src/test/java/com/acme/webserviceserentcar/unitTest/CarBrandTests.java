@@ -12,8 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@SpringBootTest
+//@SpringBootTest
 public class CarBrandTests {
     @Autowired
     private MockMvc mockMvc;
@@ -21,7 +22,7 @@ public class CarBrandTests {
     ObjectMapper objectmapper;
     @Test
     void GetCarBrand() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/car-brands").
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/car-brands").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -29,7 +30,7 @@ public class CarBrandTests {
     }
     @Test
     void GetCarBrandId() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/api/v1/car-brands/1").
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/car-brands/1").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -41,7 +42,7 @@ public class CarBrandTests {
         String imagePath="url";
         CreateCarBrandResource createCarBrandResource=new CreateCarBrandResource(name,imagePath);
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.
-                post("http://localhost:8080/api/v1/car-brands").accept(MediaType.APPLICATION_JSON)
+                post("/api/v1/car-brands").accept(MediaType.APPLICATION_JSON)
                 .content(objectmapper.writeValueAsString(createCarBrandResource))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
