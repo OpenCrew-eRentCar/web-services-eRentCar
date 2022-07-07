@@ -2,6 +2,8 @@ package com.acme.webserviceserentcar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -9,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class WebServicesErentcarApplication {
+public class WebServicesErentcarApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(WebServicesErentcarApplication.class, args);
@@ -24,5 +26,10 @@ public class WebServicesErentcarApplication {
                         .allowedOrigins("http://localhost:4200");
             }
         };
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(WebServicesErentcarApplication.class);
     }
 }
