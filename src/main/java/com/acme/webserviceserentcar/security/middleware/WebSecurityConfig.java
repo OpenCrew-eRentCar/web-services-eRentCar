@@ -15,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthorizationFilter authorizationFilter() {
         return new JwtAuthorizationFilter();
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
@@ -51,14 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.cors().and().csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers(
-                        "/api/v1/users/auth/*")
-                .permitAll();
+        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers("/api/v1/users/auth/*").permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(authorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

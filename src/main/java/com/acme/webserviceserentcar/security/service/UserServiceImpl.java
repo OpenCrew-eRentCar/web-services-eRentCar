@@ -1,6 +1,5 @@
 package com.acme.webserviceserentcar.security.service;
 
-import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.security.domain.model.entity.Role;
 import com.acme.webserviceserentcar.security.domain.model.enumeration.Roles;
 import com.acme.webserviceserentcar.security.domain.persistence.RoleRepository;
@@ -13,12 +12,11 @@ import com.acme.webserviceserentcar.security.domain.service.communication.Regist
 import com.acme.webserviceserentcar.security.middleware.JwtHandler;
 import com.acme.webserviceserentcar.security.middleware.UserDetailsImpl;
 import com.acme.webserviceserentcar.security.resource.AuthenticateResource;
-import com.acme.webserviceserentcar.security.resource.UserResource;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,29 +35,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    ClientRepository clientRepository;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtHandler handler;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    EnhancedModelMapper mapper;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtHandler handler;
+    private final PasswordEncoder encoder;
+    private final EnhancedModelMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -98,7 +82,6 @@ public class UserServiceImpl implements UserService {
             AuthenticateResponse response = new AuthenticateResponse(
                     String.format("An error occurred while authenticating: %s", e.getMessage()));
             return ResponseEntity.badRequest().body(response.getMessage());
-
         }
     }
 
@@ -106,13 +89,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ResponseEntity<?> register(RegisterRequest request) {
 
-        if(userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.getUsername())) {
             AuthenticateResponse response = new AuthenticateResponse("Username is already taken.");
             return ResponseEntity.badRequest()
                     .body(response.getMessage());
         }
 
-        if(userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             AuthenticateResponse response = new AuthenticateResponse("Email is already taken.");
             return ResponseEntity.badRequest()
                     .body(response.getMessage());
@@ -122,8 +105,8 @@ public class UserServiceImpl implements UserService {
             Set<String> rolesStringSet = request.getRoles();
             Set<Role> roles = new HashSet<>();
 
-            if(rolesStringSet == null) {
-                roleRepository.findByName(Roles.ROLE_USER)
+            if (rolesStringSet == null) {
+                roleRepository.findByName(Roles.USER)
                         .map(roles::add)
                         .orElseThrow(() -> new RuntimeException("Role not found."));
             } else {
@@ -143,16 +126,11 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(user);
 
-            UserResource resource = mapper.map(user, UserResource.class);
-            RegisterResponse response = new RegisterResponse(resource);
-
-            return ResponseEntity.ok(response.getResource());
-
+            return this.authenticate(mapper.map(request, AuthenticateRequest.class));
         } catch (Exception e) {
             RegisterResponse response = new RegisterResponse(e.getMessage());
             return ResponseEntity.badRequest().body(response.getMessage());
         }
-
     }
 
     @Override

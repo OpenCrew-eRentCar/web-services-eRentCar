@@ -51,7 +51,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean equals(Object other) {
-
         if(this == other)
             return true;
         if (other == null || getClass() != other.getClass())
@@ -66,6 +65,5 @@ public class UserDetailsImpl implements UserDetails {
                         role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
         return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
-
     }
 }

@@ -1,6 +1,8 @@
 package com.acme.webserviceserentcar.security.domain.model.entity;
 
+import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.shared.domain.model.AuditModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,6 +44,13 @@ public class User extends AuditModel {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(
+            targetEntity = Client.class,
+            mappedBy = "user"
+    )
+    @JsonIgnore
+    private Client client;
 
     public User(String username, String email, String password) {
         this.username = username;

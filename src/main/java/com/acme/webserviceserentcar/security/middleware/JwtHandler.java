@@ -22,8 +22,8 @@ public class JwtHandler implements Serializable {
     private int expirationDays;
 
     public String generateToken(Authentication authentication) {
-
-        String subject = ((UserDetailsImpl) authentication.getPrincipal()).getUsername();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String subject = userDetails.getUsername();
 
         Date issuedAt = new Date();
 
