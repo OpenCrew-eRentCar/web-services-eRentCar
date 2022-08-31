@@ -56,7 +56,7 @@ public class ClientsController {
         return mapper.toResource(clientService.getById(clientId));
     }
 
-    @Operation(summary = "Get User By Id", description = "Get User by Id", tags = {"Clients"})
+    @Operation(summary = "Get Client By Token", description = "Get Client by Token", tags = {"Clients"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Client returned",
                     content = @Content(
@@ -64,9 +64,9 @@ public class ClientsController {
                             schema = @Schema(implementation = ClientResource.class)
                     ))
     })
-    @GetMapping("/user/{userId}")
-    public ClientResource getByUserId(@PathVariable Long userId) {
-        return mapper.toResource(clientService.getByUserId(userId));
+    @GetMapping("/token")
+    public ClientResource getByToken() {
+        return mapper.toResource(clientService.getByToken());
     }
 
     @Operation(summary = "Create Client", description = "Create Client", tags = {"Clients"})
@@ -90,9 +90,9 @@ public class ClientsController {
                             schema = @Schema(implementation = ClientResource.class)
                     ))
     })
-    @PutMapping("{clientId}")
-    public ClientResource updateClient(@PathVariable Long clientId, @Valid @RequestBody UpdateClientResource request) {
-        return mapper.toResource(clientService.update(clientId, mapper.toModel(request)));
+    @PutMapping()
+    public ClientResource updateClient(@Valid @RequestBody UpdateClientResource request) {
+        return mapper.toResource(clientService.update(mapper.toModel(request)));
     }
 
     @Operation(summary = "Update Plan Client", description = "Update Plan Client", tags = {"Clients"})
@@ -103,9 +103,9 @@ public class ClientsController {
                             schema = @Schema(implementation = ClientResource.class)
                     ))
     })
-    @PutMapping("{clientId}/plan/{planId}")
-    public ClientResource updatePlanClient(@PathVariable Long clientId, @PathVariable Long planId) {
-        return mapper.toResource(clientService.updatePlan(clientId, planId));
+    @PutMapping("/plan/{planId}")
+    public ClientResource updatePlanClient(@PathVariable Long planId) {
+        return mapper.toResource(clientService.updatePlan(planId));
     }
 
     @Operation(summary = "Delete Plan Client", description = "Delete Plan Client", tags = {"Clients"})

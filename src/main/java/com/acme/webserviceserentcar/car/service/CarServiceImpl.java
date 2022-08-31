@@ -12,6 +12,8 @@ import com.acme.webserviceserentcar.shared.exception.ResourceValidationException
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -45,6 +47,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Page<Car> getAll(Pageable pageable) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
         return carRepository.findAll(pageable);
     }
 

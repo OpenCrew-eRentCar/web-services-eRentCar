@@ -5,11 +5,15 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.persistence.PlanRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
+import com.acme.webserviceserentcar.security.domain.model.entity.User;
+import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
+import com.acme.webserviceserentcar.security.middleware.UserDetailsImpl;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -22,12 +26,22 @@ public class ClientServiceImpl implements ClientService {
     private static final String ENTITY = "Client";
     private final ClientRepository clientRepository;
     private final PlanRepository planRepository;
+    private final UserRepository userRepository;
     private final Validator validator;
 
-    public ClientServiceImpl(ClientRepository clientRepository, PlanRepository planRepository, Validator validator) {
+    public ClientServiceImpl(ClientRepository clientRepository, PlanRepository planRepository, UserRepository userRepository, Validator validator) {
         this.clientRepository = clientRepository;
         this.planRepository = planRepository;
+        this.userRepository = userRepository;
         this.validator = validator;
+    }
+
+    public String getUsernameFromAuthentication() {
+        return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    }
+
+    public Long getUserIdFromAuthentication() {
+        return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 
     @Override
@@ -42,7 +56,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getByUserId(Long userId) {
+    public Client getByToken() {
+        Long userId = this.getUserIdFromAuthentication();
         return clientRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, userId));
     }
 
@@ -53,15 +68,22 @@ public class ClientServiceImpl implements ClientService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
+        User user = userRepository.findById(this.getUserIdFromAuthentication())
+                .orElseThrow(() -> new ResourceNotFoundException("User", this.getUserIdFromAuthentication()));
+
+        request.setUser(user);
+
         return clientRepository.save(request);
     }
 
     @Override
-    public Client update(Long clientId, Client request) {
+    public Client update(Client request) {
         Set<ConstraintViolation<Client>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
+
+        Long clientId = getByToken().getId(); //get client id using token
 
         return clientRepository.findById(clientId).map(client ->
                 clientRepository.save(client.withNames(request.getNames())
@@ -77,11 +99,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updatePlan(Long clientId, Long planId) {
+    public Client updatePlan(Long planId) {
         Plan plan;
 
         if (planId == 0) plan = null;
         else plan = planRepository.findById(planId).orElseThrow(() -> new ResourceNotFoundException("Plan", planId));
+
+        Long clientId = getByToken().getId(); //get client id using token
 
         return clientRepository.findById(clientId).map(client ->
                 clientRepository.save(client.withPlan(plan))

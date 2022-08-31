@@ -31,5 +31,5 @@ public class CreateClientResource {
 
     private String imagePath;
 
-    private Long userId;
+    //private Long userId;
 }
