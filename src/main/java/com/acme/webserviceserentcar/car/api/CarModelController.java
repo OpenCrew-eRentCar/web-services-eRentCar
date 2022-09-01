@@ -65,9 +65,8 @@ public class CarModelController {
                     ))
     })
     @PostMapping()
-    public CarModelResource createCarModel(@RequestParam(name = "carBrandId") Long carBrandId,
-                                           @Valid @RequestBody CreateCarModelResource request) {
-        return mapper.toResource(carModelService.create(carBrandId, mapper.toModel(request)));
+    public CarModelResource createCarModel(@Valid @RequestBody CreateCarModelResource request) {
+        return mapper.toResource(carModelService.create(request.getCardBrandId(), mapper.toModel(request)));
     }
 
     @Operation(summary = "Update Car Model", description = "Updating Car Model", tags = {"CarModels"})
@@ -80,9 +79,8 @@ public class CarModelController {
     })
     @PutMapping("{carModelId}")
     public CarModelResource updateCarModel(@PathVariable Long carModelId,
-                                           @RequestParam(name = "carBrandId") Long carBrandId,
                                            @Valid @RequestBody UpdateCarModelResource request) {
-        return mapper.toResource(carModelService.update(carModelId, carBrandId, mapper.toModel(request)));
+        return mapper.toResource(carModelService.update(carModelId, request.getCardBrandId(), mapper.toModel(request)));
     }
 
     @Operation(summary = "Delete Car Model", description = "Delete Car Model", tags = {"CarModels"})
