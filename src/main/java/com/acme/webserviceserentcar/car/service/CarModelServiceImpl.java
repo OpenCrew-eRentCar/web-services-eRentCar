@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,26 @@ public class CarModelServiceImpl implements CarModelService {
         this.carModelRepository = carModelRepository;
         this.carBrandRepository = carBrandRepository;
         this.validator = validator;
+    }
+
+    @Override
+    public void seed() {
+        Set<CarModel> carModels = new HashSet<>();
+        carModels.add(new CarModel()
+                .withName("Versa")
+                .withImagePath("https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/Versa_MY20/MY22/Sense%20MT.png.ximg.l_12_m.smart.png")
+                .withCarBrand(carBrandRepository.findByName("Nissan").orElseThrow(() -> new ResourceNotFoundException("Car brand: Nissan"))));
+
+        carModels.add(new CarModel()
+                .withName("Cruze")
+                .withImagePath("https://fotos.perfil.com/2019/12/17/chevrolet-actualizo-la-version-lt-del-cruze-824280.jpg")
+                .withCarBrand(carBrandRepository.findByName("Chevrolet").orElseThrow(() -> new ResourceNotFoundException("Car brand: Chevrolet"))));
+
+        carModels.forEach(carModel -> {
+            if (!carModelRepository.existsByName(carModel.getName())) {
+                carModelRepository.save(carModel);
+            }
+        });
     }
 
     @Override

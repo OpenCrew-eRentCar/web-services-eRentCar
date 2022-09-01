@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CarModelService {
+    void seed();
     List<CarModel> getAll();
     Page<CarModel> getAll(Pageable pageable);
     CarModel getById(Long carModelId);
