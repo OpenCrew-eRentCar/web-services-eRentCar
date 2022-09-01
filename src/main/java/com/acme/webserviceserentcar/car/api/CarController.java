@@ -44,18 +44,18 @@ public class CarController {
         return mapper.modelListToPage(carService.getAll(), pageable);
     }
 
-    /*@Operation(summary = "Get All Cars by Client id", description = "Get All Cars by Client id", tags = {"Cars"})
+    @Operation(summary = "Get All Client Cars", description = "Get All Client Cars", tags = {"Cars"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All Cars of Client returned",
+            @ApiResponse(responseCode = "200", description = "All Client Cars returned",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = CarResource.class))
                     ))
     })
-    @GetMapping("client/{clientId}")
-    public Page<CarResource> getAllCarsByClientId(@PathVariable Long clientId, Pageable pageable) {
-        return carService.getAllCarsByClientId(clientId, pageable).map(mapper::toResource);
-    }*/
+    @GetMapping("/client")
+    public Page<CarResource> getAllCarsByClient(Pageable pageable) {
+        return mapper.modelListToPage(carService.getAllByClient(), pageable);
+    }
 
     @Operation(summary = "Get Car By Id", description = "Get Car by Id", tags = {"Cars"})
     @ApiResponses(value = {
@@ -79,10 +79,8 @@ public class CarController {
                     ))
     })
     @PostMapping()
-    public CarResource createCar(@RequestParam(name = "clientId") Long clientId,
-                                 @RequestParam(name = "carModelId") Long carModelId,
-                                 @Valid @RequestBody CreateCarResource request) {
-        return mapper.toResource(carService.create(clientId, carModelId, mapper.toModel(request)));
+    public CarResource createCar(@Valid @RequestBody CreateCarResource request) {
+        return mapper.toResource(carService.create(request.getCarModelId(), mapper.toModel(request)));
     }
 
     @Operation(summary = "Update Car", description = "Updating Car", tags = {"Cars"})
@@ -95,9 +93,8 @@ public class CarController {
     })
     @PutMapping("{carId}")
     public CarResource updateCar(@PathVariable Long carId,
-                                 @RequestParam(name = "carModelId") Long carModelId,
                                  @Valid @RequestBody UpdateCarResource request) {
-        return mapper.toResource(carService.update(carId, carModelId, mapper.toModel(request)));
+        return mapper.toResource(carService.update(carId, request.getCarModelId(), mapper.toModel(request)));
     }
 
     /*@Operation(summary = "Update Car Rate", description = "Updating Car Rate", tags = {"Cars"})
