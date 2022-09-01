@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CarModelRepository extends JpaRepository<CarModel, Long> {
+    boolean existsByName(String name);
 }
