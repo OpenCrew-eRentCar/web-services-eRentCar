@@ -7,13 +7,12 @@ import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
+import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -26,16 +25,17 @@ public class CarServiceImpl implements CarService {
     private static final String ENTITY = "Car";
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
+    private final ClientService clientService;
     private final CarModelRepository carModelRepository;
     private final Validator validator;
 
-
     public CarServiceImpl(CarRepository carRepository,
                           ClientRepository clientRepository,
-                          CarModelRepository carModelRepository,
+                          ClientService clientService, CarModelRepository carModelRepository,
                           Validator validator) {
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
+        this.clientService = clientService;
         this.carModelRepository = carModelRepository;
         this.validator = validator;
     }
@@ -47,15 +47,14 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Page<Car> getAll(Pageable pageable) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = userDetails.getUsername();
         return carRepository.findAll(pageable);
     }
 
-    /*@Override
-    public Page<Car> getAllCarsByClientId(Long clientId, Pageable pageable) {
-        return carRepository.findByClientId(clientId, pageable);
-    }*/
+    @Override
+    public List<Car> getAllByClient() {
+        Long clientId = this.clientService.getByToken().getId();
+        return carRepository.findByClientId(clientId);
+    }
 
     @Override
     public Car getById(Long carId) {
@@ -63,11 +62,13 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car create(Long clientId, Long carModelId, Car request) {
+    public Car create(Long carModelId, Car request) {
         Set<ConstraintViolation<Car>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
+
+        Long clientId = this.clientService.getByToken().getId();
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
@@ -78,6 +79,7 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new ResourceNotFoundException("Car Model", carModelId));
 
         request.setCarModel(carModel);
+        request.setActive(true);
 
         return carRepository.save(request);
     }
@@ -104,6 +106,7 @@ public class CarServiceImpl implements CarService {
                     .withImagePath(request.getImagePath())
                     .withCategory(request.getCategory())
                     .withMechanicCondition(request.getMechanicCondition())
+                    .withActive(request.isActive())
                     .withCarModel(carModel));
         }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
     }

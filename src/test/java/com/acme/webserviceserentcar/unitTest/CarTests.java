@@ -37,7 +37,7 @@ public class CarTests {
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);
     }
-    @Test
+    /*@Test
     void CreateCar() throws Exception{
         String address="123ToyotaPrueba";
         int year=2012;
@@ -63,7 +63,7 @@ public class CarTests {
         int status = mvcResult.getResponse().getStatus();
         System. out.println(mvcResult.getResponse());
         Assertions.assertEquals(200, status);
-    }
+    }*/
     /*@Test
     void DeleteCar() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/cars/1").
