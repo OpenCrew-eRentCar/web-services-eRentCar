@@ -58,4 +58,7 @@ public class CreateCarResource {
 
     @NotNull
     private MechanicConditions mechanicCondition;
+
+    @NotNull
+    private Long carModelId;
 }

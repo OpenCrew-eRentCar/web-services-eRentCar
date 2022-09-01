@@ -24,6 +24,7 @@ public class CarResource {
     private String imagePath;
     private CategoryOfCar category;
     private MechanicConditions mechanicConditions;
+    private boolean active;
     private CarModelResource carModel;
     private Long clientId;
 }

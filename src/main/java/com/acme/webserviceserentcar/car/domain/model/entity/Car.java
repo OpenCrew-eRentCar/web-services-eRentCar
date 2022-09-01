@@ -71,6 +71,9 @@ public class Car implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private MechanicConditions mechanicCondition;
 
+    @NotNull
+    private boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "client_id",

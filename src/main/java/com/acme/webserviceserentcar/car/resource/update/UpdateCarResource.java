@@ -53,4 +53,10 @@ public class UpdateCarResource {
 
     @NotNull
     private MechanicConditions mechanicCondition;
+
+    @NotNull
+    private boolean active;
+
+    @NotNull
+    private Long carModelId;
 }
