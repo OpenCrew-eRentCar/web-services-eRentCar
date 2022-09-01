@@ -19,4 +19,7 @@ public class UpdateCarModelResource {
     @NotBlank
     @Size(max = 300)
     private String imagePath;
+
+    @NotNull
+    private Long cardBrandId;
 }
