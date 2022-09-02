@@ -5,6 +5,9 @@ import com.acme.webserviceserentcar.car.domain.model.entity.CarModel;
 import com.acme.webserviceserentcar.car.domain.persistence.CarModelRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
+import com.acme.webserviceserentcar.car.mapping.CarMapper;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
+import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
@@ -28,16 +31,18 @@ public class CarServiceImpl implements CarService {
     private final ClientService clientService;
     private final CarModelRepository carModelRepository;
     private final Validator validator;
+    private final CarMapper carMapper;
 
     public CarServiceImpl(CarRepository carRepository,
                           ClientRepository clientRepository,
                           ClientService clientService, CarModelRepository carModelRepository,
-                          Validator validator) {
+                          Validator validator, CarMapper carMapper) {
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
         this.clientService = clientService;
         this.carModelRepository = carModelRepository;
         this.validator = validator;
+        this.carMapper = carMapper;
     }
 
     @Override
@@ -62,8 +67,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car create(Long carModelId, Car request) {
-        Set<ConstraintViolation<Car>> violations = validator.validate(request);
+    public Car create(CreateCarResource request) {
+        Set<ConstraintViolation<CreateCarResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
@@ -73,27 +78,27 @@ public class CarServiceImpl implements CarService {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
 
-        request.setClient(client);
+        CarModel carModel = carModelRepository.findById(request.getCarModelId())
+                .orElseThrow(() -> new ResourceNotFoundException("Car Model", request.getCarModelId()));
 
-        CarModel carModel = carModelRepository.findById(carModelId)
-                .orElseThrow(() -> new ResourceNotFoundException("Car Model", carModelId));
+        Car car = carMapper.toModel(request);
+        car.setClient(client);
+        car.setCarModel(carModel);
+        car.setActive(true);
 
-        request.setCarModel(carModel);
-        request.setActive(true);
-
-        return carRepository.save(request);
+        return carRepository.save(car);
     }
 
     @Override
-    public Car update(Long carId, Long carModelId, Car request) {
-        Set<ConstraintViolation<Car>> violations = validator.validate(request);
+    public Car update(Long carId, UpdateCarResource request) {
+        Set<ConstraintViolation<UpdateCarResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
         return carRepository.findById(carId).map(car -> {
-            CarModel carModel = carModelRepository.findById(carModelId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Car Model", carModelId));
+            CarModel carModel = carModelRepository.findById(request.getCarModelId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Car Model", request.getCarModelId()));
 
             return carRepository.save(car.withAddress(request.getAddress())
                     .withYear(request.getYear())

@@ -96,7 +96,7 @@ public class Car implements Serializable {
             targetEntity = Favourite.class,
             mappedBy = "car",
             fetch = FetchType.LAZY,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     @JsonIgnore
     private Set<Favourite> favourites;
@@ -106,7 +106,7 @@ public class Car implements Serializable {
             targetEntity = Rent.class,
             mappedBy = "car",
             fetch = FetchType.LAZY,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     @JsonIgnore
     private Set<Rent> rents;
