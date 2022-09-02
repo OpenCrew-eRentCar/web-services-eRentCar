@@ -45,8 +45,7 @@ public class CarModel implements Serializable {
     @OneToMany(
             targetEntity = Car.class,
             mappedBy = "carModel",
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private Set<Car> cars;

@@ -5,6 +5,9 @@ import com.acme.webserviceserentcar.car.domain.model.entity.CarModel;
 import com.acme.webserviceserentcar.car.domain.persistence.CarBrandRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarModelRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarModelService;
+import com.acme.webserviceserentcar.car.mapping.CarModelMapper;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarModelResource;
+import com.acme.webserviceserentcar.car.resource.update.UpdateCarModelResource;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.data.domain.Page;
@@ -24,13 +27,15 @@ public class CarModelServiceImpl implements CarModelService {
     private final CarModelRepository carModelRepository;
     private final CarBrandRepository carBrandRepository;
     private final Validator validator;
+    private final CarModelMapper carModelMapper;
 
     public CarModelServiceImpl(CarModelRepository carModelRepository,
                                CarBrandRepository carBrandRepository,
-                               Validator validator) {
+                               Validator validator, CarModelMapper carModelMapper) {
         this.carModelRepository = carModelRepository;
         this.carBrandRepository = carBrandRepository;
         this.validator = validator;
+        this.carModelMapper = carModelMapper;
     }
 
     @Override
@@ -70,33 +75,33 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public CarModel create(Long carBrandId, CarModel request) {
-        Set<ConstraintViolation<CarModel>> violations = validator.validate(request);
+    public CarModel create(CreateCarModelResource request) {
+        Set<ConstraintViolation<CreateCarModelResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        CarBrand carBrand = carBrandRepository.findById(carBrandId)
-                .orElseThrow(() -> new ResourceNotFoundException("Car Brand", carBrandId));
+        CarBrand carBrand = carBrandRepository.findById(request.getCardBrandId())
+                .orElseThrow(() -> new ResourceNotFoundException("Car Brand", request.getCardBrandId()));
 
-        request.setCarBrand(carBrand);
+        CarModel carModel = carModelMapper.toModel(request);
+        carModel.setCarBrand(carBrand);
 
-        return carModelRepository.save(request);
+        return carModelRepository.save(carModel);
     }
 
     @Override
-    public CarModel update(Long carModelId, Long carBrandId, CarModel request) {
-        Set<ConstraintViolation<CarModel>> violations = validator.validate(request);
+    public CarModel update(Long carModelId, UpdateCarModelResource request) {
+        Set<ConstraintViolation<UpdateCarModelResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
         return carModelRepository.findById(carModelId).map(carModel -> {
-            CarBrand carBrand = carBrandRepository.findById(carBrandId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Car Brand", carBrandId));
+            CarBrand carBrand = carBrandRepository.findById(request.getCardBrandId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Car Brand", request.getCardBrandId()));
 
-            return carModelRepository.save(carModel.withId(request.getId())
-                    .withName(request.getName())
+            return carModelRepository.save(carModel.withName(request.getName())
                     .withImagePath(request.getImagePath())
                     .withCarBrand(carBrand));
         }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carModelId));
