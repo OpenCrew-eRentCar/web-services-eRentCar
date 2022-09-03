@@ -4,13 +4,14 @@ import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
+import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
 import com.acme.webserviceserentcar.favourite.domain.persistence.FavouriteRepository;
 import com.acme.webserviceserentcar.favourite.domain.service.FavouriteService;
+import com.acme.webserviceserentcar.favourite.mapping.FavouriteMapper;
+import com.acme.webserviceserentcar.favourite.resource.create.CreateFavouriteResource;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,55 +27,56 @@ public class FavouriteServiceImpl implements FavouriteService {
     private final Validator validator;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
+    private final ClientService clientService;
+    private final FavouriteMapper favouriteMapper;
 
-    public FavouriteServiceImpl(FavouriteRepository favouriteRepository, Validator validator, CarRepository carRepository, ClientRepository clientRepository) {
+    public FavouriteServiceImpl(FavouriteRepository favouriteRepository, Validator validator,
+                                CarRepository carRepository, ClientRepository clientRepository,
+                                ClientService clientService, FavouriteMapper favouriteMapper) {
         this.favouriteRepository = favouriteRepository;
         this.validator = validator;
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
+        this.clientService = clientService;
+        this.favouriteMapper = favouriteMapper;
     }
 
     @Override
     public List<Favourite> getAll() {
-        return favouriteRepository.findAll();
+        Long clientId = this.clientService.getByToken().getId();
+        return favouriteRepository.findByClientId(clientId);
     }
-
-    @Override
-    public Page<Favourite> getAll(Pageable pageable) {
-        return favouriteRepository.findAll(pageable);
-    }
-
-    /*@Override
-    public Page<Favourite> getAllFavouritesByClientId(Long clientId, Pageable pageable) {
-        return favouriteRepository.findByClientId(clientId, pageable);
-    }*/
 
     @Override
     public Favourite getById(Long favouriteId) {
         return favouriteRepository.findById(favouriteId)
-                .orElseThrow(()-> new ResourceNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY,
                         favouriteId
                 ));
     }
 
     @Override
-    public Favourite create(Long clientId, Long carId, Favourite request) {
-        Set<ConstraintViolation<Favourite>> violations = validator.validate(request);
-        if(!violations.isEmpty())
+    public Favourite create(CreateFavouriteResource request) {
+        Set<ConstraintViolation<CreateFavouriteResource>> violations = validator.validate(request);
+
+        if (!violations.isEmpty()) {
             throw new ResourceValidationException(ENTITY, violations);
+        }
+
+        Long clientId = this.clientService.getByToken().getId();
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
 
-        request.setClient(client);
+        Car car = carRepository.findById(request.getCarId())
+                .orElseThrow(() -> new ResourceNotFoundException("Car", request.getCarId()));
 
-        Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new ResourceNotFoundException("Car", carId));
+        Favourite favourite = favouriteMapper.toModel(request);
+        favourite.setClient(client);
+        favourite.setCar(car);
 
-        request.setCar(car);
-
-        return favouriteRepository.save(request);
+        return favouriteRepository.save(favourite);
     }
 
     @Override
@@ -84,5 +86,4 @@ public class FavouriteServiceImpl implements FavouriteService {
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, favouriteId));
     }
-
 }
