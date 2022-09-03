@@ -43,7 +43,6 @@ public class RentController {
         return mapper.modelListToPage(rentService.getAll(), pageable);
     }
 
-
     @Operation(summary = "Get Rent by Id", description = "Get Rent by Id", tags = {"Rents"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rent returned",
@@ -67,10 +66,8 @@ public class RentController {
                     ))
     })
     @PostMapping()
-    public RentResource createRent(@RequestParam(name = "clientId") Long clientId,
-                                   @RequestParam(name = "carId") Long carId,
-                                   @Valid @RequestBody CreateRentResource request) {
-        return mapper.toResource(rentService.create(clientId, carId, mapper.toModel(request)));
+    public RentResource createRent(@Valid @RequestBody CreateRentResource request) {
+        return mapper.toResource(rentService.create(request));
     }
 
 

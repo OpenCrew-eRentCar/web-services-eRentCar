@@ -52,11 +52,11 @@ public class Rent implements Serializable {
     )
     private Car car;
 
-    @OneToOne(
+    /*@OneToOne(
             targetEntity = Reservation.class,
             mappedBy = "rent",
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Reservation reservation;
+    private Reservation reservation;*/
 }

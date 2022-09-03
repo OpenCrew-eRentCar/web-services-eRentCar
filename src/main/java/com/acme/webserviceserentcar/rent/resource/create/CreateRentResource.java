@@ -24,4 +24,7 @@ public class CreateRentResource {
 
     @NotNull
     private int rate;
+
+    @NotNull
+    private Long carId;
 }

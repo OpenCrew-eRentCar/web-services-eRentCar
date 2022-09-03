@@ -4,16 +4,14 @@ import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
+import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
-import com.acme.webserviceserentcar.reservations.domain.model.entity.Reservation;
-import com.acme.webserviceserentcar.reservations.domain.persistence.ReservationRepository;
-import com.acme.webserviceserentcar.reservations.domain.service.ReservationService;
+import com.acme.webserviceserentcar.rent.mapping.RentMapper;
+import com.acme.webserviceserentcar.rent.resource.create.CreateRentResource;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,25 +27,23 @@ public class RentServiceImpl implements RentService {
     private final Validator validator;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
-    private final ReservationService reservationService;
+    private final ClientService clientService;
+    private final RentMapper rentMapper;
 
     public RentServiceImpl(RentRepository rentRepository, Validator validator, CarRepository carRepository,
-                           ClientRepository clientRepository, ReservationService reservationService) {
+                           ClientRepository clientRepository, ClientService clientService, RentMapper rentMapper) {
         this.rentRepository = rentRepository;
         this.validator = validator;
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
-        this.reservationService = reservationService;
+        this.clientService = clientService;
+        this.rentMapper = rentMapper;
     }
 
     @Override
     public List<Rent> getAll() {
-        return rentRepository.findAll();
-    }
-
-    @Override
-    public Page<Rent> getAll(Pageable pageable) {
-        return rentRepository.findAll(pageable);
+        Long clientId = clientService.getByToken().getId();
+        return rentRepository.findAllByClientId(clientId);
     }
 
     @Override
@@ -60,26 +56,23 @@ public class RentServiceImpl implements RentService {
     }
 
     @Override
-    public Rent create(Long clientId, Long carId, Rent request) {
-        Set<ConstraintViolation<Rent>> violations = validator.validate(request);
+    public Rent create(CreateRentResource request) {
+        Set<ConstraintViolation<CreateRentResource>> violations = validator.validate(request);
+
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
+
+        Long clientId = clientService.getByToken().getId();
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
 
-        request.setClient(client);
+        Car car = carRepository.findById(request.getCarId())
+                .orElseThrow(() -> new ResourceNotFoundException("Car", request.getCarId()));
 
-        Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new ResourceNotFoundException("Car", carId));
-
-        request.setCar(car);
-
-        Rent rent = rentRepository.save(request);
-
-        Reservation reservation = reservationService.create(car.getClient().getId(), rent.getId());
-
-        rent.setReservation(reservation);
+        Rent rent = rentMapper.toModel(request);
+        rent.setClient(client);
+        rent.setCar(car);
 
         return rentRepository.save(rent);
     }
