@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -64,6 +65,7 @@ public class CarBrandController {
                             schema = @Schema(implementation = CarBrandResource.class)
                     ))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public CarBrandResource createCarBrand(@Valid @RequestBody CreateCarBrandResource request) {
         return mapper.toResource(carBrandService.create(mapper.toModel(request)));
@@ -77,6 +79,7 @@ public class CarBrandController {
                             schema = @Schema(implementation = CarBrandResource.class)
                     ))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("{carBrandId}")
     public CarBrandResource updateCarBrand(@PathVariable Long carBrandId, @Valid @RequestBody UpdateCarBrandResource request) {
         return mapper.toResource(carBrandService.update(carBrandId, mapper.toModel(request)));
@@ -87,6 +90,7 @@ public class CarBrandController {
             @ApiResponse(responseCode = "200", description = "Car Brand deleted",
                     content = @Content(mediaType = "application/json"))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("{carBrandId}")
     public ResponseEntity<?> deleteCarBrand(@PathVariable Long carBrandId) {
         return carBrandService.delete(carBrandId);
