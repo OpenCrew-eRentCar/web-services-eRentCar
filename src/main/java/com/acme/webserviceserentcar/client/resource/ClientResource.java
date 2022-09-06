@@ -3,8 +3,6 @@ package com.acme.webserviceserentcar.client.resource;
 import com.acme.webserviceserentcar.car.resource.CarResource;
 import com.acme.webserviceserentcar.favourite.resource.FavouriteResource;
 import com.acme.webserviceserentcar.rent.resource.RentResource;
-import com.acme.webserviceserentcar.reservations.domain.model.entity.Reservation;
-import com.acme.webserviceserentcar.reservations.resource.ReservationResource;
 import lombok.*;
 
 import java.util.Set;
@@ -29,5 +27,4 @@ public class ClientResource {
     private Set<CarResource> cars;
     private Set<FavouriteResource> favourites;
     private Set<RentResource> rents;
-    private Set<ReservationResource> reservations;
 }

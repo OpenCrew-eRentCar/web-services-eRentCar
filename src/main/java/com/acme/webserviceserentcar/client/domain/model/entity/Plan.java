@@ -1,14 +1,15 @@
 package com.acme.webserviceserentcar.client.domain.model.entity;
 
+import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.shared.converter.StringListConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,9 +24,8 @@ public class Plan implements Serializable {
     private Long id;
 
     @NotNull
-    @NotBlank
-    @Size(max = 30)
-    private String name;
+    @Enumerated(value = EnumType.STRING)
+    private PlanName name;
 
     @NotNull
     @Convert(converter = StringListConverter.class)
@@ -33,4 +33,11 @@ public class Plan implements Serializable {
 
     @NotNull
     private int price;
+
+    @OneToMany(
+            targetEntity = Client.class,
+            mappedBy = "plan"
+    )
+    @JsonIgnore
+    private Set<Client> client;
 }

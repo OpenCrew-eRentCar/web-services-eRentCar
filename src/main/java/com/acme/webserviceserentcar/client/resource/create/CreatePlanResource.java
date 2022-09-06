@@ -1,12 +1,11 @@
 package com.acme.webserviceserentcar.client.resource.create;
 
+import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.shared.converter.StringListConverter;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -16,9 +15,8 @@ import java.util.List;
 @With
 public class CreatePlanResource {
     @NotNull
-    @NotBlank
-    @Size(max = 30)
-    private String name;
+    @Enumerated(value = EnumType.STRING)
+    private PlanName name;
 
     @NotNull
     @Convert(converter = StringListConverter.class)

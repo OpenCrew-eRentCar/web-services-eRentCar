@@ -3,8 +3,8 @@ package com.acme.webserviceserentcar.client.service;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
-import com.acme.webserviceserentcar.client.domain.persistence.PlanRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
+import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import com.acme.webserviceserentcar.security.middleware.UserDetailsImpl;
@@ -25,13 +25,13 @@ import java.util.Set;
 public class ClientServiceImpl implements ClientService {
     private static final String ENTITY = "Client";
     private final ClientRepository clientRepository;
-    private final PlanRepository planRepository;
+    private final PlanService planService;
     private final UserRepository userRepository;
     private final Validator validator;
 
-    public ClientServiceImpl(ClientRepository clientRepository, PlanRepository planRepository, UserRepository userRepository, Validator validator) {
+    public ClientServiceImpl(ClientRepository clientRepository, PlanService planService, UserRepository userRepository, Validator validator) {
         this.clientRepository = clientRepository;
-        this.planRepository = planRepository;
+        this.planService = planService;
         this.userRepository = userRepository;
         this.validator = validator;
     }
@@ -83,7 +83,7 @@ public class ClientServiceImpl implements ClientService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        Long clientId = getByToken().getId(); //get client id using token
+        Long clientId = getByToken().getId();
 
         return clientRepository.findById(clientId).map(client ->
                 clientRepository.save(client.withNames(request.getNames())
@@ -100,12 +100,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client updatePlan(Long planId) {
-        Plan plan;
+        Plan plan = planService.getById(planId);
 
-        if (planId == 0) plan = null;
-        else plan = planRepository.findById(planId).orElseThrow(() -> new ResourceNotFoundException("Plan", planId));
-
-        Long clientId = getByToken().getId(); //get client id using token
+        Long clientId = getByToken().getId();
 
         return clientRepository.findById(clientId).map(client ->
                 clientRepository.save(client.withPlan(plan))

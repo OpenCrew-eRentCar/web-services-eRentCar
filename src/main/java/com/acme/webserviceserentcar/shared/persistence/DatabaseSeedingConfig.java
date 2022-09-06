@@ -2,6 +2,7 @@ package com.acme.webserviceserentcar.shared.persistence;
 
 import com.acme.webserviceserentcar.car.domain.service.CarBrandService;
 import com.acme.webserviceserentcar.car.domain.service.CarModelService;
+import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.security.domain.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,14 @@ public class DatabaseSeedingConfig {
     private final RoleService roleService;
     private final CarBrandService carBrandService;
     private final CarModelService carModelService;
+    private final PlanService planService;
 
-    public DatabaseSeedingConfig(RoleService roleService, CarBrandService carBrandService, CarModelService carModelService) {
+    public DatabaseSeedingConfig(RoleService roleService, CarBrandService carBrandService,
+                                 CarModelService carModelService, PlanService planService) {
         this.roleService = roleService;
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
+        this.planService = planService;
     }
 
     @EventListener
@@ -32,6 +36,7 @@ public class DatabaseSeedingConfig {
         roleService.seed();
         carBrandService.seed();
         carModelService.seed();
+        planService.seed();
         logger.info("Finished Database Seeding Process for {} at {}", name, new Timestamp(System.currentTimeMillis()));
     }
 }

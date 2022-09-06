@@ -1,5 +1,6 @@
 package com.acme.webserviceserentcar.client.resource;
 
+import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import lombok.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @With
 public class PlanResource {
     private Long id;
-    private String name;
+    private PlanName name;
     private List<String> benefits;
     private int price;
 }

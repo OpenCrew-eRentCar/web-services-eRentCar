@@ -5,6 +5,7 @@ import com.acme.webserviceserentcar.client.mapping.PlanMapper;
 import com.acme.webserviceserentcar.client.resource.create.CreatePlanResource;
 import com.acme.webserviceserentcar.client.resource.PlanResource;
 import com.acme.webserviceserentcar.client.resource.update.UpdatePlanResource;
+import com.acme.webserviceserentcar.security.domain.model.enumeration.Roles;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,7 +59,7 @@ public class PlansController {
         return mapper.toResource(planService.getById(planId));
     }
 
-    @Operation(summary = "Create Plan", description = "Create Plan", tags = {"Plans"})
+    /*@Operation(summary = "Create Plan", description = "Create Plan", tags = {"Plans"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Plan created",
                     content = @Content(
@@ -67,7 +70,7 @@ public class PlansController {
     @PostMapping
     public PlanResource createPlan(@Valid @RequestBody CreatePlanResource request) {
         return mapper.toResource(planService.create(mapper.toModel(request)));
-    }
+    }*/
 
     @Operation(summary = "Update Plan", description = "Update Plan", tags = {"Plans"})
     @ApiResponses(value = {
@@ -77,15 +80,17 @@ public class PlansController {
                             schema = @Schema(implementation = PlanResource.class)
                     ))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("{planId}")
     public PlanResource updatePlan(@PathVariable Long planId, @Valid @RequestBody UpdatePlanResource request) {
-        return mapper.toResource(planService.update(planId, mapper.toModel(request)));
+        return mapper.toResource(planService.update(planId, request));
     }
 
     @Operation(summary = "Delete Plan", description = "Delete Plan", tags = {"Plans"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Plan deleted", content = @Content(mediaType = "application/json"))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("{planId}")
     public ResponseEntity<?> deletePlan(@PathVariable Long planId) { return planService.delete(planId); }
 }

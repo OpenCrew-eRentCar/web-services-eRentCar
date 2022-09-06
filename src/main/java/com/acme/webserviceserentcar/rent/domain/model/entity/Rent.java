@@ -2,7 +2,6 @@ package com.acme.webserviceserentcar.rent.domain.model.entity;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
-import com.acme.webserviceserentcar.reservations.domain.model.entity.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -51,12 +50,4 @@ public class Rent implements Serializable {
             nullable = false
     )
     private Car car;
-
-    /*@OneToOne(
-            targetEntity = Reservation.class,
-            mappedBy = "rent",
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    private Reservation reservation;*/
 }
