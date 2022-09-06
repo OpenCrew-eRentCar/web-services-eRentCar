@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -64,6 +65,7 @@ public class CarModelController {
                             schema = @Schema(implementation = CarModelResource.class)
                     ))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public CarModelResource createCarModel(@Valid @RequestBody CreateCarModelResource request) {
         return mapper.toResource(carModelService.create(request));
@@ -77,6 +79,7 @@ public class CarModelController {
                             schema = @Schema(implementation = CarModelResource.class)
                     ))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("{carModelId}")
     public CarModelResource updateCarModel(@PathVariable Long carModelId,
                                            @Valid @RequestBody UpdateCarModelResource request) {
@@ -88,6 +91,7 @@ public class CarModelController {
             @ApiResponse(responseCode = "200", description = "Car Model deleted",
                     content = @Content(mediaType = "application/json"))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("{carModelId}")
     public ResponseEntity<?> deleteCarModel(@PathVariable Long carModelId) {
         return carModelService.delete(carModelId);
