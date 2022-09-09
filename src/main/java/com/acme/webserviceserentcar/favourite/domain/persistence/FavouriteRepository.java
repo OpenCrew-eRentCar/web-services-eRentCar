@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
     List<Favourite> findByClientId(Long clientId);
+    boolean existsByCarIdAndClientId(Long carId, Long clientId);
 }

@@ -1,9 +1,8 @@
 package com.acme.webserviceserentcar.favourite.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
-import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
+import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
-import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
 import com.acme.webserviceserentcar.favourite.domain.persistence.FavouriteRepository;
@@ -25,18 +24,15 @@ public class FavouriteServiceImpl implements FavouriteService {
     private static final String ENTITY = "Favourite";
     private final FavouriteRepository favouriteRepository;
     private final Validator validator;
-    private final CarRepository carRepository;
-    private final ClientRepository clientRepository;
+    private final CarService carService;
     private final ClientService clientService;
     private final FavouriteMapper favouriteMapper;
 
     public FavouriteServiceImpl(FavouriteRepository favouriteRepository, Validator validator,
-                                CarRepository carRepository, ClientRepository clientRepository,
-                                ClientService clientService, FavouriteMapper favouriteMapper) {
+                                CarService carService, ClientService clientService, FavouriteMapper favouriteMapper) {
         this.favouriteRepository = favouriteRepository;
         this.validator = validator;
-        this.carRepository = carRepository;
-        this.clientRepository = clientRepository;
+        this.carService = carService;
         this.clientService = clientService;
         this.favouriteMapper = favouriteMapper;
     }
@@ -66,11 +62,16 @@ public class FavouriteServiceImpl implements FavouriteService {
 
         Long clientId = this.clientService.getByToken().getId();
 
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
+        if (favouriteRepository.existsByCarIdAndClientId(request.getCarId(), clientId)) {
+            throw new ResourceValidationException(ENTITY, "Car already in favourites");
+        }
 
-        Car car = carRepository.findById(request.getCarId())
-                .orElseThrow(() -> new ResourceNotFoundException("Car", request.getCarId()));
+        Client client = clientService.getById(clientId);
+        Car car = carService.getById(request.getCarId());
+
+        if (car.getClient().getId() == clientId) {
+            throw new ResourceValidationException(ENTITY, "You can't add your own car to favourites");
+        }
 
         Favourite favourite = favouriteMapper.toModel(request);
         favourite.setClient(client);
@@ -81,6 +82,12 @@ public class FavouriteServiceImpl implements FavouriteService {
 
     @Override
     public ResponseEntity<?> delete(Long favouriteId) {
+        Long clientId = this.clientService.getByToken().getId();
+
+        if (!favouriteRepository.existsByCarIdAndClientId(favouriteId, clientId)) {
+            throw new ResourceNotFoundException(ENTITY, favouriteId);
+        }
+
         return favouriteRepository.findById(favouriteId).map(favourite -> {
             favouriteRepository.delete(favourite);
             return ResponseEntity.ok().build();
