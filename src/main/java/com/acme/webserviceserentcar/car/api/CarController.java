@@ -2,6 +2,7 @@ package com.acme.webserviceserentcar.car.api;
 
 import com.acme.webserviceserentcar.car.resource.CarResource;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
+import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.car.mapping.CarMapper;
@@ -68,6 +69,19 @@ public class CarController {
     @GetMapping("{carId}")
     public CarResource getCarById(@PathVariable Long carId) {
         return mapper.toResource(carService.getById(carId));
+    }
+
+    @Operation(summary = "Search Cars", description = "Search Cars", tags = {"Cars"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found cars",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = CarResource.class))
+                    ))
+    })
+    @PostMapping("/search")
+    public Page<CarResource> searchCars(@Valid @RequestBody SearchCarFilters searchCarFilters, Pageable pageable) {
+        return mapper.modelListToPage(carService.searchByFilters(searchCarFilters), pageable);
     }
 
     @Operation(summary = "Create Car", description = "Create Car", tags = {"Cars"})

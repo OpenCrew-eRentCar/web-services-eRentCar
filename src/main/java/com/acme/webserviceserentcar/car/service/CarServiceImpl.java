@@ -6,7 +6,9 @@ import com.acme.webserviceserentcar.car.domain.persistence.CarModelRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.car.mapping.CarMapper;
+import com.acme.webserviceserentcar.car.persistence.CarRepositoryCustom;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
+import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
@@ -27,6 +29,7 @@ import java.util.Set;
 public class CarServiceImpl implements CarService {
     private static final String ENTITY = "Car";
     private final CarRepository carRepository;
+    private final CarRepositoryCustom carRepositoryCustom;
     private final ClientRepository clientRepository;
     private final ClientService clientService;
     private final CarModelRepository carModelRepository;
@@ -34,10 +37,11 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
 
     public CarServiceImpl(CarRepository carRepository,
-                          ClientRepository clientRepository,
+                          CarRepositoryCustom carRepositoryCustom, ClientRepository clientRepository,
                           ClientService clientService, CarModelRepository carModelRepository,
                           Validator validator, CarMapper carMapper) {
         this.carRepository = carRepository;
+        this.carRepositoryCustom = carRepositoryCustom;
         this.clientRepository = clientRepository;
         this.clientService = clientService;
         this.carModelRepository = carModelRepository;
@@ -47,8 +51,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getAll() {
-        Long clientId = this.clientService.getByToken().getId();
-        return carRepository.findByClientIdNot(clientId);
+        return carRepository.findAll();
     }
 
     @Override
@@ -65,6 +68,12 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car getById(Long carId) {
         return carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+    }
+
+    @Override
+    public List<Car> searchByFilters(SearchCarFilters searchCarFilters) {
+        Long clientId = this.clientService.getByToken().getId();
+        return carRepositoryCustom.findBySearchFilters(searchCarFilters, clientId);
     }
 
     @Override
