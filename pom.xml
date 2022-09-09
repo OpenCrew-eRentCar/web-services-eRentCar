@@ -11,7 +11,7 @@
     <groupId>com.acme</groupId>
     <artifactId>web-services-erentcar</artifactId>
     <version>2.0.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>web-services-erentcar</name>
     <description>web-services-erentcar</description>
     <properties>
