@@ -47,7 +47,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getAll() {
-        return carRepository.findAll();
+        Long clientId = this.clientService.getByToken().getId();
+        return carRepository.findByClientIdNot(clientId);
     }
 
     @Override
