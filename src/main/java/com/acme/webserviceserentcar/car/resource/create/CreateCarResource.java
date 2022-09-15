@@ -2,6 +2,7 @@ package com.acme.webserviceserentcar.car.resource.create;
 
 
 
+import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
 import lombok.*;
 
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
@@ -36,6 +37,12 @@ public class CreateCarResource {
 
     @NotNull
     private boolean manual;
+
+    @NotNull
+    private String licensePlate;
+
+    @NotNull
+    private InsuranceType insuranceType;
 
     @NotNull
     private int carValueInDollars;

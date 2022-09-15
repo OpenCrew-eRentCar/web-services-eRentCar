@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.persistence;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
 import com.acme.webserviceserentcar.car.resource.searchFilters.PriceRange;
 import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import org.springframework.stereotype.Repository;
@@ -48,5 +49,9 @@ public class CarRepositoryCustom {
 
         query.select(car).where(priceRangeCriteria, categoryOfCarCriteria, clientCriteria);
         return entityManager.createQuery(query).getResultList();
+    }
+
+    public boolean isActiveSOAT(String licensePlate, InsuranceType insuranceType) {
+        return true;
     }
 }
