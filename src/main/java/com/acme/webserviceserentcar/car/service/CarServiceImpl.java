@@ -2,6 +2,7 @@ package com.acme.webserviceserentcar.car.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.model.entity.CarModel;
+import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
 import com.acme.webserviceserentcar.car.domain.persistence.CarModelRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
@@ -68,6 +69,51 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car getById(Long carId) {
         return carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+    }
+
+    @Override
+    public boolean existThisLicensePlate(String licencePlate) {
+        Car car = carRepository.findByLicensePlate(licencePlate);
+        if (car == null) {
+            return false;
+        } return true;
+    }
+
+    @Override
+    public boolean isActiveSOAT(String licensePlate, InsuranceType insuranceType)
+    {
+        // Here will be the connection with the rest API to verify SOAT
+        // It is required to be an organization with RUT to use the service.
+
+        class Insurance {
+            public String licensePlate;
+            public InsuranceType insuranceType;
+            public boolean isActive;
+
+            Insurance(String licensePlate, InsuranceType insuranceType, boolean isActive) {
+                this.licensePlate = licensePlate;
+                this.insuranceType = insuranceType;
+                this.isActive = isActive;
+            }
+        }
+
+        Insurance[] arrInsurance = new Insurance[5];
+
+        arrInsurance[0] = new Insurance("AKR-079", InsuranceType.RIMAC, true);
+        arrInsurance[1] = new Insurance("AKR-080", InsuranceType.RIMAC, false);
+        arrInsurance[2] = new Insurance("AKR-081", InsuranceType.PACIFICO, true);
+        arrInsurance[3] = new Insurance("AKR-082", InsuranceType.PACIFICO, false);
+        arrInsurance[4] = new Insurance("AKR-083", InsuranceType.RIMAC, true);
+
+        boolean result = true;
+
+        for (int i = 0; i < arrInsurance.length; i++) {
+            if (arrInsurance[i].licensePlate == licensePlate && arrInsurance[i].insuranceType == insuranceType) {
+                result = arrInsurance[i].isActive;
+                break;
+            }
+        }
+        return result;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.domain.model.entity;
 
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
+import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
@@ -58,6 +59,12 @@ public class Car implements Serializable {
 
     @NotNull
     private int rentAmountDay;
+
+    @NotNull
+    private String licensePlate;
+
+    @NotNull
+    private InsuranceType insurance;
 
     @NotNull
     @NotBlank

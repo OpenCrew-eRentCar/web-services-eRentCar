@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.domain.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
 import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
@@ -15,6 +16,8 @@ public interface CarService {
     Page<Car> getAll(Pageable pageable);
     List<Car> getAllByClient();
     Car getById(Long carId);
+    boolean existThisLicensePlate(String licencePlate);
+    boolean isActiveSOAT(String licensePlate, InsuranceType insuranceType);
     List<Car> searchByFilters(SearchCarFilters searchCarFilters);
     Car create(CreateCarResource request);
     Car update(Long carId, UpdateCarResource request);
