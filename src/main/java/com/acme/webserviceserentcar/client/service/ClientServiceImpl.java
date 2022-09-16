@@ -116,4 +116,11 @@ public class ClientServiceImpl implements ClientService {
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
     }
+
+
+    @Override
+    public boolean validateRecord(Long clientId){
+        double cmp = getById(clientId).getRecord();
+        return  cmp<5;
+    }
 }

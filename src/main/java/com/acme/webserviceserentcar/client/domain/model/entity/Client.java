@@ -43,6 +43,8 @@ public class  Client implements Serializable {
     private int responseTime;
 
     private double rate;
+    private double record;
+    private double minRecordExpected;
 
     @NotNull
     private String imagePath;

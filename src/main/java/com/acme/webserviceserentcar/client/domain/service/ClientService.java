@@ -13,7 +13,11 @@ public interface ClientService {
     Client getById(Long clientId);
     Client getByToken();
     Client create(Client request);
+
     Client update(Client request);
     Client updatePlan(Long planId);
     ResponseEntity<?> delete(Long clientId);
+
+
+    boolean validateRecord(Long clientId);
 }
