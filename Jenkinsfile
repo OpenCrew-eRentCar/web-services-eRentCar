@@ -10,7 +10,7 @@ pipeline {
         DB_DATASOURCE_DIALECT = credentials('DB_DATASOURCE_DIALECT_ERENTCAR')
         AUTHORIZATION_JWT_SECRET = credentials('AUTHORIZATION_JWT_SECRET_ERENTCAR')
         AUTHORIZATION_JWT_EXPIRATION_DAYS = credentials('AUTHORIZATION_JWT_EXPIRATION_DAYS_ERENTCAR')
-        SECRETS_PROPERTIES = credentials('SECRETS_PROPERTIES_ERENTCAR')
+        SECRET_PROPERTIES = credentials('SECRET_PROPERTIES_ERENTCAR')
     }
 	
     stages {
@@ -21,7 +21,7 @@ pipeline {
                 //bat 'echo spring.datasource.dialect=${env.DB_DATASOURCE_DIALECT} >> src/main/resources/application.properties'
                 //bat 'echo authorization.jwt.secret=$AUTHORIZATION_JWT_SECRET >> src/main/resources/application.properties'
                 //bat 'echo authorization.jwt.expirationDays=$AUTHORIZATION_JWT_EXPIRATION_DAYS >> src/main/resources/application.properties'
-                bat 'powershell Copy-Item ${SECRETS_PROPERTIES} -Destination src/main/resources'
+                bat 'powershell Copy-Item ${SECRET_PROPERTIES} -Destination src/main/resources'
             }
         }
 
