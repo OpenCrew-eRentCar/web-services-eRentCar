@@ -22,7 +22,7 @@ pipeline {
                 //bat 'echo authorization.jwt.secret=$AUTHORIZATION_JWT_SECRET >> src/main/resources/application.properties'
                 //bat 'echo authorization.jwt.expirationDays=$AUTHORIZATION_JWT_EXPIRATION_DAYS >> src/main/resources/application.properties'
                 echo ${env.DB_DATASOURCE_URL}
-                echo ${SECRET_PROPERTIES}
+                echo "secret file: ${SECRET_PROPERTIES}"
                 bat 'powershell Copy-Item ${SECRET_PROPERTIES} -Destination src/main/resources'
             }
         }
