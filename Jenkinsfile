@@ -16,8 +16,8 @@ pipeline {
         stage('Setup environment') {
             steps {
                 bat 'echo $DB_DATASOURCE_URL'
-                bat 'echo spring.datasource.url=$DB_DATASOURCE_URL >> src/main/resources/application.properties'
-                bat 'echo spring.datasource.dialect=$DB_DATASOURCE_DIALECT >> src/main/resources/application.properties'
+                bat 'echo spring.datasource.url=${env.DB_DATASOURCE_URL} >> src/main/resources/application.properties'
+                bat 'echo spring.datasource.dialect=${env.DB_DATASOURCE_DIALECT} >> src/main/resources/application.properties'
                 bat 'echo authorization.jwt.secret=$AUTHORIZATION_JWT_SECRET >> src/main/resources/application.properties'
                 bat 'echo authorization.jwt.expirationDays=$AUTHORIZATION_JWT_EXPIRATION_DAYS >> src/main/resources/application.properties'
             }
