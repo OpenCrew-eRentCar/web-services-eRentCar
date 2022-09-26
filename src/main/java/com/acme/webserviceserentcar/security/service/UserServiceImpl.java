@@ -14,7 +14,6 @@ import com.acme.webserviceserentcar.security.middleware.UserDetailsImpl;
 import com.acme.webserviceserentcar.security.resource.AuthenticateResource;
 import com.acme.webserviceserentcar.shared.mapping.EnhancedModelMapper;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
@@ -44,6 +42,17 @@ public class UserServiceImpl implements UserService {
     private final JwtHandler handler;
     private final PasswordEncoder encoder;
     private final EnhancedModelMapper mapper;
+
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                           AuthenticationManager authenticationManager, JwtHandler handler, PasswordEncoder encoder,
+                           EnhancedModelMapper mapper) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
+        this.handler = handler;
+        this.encoder = encoder;
+        this.mapper = mapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

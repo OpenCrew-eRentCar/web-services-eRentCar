@@ -1,23 +1,16 @@
-package com.acme.webserviceserentcar.car.service;
+package com.acme.webserviceserentcar.unitTest.car.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
-import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
-import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.persistence.CarRepositoryCustom;
-import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
-import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
-import com.acme.webserviceserentcar.client.domain.service.ClientService;
-import org.hibernate.mapping.Any;
+import com.acme.webserviceserentcar.car.service.CarServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.validation.Validator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

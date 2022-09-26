@@ -1,9 +1,10 @@
 package com.acme.webserviceserentcar.security.middleware;
 
-import com.acme.webserviceserentcar.security.domain.service.UserService;
+import com.acme.webserviceserentcar.security.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,8 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Lazy
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @Autowired
     JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -33,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userService);
+        builder.userDetailsService(userServiceImpl);
     }
 
     @Bean

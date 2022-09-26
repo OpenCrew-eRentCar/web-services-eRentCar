@@ -1,6 +1,5 @@
 package com.acme.webserviceserentcar.security.api;
 
-import com.acme.webserviceserentcar.client.resource.ClientResource;
 import com.acme.webserviceserentcar.security.domain.service.UserService;
 import com.acme.webserviceserentcar.security.domain.service.communication.AuthenticateRequest;
 import com.acme.webserviceserentcar.security.domain.service.communication.RegisterRequest;
