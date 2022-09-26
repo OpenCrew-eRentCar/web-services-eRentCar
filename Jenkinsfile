@@ -53,6 +53,7 @@ pipeline {
 
         stage ('Deploy Stage') {
             steps {
+                bat 'heroku git:remote -a erentcar-evo'
                 bat 'git push heroku master'
             }
         }
