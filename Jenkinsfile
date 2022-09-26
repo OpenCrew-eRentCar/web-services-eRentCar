@@ -53,7 +53,7 @@ pipeline {
 
         stage ('Deploy Stage') {
             steps {
-                bat 'git push https://%HEROKU_CREDENTIALS_USR%:%HEROKU_CREDENTIALS_PSW%@git.heroku.com/erentcar-evo.git HEAD:master'
+                bat 'git push heroku master'
             }
         }
     }
