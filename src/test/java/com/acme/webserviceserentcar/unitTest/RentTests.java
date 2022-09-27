@@ -22,14 +22,16 @@ public class RentTests {
     private MockMvc mockMvc;//esto ayuda para los test con url
     @Autowired
     ObjectMapper objectmapper;
-    @Test
+   /* @Test
     void GetRents() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/rents").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);
-    }
+    }*/
+
+    //*********************************
     /*@Test
     void GetRentsById() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders

@@ -18,14 +18,15 @@ public class FavoriteTests {
     private MockMvc mockMvc;
     @Autowired
     ObjectMapper objectmapper;
-    @Test
+    /*@Test
     void GetFavorites() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/favourites").
                         accept(MediaType.APPLICATION_JSON_VALUE)).
                 andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);
-    }
+    }*/
+    ///*****************************************
     /*@Test
     void GetFavouritesById() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/favourites/1").
