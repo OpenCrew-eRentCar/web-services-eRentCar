@@ -15,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -84,7 +87,8 @@ public class CarBrandController {
     public CarBrandResource updateCarBrand(@PathVariable Long carBrandId, @Valid @RequestBody UpdateCarBrandResource request) {
         return mapper.toResource(carBrandService.update(carBrandId, mapper.toModel(request)));
     }
-
+    
+    
     @Operation(summary = "Delete Car Brand", description = "Delete Car Brand", tags = {"CarBrands"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Car Brand deleted",
