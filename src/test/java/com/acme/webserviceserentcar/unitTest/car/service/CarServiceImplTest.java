@@ -19,9 +19,17 @@ import org.mockito.MockitoAnnotations;
 import javax.validation.Validator;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
+// @SpringBootTest
 class CarServiceImplTest {
+   // @Autowired
 
     @Mock
     private CarRepository carRepository;
@@ -47,6 +55,7 @@ class CarServiceImplTest {
     private Car car;
     private Client client;
     private CarModel carModel;
+
     private CreateCarResource carResource;
 
     @BeforeEach
@@ -65,7 +74,9 @@ class CarServiceImplTest {
         car.setInsurance(InsuranceType.RIMAC);
         car.setCarModel(carModel);
         car.setClient(client);
+        car.setActive(true);
     }
+
 
     @Test
     void ValidateThatThereIsNoSimilarLicensePlateNumber() {
