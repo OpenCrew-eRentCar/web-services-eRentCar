@@ -4,20 +4,15 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
-import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
-import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
