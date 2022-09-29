@@ -18,6 +18,10 @@ public class CreateClientResource {
     @Size(max = 30)
     private String lastNames;
 
+    @NotNull
+    @Size(min = 8, max = 8)
+    private String dni;
+
     @Size(max = 50)
     private String address;
 
