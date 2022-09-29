@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.validation.Validator;
-
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

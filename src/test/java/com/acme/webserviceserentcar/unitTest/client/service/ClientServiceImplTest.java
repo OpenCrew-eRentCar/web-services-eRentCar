@@ -4,20 +4,15 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
-import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
-import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -40,7 +35,8 @@ class ClientServiceImplTest {
     private ClientServiceImpl clientService;
 
     private Client client;
-    private String EMPTY_STRING = "";
+    private final String EMPTY_STRING = "";
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -63,54 +59,54 @@ class ClientServiceImplTest {
     void validateRecord() {
         when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
         boolean result = clientService.validateRecord(client.getId());
-        boolean expected = true;
-        assertEquals(expected,result);
+        boolean expected = client.getRecord()<5.0;
+        assertEquals(expected, result);
     }
 
     @Test
     void validateFullNameEmpty() {
         // Arrange
         String firstName = EMPTY_STRING;
-        String lastName =  EMPTY_STRING;
+        String lastName = EMPTY_STRING;
 
         // Act
         boolean result = clientService.isValidFullName(firstName, lastName);
 
         // Assert
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
     void validateFullNameShort() {
         // Arrange
         String firstName = "An"; // this has less than two letters.
-        String lastName =  "To";
+        String lastName = "To";
 
         // Act
         boolean result = clientService.isValidFullName("An", "To");
 
         // Assert
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
     void validateFullNameWithALastname() {
         // Arrange
         String firstName = "Ben";
-        String lastName =  "Cordova";
+        String lastName = "Cordova";
 
         // Act
         boolean result = clientService.isValidFullName(firstName, lastName);
 
         // Assert
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
     void validateFullNameCorrectly() {
         // Arrange
         String firstName = "Ben";
-        String lastName =  "Cordova Jimenez";
+        String lastName = "Cordova Jimenez";
 
         // Act
         boolean result = clientService.isValidFullName(firstName, lastName);
@@ -212,9 +208,9 @@ class ClientServiceImplTest {
         // Act
         when(clientRepository.save(client)).thenReturn(client);
         var result =
-        assertThrows(IllegalArgumentException.class, () -> {
-            clientService.create(client);
-        });
+                assertThrows(IllegalArgumentException.class, () -> {
+                    clientService.create(client);
+                });
 
         // Assert
         assertEquals("The DNI must have 8 numbers", result.getMessage());
