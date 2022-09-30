@@ -34,7 +34,7 @@ class CarServiceImplTest {
         car = new Car();
         car.setId(Long.valueOf(11));
         car.setLicensePlate("AKR-079");
-        car.setInsurance(InsuranceType.RIMAC);
+        car.setInsuranceType(InsuranceType.RIMAC);
         car.setAddress("Av. 28 de julio");
     }
 
