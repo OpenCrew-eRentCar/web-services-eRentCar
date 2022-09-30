@@ -84,7 +84,7 @@ public class FavouriteServiceImpl implements FavouriteService {
     public ResponseEntity<?> delete(Long favouriteId) {
         Long clientId = this.clientService.getByToken().getId();
 
-        if (!favouriteRepository.existsByCarIdAndClientId(favouriteId, clientId)) {
+        if (!favouriteRepository.existsByIdAndClientId(favouriteId, clientId)) {
             throw new ResourceNotFoundException(ENTITY, favouriteId);
         }
 
