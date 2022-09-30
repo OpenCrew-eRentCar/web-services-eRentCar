@@ -64,7 +64,8 @@ public class Car implements Serializable {
     private String licensePlate;
 
     @NotNull
-    private InsuranceType insurance;
+    @Enumerated(value = EnumType.STRING)
+    private InsuranceType insuranceType;
 
     @NotNull
     @NotBlank
