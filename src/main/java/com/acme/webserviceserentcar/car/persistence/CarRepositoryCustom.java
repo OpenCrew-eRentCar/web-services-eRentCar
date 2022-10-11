@@ -26,26 +26,18 @@ public class CarRepositoryCustom {
         CriteriaQuery<Car> query = builder.createQuery(Car.class);
         Root<Car> car = query.from(Car.class);
 
-        Predicate priceRangeCriteria = builder.conjunction();
+        //Find by category
+        Predicate categoryOfCarCriteria = builder.in(car.get("category")).value(searchCarFilters.getCategories());
 
+        //Find by price range
+        Predicate priceRangeCriteria = builder.disjunction();
         for (PriceRange range : searchCarFilters.getPriceRanges()) {
             Predicate rangePrice = builder.between(car.get("rentAmountDay"), range.getMin(), range.getMax());
             priceRangeCriteria = builder.or(priceRangeCriteria, rangePrice);
         }
 
-        Predicate categoryOfCarCriteria = builder.conjunction();
-
-        if (searchCarFilters.getCategories().size() > 0) {
-            Predicate category = builder.in(car.get("category")).value(searchCarFilters.getCategories());
-            categoryOfCarCriteria = builder.and(categoryOfCarCriteria, category);
-        }
-
-        Predicate clientCriteria = builder.conjunction();
-
-        if (clientId != null) {
-            Predicate clientCar = builder.notEqual(car.get("client").get("id"), clientId);
-            clientCriteria = builder.and(clientCriteria, clientCar);
-        }
+        //Find by Client id
+        Predicate clientCriteria = builder.notEqual(car.get("client").get("id"), clientId);
 
         query.select(car).where(priceRangeCriteria, categoryOfCarCriteria, clientCriteria);
         return entityManager.createQuery(query).getResultList();
