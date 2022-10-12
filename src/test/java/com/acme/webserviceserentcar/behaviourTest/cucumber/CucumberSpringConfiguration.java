@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.acceptanceTest.cucumber;
+package com.acme.webserviceserentcar.behaviourTest.cucumber;
 
 import com.acme.webserviceserentcar.WebServicesErentcarApplication;
 import io.cucumber.spring.CucumberContextConfiguration;

@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.acceptanceTest.steps;
+package com.acme.webserviceserentcar.behaviourTest.steps;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
