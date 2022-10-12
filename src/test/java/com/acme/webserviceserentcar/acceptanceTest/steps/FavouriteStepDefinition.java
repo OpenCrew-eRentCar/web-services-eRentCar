@@ -55,8 +55,8 @@ public class FavouriteStepDefinition {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Given("I am a Client")
-    public void iAmAClient(DataTable table) {
+    @Given("I am a Client \\(Favourite)")
+    public void iAmAClientFavourite(DataTable table) {
         List<List<String>> rows = table.asLists(String.class);
         List<String> row = rows.get(1);
         client1 = new Client();

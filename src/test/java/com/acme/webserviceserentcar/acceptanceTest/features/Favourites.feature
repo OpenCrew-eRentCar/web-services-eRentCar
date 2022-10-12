@@ -1,6 +1,6 @@
 Feature: Favourites Service
   Scenario: Add favourite
-    Given I am a Client
+    Given I am a Client (Favourite)
       | id | names |
       | 1  | Bob  |
     And Exists a Car with data
@@ -10,7 +10,7 @@ Feature: Favourites Service
     Then I should see that car in my Favourites
 
   Scenario: Get Favourites
-    Given I am a Client
+    Given I am a Client (Favourite)
       | id | names |
       | 1  | Bob  |
     And Have a Favourites Cars
@@ -21,7 +21,7 @@ Feature: Favourites Service
     Then I should get my Favourites with length 2
 
   Scenario: Get Favourite by id
-    Given I am a Client
+    Given I am a Client (Favourite)
       | id | names |
       | 1  | Bob  |
     And Have a Favourites Cars
@@ -32,7 +32,7 @@ Feature: Favourites Service
     Then I should get the Favourite Car with id 1
 
   Scenario: Delete Favourite by id
-    Given I am a Client
+    Given I am a Client (Favourite)
       | id | names |
       | 1  | Bob  |
     And Have a Favourites Cars
