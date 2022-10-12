@@ -10,6 +10,7 @@ import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
 import com.acme.webserviceserentcar.rent.resource.create.CreateRentResource;
+import com.acme.webserviceserentcar.rent.resource.update.UpdateRentResource;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,14 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +62,31 @@ public class RentServiceImpl implements RentService {
                         ENTITY,
                         rentId
                 ));
+    }
+
+    public boolean isFinishedRent(Date finishDate) throws ParseException {
+        LocalDateTime now = LocalDateTime.now();
+        Date today = Date.from(now.toInstant(ZoneOffset.UTC));
+        return today.after(finishDate) || today.equals(finishDate);
+    }
+
+    public Rent updateRateClient(Long rentId, UpdateRentResource request) throws ParseException {
+        Set<ConstraintViolation<UpdateRentResource>> violations = validator.validate(request);
+
+        if (!violations.isEmpty())
+            throw new ResourceValidationException(ENTITY, violations);
+
+        Rent rent = rentRepository.findById(rentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Rent", rentId));
+
+        boolean result = isFinishedRent(rent.getFinishDate());
+
+        if (!result)
+            throw new ResourceValidationException(ENTITY, "Rent is not over.");
+
+        rent.setRate(request.getRate());
+
+        return rentRepository.save(rent);
     }
 
     @Override

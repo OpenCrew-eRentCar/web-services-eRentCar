@@ -129,10 +129,7 @@ public class CarServiceImpl implements CarService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        Long clientId = this.clientService.getByToken().getId();
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
+        Client client = this.clientService.getByToken();
 
         CarModel carModel = carModelRepository.findById(request.getCarModelId())
                 .orElseThrow(() -> new ResourceNotFoundException("Car Model", request.getCarModelId()));

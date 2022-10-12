@@ -68,12 +68,38 @@ public class ClientServiceImpl implements ClientService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        User user = userRepository.findById(this.getUserIdFromAuthentication())
+        if (!isValidFullName(request.getFirstName(), request.getLastNames()))
+            throw new IllegalArgumentException("Incorrect first name and/or last names.");
+
+        if (!isValidNickName(request.getNames()))
+            throw new IllegalArgumentException("Incorrect nickname.");
+
+        if (!isValidDni(request.getDni()))
+            throw new IllegalArgumentException("The DNI must have 8 numbers");
+
+
+        /* User user = userRepository.findById(this.getUserIdFromAuthentication())
                 .orElseThrow(() -> new ResourceNotFoundException("User", this.getUserIdFromAuthentication()));
 
-        request.setUser(user);
+        request.setUser(user);*/
 
         return clientRepository.save(request);
+    }
+
+    public boolean isValidFullName(String firstName, String lastName) {
+        if (!firstName.trim().isEmpty() && firstName.length() >= 3 && firstName.length() <= 35)
+            return !lastName.trim().isEmpty() && lastName.contains(" ") && lastName.length() >= 7;
+        return false;
+    }
+
+    public boolean isValidNickName(String name) {
+        return !name.trim().isEmpty() && name.length() >= 6 && name.length() <= 12;
+    }
+
+    public boolean isValidDni(String dni) {
+        boolean isNumeric = (dni != null && dni.matches("[0-9]+"));
+        boolean isNumberOfDni = dni.length() == 8;
+        return isNumeric && isNumberOfDni;
     }
 
     @Override
