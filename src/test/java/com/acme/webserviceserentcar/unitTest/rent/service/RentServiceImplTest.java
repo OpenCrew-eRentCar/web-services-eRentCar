@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.rent.service;
+package com.acme.webserviceserentcar.unitTest.rent.service;
 
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
@@ -8,6 +8,7 @@ import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
 import com.acme.webserviceserentcar.rent.resource.RentResource;
 import com.acme.webserviceserentcar.rent.resource.update.UpdateRentResource;
+import com.acme.webserviceserentcar.rent.service.RentServiceImpl;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,4 +119,19 @@ class RentServiceImplTest {
         // Assert
         assertEquals(newRate, rent.getRate());
     }
+
+    @Test
+    void getAllRents() {}
+
+    @Test
+    void getRentById() {}
+
+    @Test
+    void creteRent() {}
+
+    @Test
+    void updateRent() {}
+
+    @Test
+    void deleteRent() {}
 }
