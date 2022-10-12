@@ -1,17 +1,19 @@
 package com.acme.webserviceserentcar.unitTest.client.service;
 
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
+import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
+import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,8 +34,9 @@ class ClientServiceImplTest {
     private Validator validator;
 
     @InjectMocks
+    @Spy
     private ClientServiceImpl clientService;
-
+    private List<Client> clients;
     private Client client;
     private final String EMPTY_STRING = "";
 
@@ -49,10 +52,21 @@ class ClientServiceImplTest {
         client.setCellphoneNumber(958332883L);
         client.setImagePath("213");
         client.setMinRecordExpected(5.0);
-        client.setNames("hbcordova");
-        client.setFirstName("Heber");
+        client.setNames("heber");
         client.setLastNames("Cordova Jimenez");
         client.setDni("70471826");
+
+        Client client1 = new Client();
+        client1.setId(2L);
+        client1.setNames("Juan");
+
+        Client client2 = new Client();
+        client2.setId(3L);
+        client2.setNames("Pedro");
+
+        clients = new ArrayList<>();
+        clients.add(client1);
+        clients.add(client2);
     }
 
     @Test
@@ -92,11 +106,11 @@ class ClientServiceImplTest {
     @Test
     void validateFullNameWithALastname() {
         // Arrange
-        String firstName = "Ben";
+        String names = "Be";
         String lastName = "Cordova";
 
         // Act
-        boolean result = clientService.isValidFullName(firstName, lastName);
+        boolean result = clientService.isValidFullName(names, lastName);
 
         // Assert
         assertFalse(result);
@@ -105,7 +119,7 @@ class ClientServiceImplTest {
     @Test
     void validateFullNameCorrectly() {
         // Arrange
-        String firstName = "Ben";
+        String firstName = "Benn";
         String lastName = "Cordova Jimenez";
 
         // Act
@@ -217,20 +231,67 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void getAllClients() {}
+    void getAllClients() {
+        when(clientRepository.findAll()).thenReturn(clients);
+        List<Client> result = clientService.getAll();
+        assertEquals(clients, result);
+    }
 
     @Test
-    void getClientById() {}
+    void getClientById() {
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
+        Client result = clientService.getById(client.getId());
+        assertEquals(client, result);
+    }
 
     @Test
-    void createClient() {}
+    void createClient() {
+        when(clientRepository.save(client)).thenReturn(client);
+        Client result = clientService.create(client);
+        assertEquals(client, result);
+    }
 
     @Test
-    void updateClient() {}
+    void updateClient() {
+        Client clientUpdate = client;
+        clientUpdate.setNames("Pedrito");
+
+        Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+
+        Client result = clientService.update(clientUpdate);
+
+        assertEquals(clientUpdate, result);
+    }
 
     @Test
-    void updateClientPlan() {}
+    void updateClientPlan() {
+        Plan plan = new Plan();
+        plan.setId(1L);
+        plan.setName(PlanName.PREMIUM);
+
+        Client clientUpdate = client;
+        clientUpdate.setPlan(plan);
+
+        Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
+        when(planService.getById(plan.getId())).thenReturn(plan);
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+
+        Client result = clientService.updatePlan(plan.getId());
+
+        assertEquals(clientUpdate, result);
+    }
 
     @Test
-    void deleteClient() {}
+    void deleteClient() {
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
+        clientService.delete(client.getId());
+        clients.remove(client);
+        List<Client> results = clients;
+        assertEquals(clients, results);
+    }
 }

@@ -29,9 +29,6 @@ public class  Client implements Serializable {
     @Size(max = 30)
     private String names;
 
-    @Size(max = 60)
-    private String firstName;
-
     @Size(max = 30)
     private String lastNames;
 

@@ -68,11 +68,8 @@ public class ClientServiceImpl implements ClientService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        if (!isValidFullName(request.getFirstName(), request.getLastNames()))
+        if (!isValidFullName(request.getNames(), request.getLastNames()))
             throw new IllegalArgumentException("Incorrect first name and/or last names.");
-
-        if (!isValidNickName(request.getNames()))
-            throw new IllegalArgumentException("Incorrect nickname.");
 
         if (!isValidDni(request.getDni()))
             throw new IllegalArgumentException("The DNI must have 8 numbers");
@@ -86,14 +83,14 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(request);
     }
 
-    public boolean isValidFullName(String firstName, String lastName) {
-        if (!firstName.trim().isEmpty() && firstName.length() >= 3 && firstName.length() <= 35)
-            return !lastName.trim().isEmpty() && lastName.contains(" ") && lastName.length() >= 7;
+    public boolean isValidFullName(String names, String lastName) {
+        if (!names.trim().isEmpty() && names.length() >= 3 && names.length() <= 35)
+            return !lastName.trim().isEmpty() && lastName.length() >= 2;
         return false;
     }
 
     public boolean isValidNickName(String name) {
-        return !name.trim().isEmpty() && name.length() >= 6 && name.length() <= 12;
+        return !name.trim().isEmpty() && name.length() >= 4 && name.length() <= 12;
     }
 
     public boolean isValidDni(String dni) {
