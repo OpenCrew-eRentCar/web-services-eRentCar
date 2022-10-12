@@ -119,4 +119,24 @@ class CarServiceImplTest {
         // Assert
         assertNotNull(result);
     }
+
+    @Test
+    void getCarById() {
+    }
+
+    @Test
+    void getAllCars() {
+    }
+
+    @Test
+    void createCar() {
+    }
+
+    @Test
+    void updateCar() {
+    }
+
+    @Test
+    void deleteCar() {
+    }
 }

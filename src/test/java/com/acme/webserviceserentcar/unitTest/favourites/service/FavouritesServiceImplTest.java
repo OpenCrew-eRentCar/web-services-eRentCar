@@ -65,6 +65,12 @@ public class FavouritesServiceImplTest {
     }
 
     @Test
+    void getAllFavourites() {}
+
+    @Test
+    void getFavouriteById() {}
+
+    @Test
     void saveFavourite() {
         when(clientService.getByToken()).thenReturn(client1);
         when(clientService.getById(client1.getId())).thenReturn(client1);
@@ -75,4 +81,7 @@ public class FavouritesServiceImplTest {
         assertEquals(favourite, result);
         verify(favouriteRepository).save(favourite);
     }
+
+    @Test
+    void deleteFavourite() {}
 }

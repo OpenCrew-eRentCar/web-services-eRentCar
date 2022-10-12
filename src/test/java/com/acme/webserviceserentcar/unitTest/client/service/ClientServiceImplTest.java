@@ -215,4 +215,22 @@ class ClientServiceImplTest {
         // Assert
         assertEquals("The DNI must have 8 numbers", result.getMessage());
     }
+
+    @Test
+    void getAllClients() {}
+
+    @Test
+    void getClientById() {}
+
+    @Test
+    void createClient() {}
+
+    @Test
+    void updateClient() {}
+
+    @Test
+    void updateClientPlan() {}
+
+    @Test
+    void deleteClient() {}
 }

@@ -38,6 +38,14 @@ public class CarBrandServiceImplTest {
     }
 
     @Test
+    void getCarBrandById() {
+    }
+
+    @Test
+    void getAllCarBrands() {
+    }
+
+    @Test
     void createCarBrand() {
         when(carBrandRepository.save(carBrand)).thenReturn(carBrand);
         CarBrand result = carBrandService.create(carBrand);
@@ -57,5 +65,9 @@ public class CarBrandServiceImplTest {
         CarBrand result = carBrandService.update(carBrand.getId(), request);
         assertEquals(request, result);
         verify(carBrandRepository).save(request);
+    }
+
+    @Test
+    void deleteCarBrand() {
     }
 }
