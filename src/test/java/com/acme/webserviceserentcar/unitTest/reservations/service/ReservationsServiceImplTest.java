@@ -11,6 +11,7 @@ import com.acme.webserviceserentcar.rent.resource.update.UpdateRentResource;
 import com.acme.webserviceserentcar.reservations.service.ReservationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 public class ReservationsServiceImplTest {
 
-    @Mock
+    @InjectMocks
     private ReservationServiceImpl reservationsServiceImpl;
 
     @Mock
@@ -34,53 +35,44 @@ public class ReservationsServiceImplTest {
     @Mock
     private ClientServiceImpl clientService;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    Rent rent1 = new Rent();
-    Rent rent2 = new Rent();
     private Client client1;
 
+    private Car car1;
     private List<Rent> reservations;
-    UpdateRentResource rentResource = new UpdateRentResource();
+    CreateRentResource rentResource = new CreateRentResource();
 
     @BeforeEach
     void setUp() throws ParseException {
         MockitoAnnotations.openMocks(this);
 
+        rentResource.setCarId(1L);
+
         client1 = new Client();
         client1.setId(1L);
 
+        car1 = new Car();
+        car1.setId(1L);
+        car1.setClient(client1);
+
         // Initialize fields rent object
+        Rent rent1 = new Rent();
+
         rent1.setId(1L);
         rent1.setAmount(1000);
         rent1.setStartDate(format.parse("2022-07-05"));
         rent1.setFinishDate(format.parse("2022-07-07"));
         rent1.setRate(0);
-
-        rent2.setId(2L);
-        rent2.setAmount(2000);
-        rent2.setStartDate(format.parse("2022-07-06"));
-        rent2.setFinishDate(format.parse("2022-07-08"));
-        rent2.setRate(0);
-
-        //Initialize field rent resource object
-        rentResource.setAmount(1000);
-        rentResource.setStartDate(format.parse("2022-07-05"));
-        rentResource.setFinishDate(format.parse("2022-07-07"));
-        rentResource.setRate(5);
-
-        rentResource.setAmount(2000);
-        rentResource.setStartDate(format.parse("2022-07-06"));
-        rentResource.setFinishDate(format.parse("2022-07-08"));
-        rentResource.setRate(0);
+        rent1.setCar(car1);
+        rent1.setClient(client1);
 
         reservations = new ArrayList<>();
         reservations.add(rent1);
-        reservations.add(rent2);
     }
 
     @Test
     void getAllReservations() {
         when(clientService.getByToken()).thenReturn(client1);
-        when(rentRepository.findAllByClientId(client1.getId())).thenReturn(reservations);
+        when(rentRepository.findAllByCarOwner(client1.getId())).thenReturn(reservations);
         List<Rent> results = reservationsServiceImpl.getAll();
         assertEquals(reservations, results);
     }
