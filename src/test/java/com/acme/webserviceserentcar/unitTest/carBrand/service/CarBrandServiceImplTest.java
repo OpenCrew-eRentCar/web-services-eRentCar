@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.validation.Validator;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +28,9 @@ public class CarBrandServiceImplTest {
     @InjectMocks
     private CarBrandServiceImpl carBrandService;
 
+
     private CarBrand carBrand;
+    private List<CarBrand> carBrands;
 
     @BeforeEach
     void setUp() {
@@ -35,14 +40,33 @@ public class CarBrandServiceImplTest {
         carBrand.setId(1L);
         carBrand.setName("Audi");
         carBrand.setImagePath("www.image.com");
+
+        CarBrand carBrand1 = new CarBrand();
+        carBrand1.setId(2L);
+        carBrand1.setName("Onda");
+
+        CarBrand carBrand2 = new CarBrand();
+        carBrand2.setId(3L);
+        carBrand2.setName("Kia");
+
+        carBrands = new ArrayList<>();
+        carBrands.add(carBrand1);
+        carBrands.add(carBrand2);
     }
 
     @Test
     void getCarBrandById() {
+        when(carBrandRepository.findById(carBrand.getId())).thenReturn( Optional.of(carBrand));
+        CarBrand result = carBrandService.getById(carBrand.getId());
+        assertEquals(carBrand,result);
     }
 
     @Test
     void getAllCarBrands() {
+        when(carBrandRepository.findAll()).thenReturn(carBrands);
+        List<CarBrand> result = carBrandService.getAll();
+        assertEquals(carBrands,result);
+
     }
 
     @Test
@@ -69,5 +93,11 @@ public class CarBrandServiceImplTest {
 
     @Test
     void deleteCarBrand() {
+        when(carBrandRepository.findById(carBrand.getId())).thenReturn(Optional.of(carBrand));
+        carBrandService.delete(carBrand.getId());
+        carBrands.remove(carBrand);
+        System.out.println(carBrands);
+        List<CarBrand> results = carBrands;
+        assertEquals(carBrands, results);
     }
 }
