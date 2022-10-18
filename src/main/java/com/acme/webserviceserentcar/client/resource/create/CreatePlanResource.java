@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.client.resource.create;
 
 import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
-import com.acme.webserviceserentcar.shared.converter.StringListConverter;
+import com.acme.webserviceserentcar.shared.domain.model.converter.StringListConverter;
 import lombok.*;
 
 import javax.persistence.*;

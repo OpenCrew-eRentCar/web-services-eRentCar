@@ -1,7 +1,7 @@
 package com.acme.webserviceserentcar.client.domain.model.entity;
 
 import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
-import com.acme.webserviceserentcar.shared.converter.StringListConverter;
+import com.acme.webserviceserentcar.shared.domain.model.converter.StringListConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

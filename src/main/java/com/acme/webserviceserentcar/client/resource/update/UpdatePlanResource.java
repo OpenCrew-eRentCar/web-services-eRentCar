@@ -1,6 +1,6 @@
 package com.acme.webserviceserentcar.client.resource.update;
 
-import com.acme.webserviceserentcar.shared.converter.StringListConverter;
+import com.acme.webserviceserentcar.shared.domain.model.converter.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
