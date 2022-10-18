@@ -142,7 +142,12 @@ class RentServiceImplTest {
     }
 
     @Test
-    void getRentById() {}
+    void getRentById() {
+        when(clientService.getByToken()).thenReturn(client1);
+        when(rentRepository.findById(client1.getId())).thenReturn(Optional.ofNullable(rent));
+        Rent result = rentService.getById(rent.getId());
+        assertEquals(rent, result);
+    }
 
     @Test
     void creteRent() {}
