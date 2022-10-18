@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.unitTest.rent.service;
 
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
+import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
@@ -27,7 +28,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,10 +65,16 @@ class RentServiceImplTest {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     Rent rent = new Rent();
     UpdateRentResource rentResource = new UpdateRentResource();
+    private Client client1;
+
+    private List<Rent> rents;
 
     @BeforeEach
     void setUp() throws ParseException {
         MockitoAnnotations.openMocks(this);
+
+        client1 = new Client();
+        client1.setId(1L);
 
         // Initialize fields rent object
         rent.setId(1L);
@@ -73,12 +82,16 @@ class RentServiceImplTest {
         rent.setStartDate(format.parse("2022-07-05"));
         rent.setFinishDate(format.parse("2022-07-07"));
         rent.setRate(0);
+        rent.setClient(client1);
 
         //Initialize field rent resource object
         rentResource.setAmount(1000);
         rentResource.setStartDate(format.parse("2022-07-05"));
         rentResource.setFinishDate(format.parse("2022-07-07"));
         rentResource.setRate(5);
+
+        rents = new ArrayList<>();
+        rents.add(rent);
     }
 
     @Test
@@ -121,7 +134,12 @@ class RentServiceImplTest {
     }
 
     @Test
-    void getAllRents() {}
+    void getAllRents() {
+        when(clientService.getByToken()).thenReturn(client1);
+        when(rentRepository.findAllByClientId(client1.getId())).thenReturn(rents);
+        List<Rent> results = rentService.getAll();
+        assertEquals(rents, results);
+    }
 
     @Test
     void getRentById() {}
