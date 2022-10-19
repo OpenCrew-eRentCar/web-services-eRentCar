@@ -1,4 +1,4 @@
-package com.acme.webserviceserentcar.shared.converter;
+package com.acme.webserviceserentcar.shared.domain.model.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
