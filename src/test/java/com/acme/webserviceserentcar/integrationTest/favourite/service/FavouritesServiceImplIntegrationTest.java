@@ -1,6 +1,7 @@
-package com.acme.webserviceserentcar.unitTest.favourites.service;
+package com.acme.webserviceserentcar.integrationTest.favourite.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
@@ -15,20 +16,23 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.validation.Validator;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class FavouritesServiceImplTest {
+public class FavouritesServiceImplIntegrationTest {
     @Mock
     private FavouriteRepository favouriteRepository;
     @Mock
     private FavouriteMapper favouriteMapper;
     @Mock
     private ClientServiceImpl clientService;
+    @Mock
+    private CarService carService;
     @Mock
     private Validator validator;
 
@@ -78,17 +82,27 @@ public class FavouritesServiceImplTest {
     }
 
     @Test
-    void getAllFavourites() {
+    void saveFavourite() {
         when(clientService.getByToken()).thenReturn(client1);
-        when(favouriteRepository.findByClientId(client1.getId())).thenReturn(favourites);
-        List<Favourite> results = favouriteService.getAll();
-        assertEquals(favourites, results);
+        when(clientService.getById(client1.getId())).thenReturn(client1);
+        when(carService.getById(createFavouriteResource.getCarId())).thenReturn(car1);
+        when(favouriteMapper.toModel(createFavouriteResource)).thenReturn(favourite1);
+        when(favouriteRepository.save(favourite1)).thenReturn(favourite1);
+        Favourite result = favouriteService.create(createFavouriteResource);
+        assertEquals(favourite1, result);
+        verify(favouriteRepository).save(favourite1);
     }
 
     @Test
-    void getFavouriteById() {
-        when(favouriteRepository.findById(favourite1.getId())).thenReturn(java.util.Optional.ofNullable(favourite1));
-        Favourite result = favouriteService.getById(favourite1.getId());
-        assertEquals(favourite1, result);
+    void deleteFavourite() {
+        when(clientService.getByToken()).thenReturn(client1);
+        when(favouriteRepository.existsByIdAndClientId(favourite1.getId(), client1.getId())).thenReturn(true);
+        when(favouriteRepository.findById(favourite1.getId()))
+                .thenReturn(Optional.of(favourites.get(favourite1.getId().intValue())));
+        favouriteService.delete(client1.getId());
+
+        favourites.remove(favourite1);
+        List<Favourite> result = favourites;
+        assertEquals(favourites, result);
     }
 }

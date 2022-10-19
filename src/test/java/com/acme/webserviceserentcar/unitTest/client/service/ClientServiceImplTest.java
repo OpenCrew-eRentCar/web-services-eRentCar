@@ -1,12 +1,8 @@
 package com.acme.webserviceserentcar.unitTest.client.service;
 
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
-import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
-import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
-import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
-import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -20,15 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class ClientServiceImplTest {
-
     @Mock
     private ClientRepository clientRepository;
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private PlanService planService;
 
     @Mock
     private Validator validator;
@@ -242,56 +231,5 @@ class ClientServiceImplTest {
         when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
         Client result = clientService.getById(client.getId());
         assertEquals(client, result);
-    }
-
-    @Test
-    void createClient() {
-        when(clientRepository.save(client)).thenReturn(client);
-        Client result = clientService.create(client);
-        assertEquals(client, result);
-    }
-
-    @Test
-    void updateClient() {
-        Client clientUpdate = client;
-        clientUpdate.setNames("Pedrito");
-
-        Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
-        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
-        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
-        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
-
-        Client result = clientService.update(clientUpdate);
-
-        assertEquals(clientUpdate, result);
-    }
-
-    @Test
-    void updateClientPlan() {
-        Plan plan = new Plan();
-        plan.setId(1L);
-        plan.setName(PlanName.PREMIUM);
-
-        Client clientUpdate = client;
-        clientUpdate.setPlan(plan);
-
-        Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
-        when(planService.getById(plan.getId())).thenReturn(plan);
-        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
-        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
-        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
-
-        Client result = clientService.updatePlan(plan.getId());
-
-        assertEquals(clientUpdate, result);
-    }
-
-    @Test
-    void deleteClient() {
-        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
-        clientService.delete(client.getId());
-        clients.remove(client);
-        List<Client> results = clients;
-        assertEquals(clients, results);
     }
 }
