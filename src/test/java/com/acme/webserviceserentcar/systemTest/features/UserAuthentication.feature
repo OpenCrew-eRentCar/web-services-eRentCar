@@ -1,3 +1,4 @@
+@system
 Feature: User Authentication
   Scenario: User Login Success
     Given I am on the home page

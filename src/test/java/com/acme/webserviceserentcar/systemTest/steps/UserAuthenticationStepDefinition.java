@@ -21,7 +21,7 @@ public class UserAuthenticationStepDefinition {
     private WebDriver driver;
     private final String BASE_URL = "http://localhost:3000/";
 
-    @Before
+    @Before("@system")
     public void initializeDriver() {
         System.setProperty("webdriver.chrome.driver", "./src/test/java/resources/chromedriver.exe");
         driver = new ChromeDriver();
@@ -29,7 +29,7 @@ public class UserAuthenticationStepDefinition {
         driver.get(BASE_URL);
     }
 
-    @After
+    @After("@system")
     public void tearDown() {
         if (driver != null) {
             driver.quit();
