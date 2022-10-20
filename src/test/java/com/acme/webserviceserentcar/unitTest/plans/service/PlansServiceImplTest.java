@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,8 @@ public class PlansServiceImplTest {
 
     private Plan plan;
 
+    private List<Plan> plans;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -45,61 +48,71 @@ public class PlansServiceImplTest {
         plan.setName(PlanName.BASIC);
         plan.setPrice(100);
         plan.setBenefits(benefits);
+
+        Plan planOne = new Plan();
+        planOne.setId(2L);
+        planOne.setName(PlanName.PREMIUM);
+        planOne.setPrice(100);
+        planOne.setBenefits(benefits);
+
+        Plan planTwo = new Plan();
+        planTwo.setId(3L);
+        planTwo.setName(PlanName.GOLD);
+        planTwo.setPrice(100);
+        planTwo.setBenefits(benefits);
+
+        plans = new ArrayList<>();
+        plans.add(planOne);
+        plans.add(planTwo);
     }
 
     @Test
     void getAllPlans() {
-        when(planRepository.findAll()).thenReturn(Arrays.asList(plan));
-        assertNotNull(planService.getAll());
+        when(planRepository.findAll()).thenReturn(plans);
+
+        List<Plan> result = planService.getAll();
+
+        assertEquals(plans,result);
+    }
+
+    @Test
+    void getPlanById() {
+        when(planRepository.findById(plan.getId())).thenReturn(Optional.of(plan));
+
+        Plan result = planService.getById(plan.getId());
+
+        assertEquals(plan, result);
     }
 
     @Test
     void updatePlan() {
-        List<String> benefits = Arrays.asList("Benefit 1", "Benefit 2", "Benefit 3");
-
-        Plan request = new Plan();
-        request.setId(1L);
-        request.setName(PlanName.BASIC);
-        request.setPrice(100);
-        request.setBenefits(benefits);
-
         UpdatePlanResource updatePlanResource = new UpdatePlanResource();
-        updatePlanResource.setPrice(request.getPrice());
-        updatePlanResource.setBenefits(request.getBenefits());
+        updatePlanResource.setPrice(plan.getPrice());
+        updatePlanResource.setBenefits(plan.getBenefits());
 
-        when(planRepository.findById(plan.getId())).thenReturn(Optional.of(request));
-        when(planRepository.save(request)).thenReturn(request);
-        Plan result = planService.update(plan.getId(), updatePlanResource);
-        assertEquals(request, result);
-        verify(planRepository).save(request);
+        Plan expected = new Plan();
+        expected.setId(plan.getId());
+        expected.setBenefits(plan.getBenefits());
+        expected.setName(plan.getName());
+        expected.setPrice(plan.getPrice());
+
+        when(planRepository.save(expected)).thenReturn(expected);
+        when(planRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
+
+        Plan result = planService.update(expected.getId(), updatePlanResource);
+
+        assertEquals(expected, result);
     }
 
     @Test
-    void getPLanById() {
-        List<String> benefits = Arrays.asList("Benefit 1", "Benefit 2", "Benefit 3");
-
-        Plan request = new Plan();
-        request.setId(1L);
-        request.setName(PlanName.BASIC);
-        request.setPrice(100);
-        request.setBenefits(benefits);
-
-        when(planRepository.findById(plan.getId())).thenReturn(Optional.of(request));
-        Plan result = planService.getById(request.getId());
-        assertEquals(request, result);
-    }
-
-    /*@Test
     void deletePlan() {
-        List<String> benefits = Arrays.asList("Benefit 1", "Benefit 2", "Benefit 3");
+        when(planRepository.findById(plan.getId())).thenReturn(Optional.of(plan));
+        planService.delete(plan.getId());
+        plans.remove(plan);
 
-        Plan request = new Plan();
-        request.setId(1L);
-        request.setName(PlanName.BASIC);
-        request.setPrice(100);
-        request.setBenefits(benefits);
+        List<Plan> result = plans;
 
-        when(planRepository.delete(request))
-    }*/
+        assertEquals(plans, result);
+    }
 
 }
