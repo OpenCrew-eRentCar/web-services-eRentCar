@@ -1,43 +1,34 @@
 package com.acme.webserviceserentcar.unitTest.rent.service;
 
+import com.acme.webserviceserentcar.car.domain.model.entity.Car;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
+import com.acme.webserviceserentcar.car.domain.service.CarService;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.mapping.RentMapper;
-import com.acme.webserviceserentcar.rent.resource.RentResource;
+import com.acme.webserviceserentcar.rent.resource.create.CreateRentResource;
 import com.acme.webserviceserentcar.rent.resource.update.UpdateRentResource;
 import com.acme.webserviceserentcar.rent.service.RentServiceImpl;
-import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
-import io.cucumber.java.en.When;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.Validator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RentServiceImplTest {
 
@@ -48,7 +39,7 @@ class RentServiceImplTest {
     private Validator validator;
 
     @Mock
-    private CarRepository carRepository;
+    private CarService carService;
 
     @Mock
     private ClientRepository clientRepository;
@@ -63,32 +54,49 @@ class RentServiceImplTest {
     private RentServiceImpl rentService;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    Rent rent = new Rent();
-    UpdateRentResource rentResource = new UpdateRentResource();
+    private Rent rent;
+    UpdateRentResource updateRentResource = new UpdateRentResource();
+    private CreateRentResource createRentResource;
     private Client client1;
+    private Car car1;
 
+    private List<Car> cars;
     private List<Rent> rents;
 
     @BeforeEach
     void setUp() throws ParseException {
         MockitoAnnotations.openMocks(this);
 
+        createRentResource = new CreateRentResource();
+        createRentResource.setCarId(1L);
+
         client1 = new Client();
         client1.setId(1L);
+        
+        car1= new Car();
+        car1.setId(1L);
+        car1.setClient(client1);
+        
+        cars = new ArrayList<>();
+        cars.add(car1);
 
+        client1.setCars((Set<Car>) cars);
+        
         // Initialize fields rent object
+        rent = new Rent();
         rent.setId(1L);
         rent.setAmount(1000);
         rent.setStartDate(format.parse("2022-07-05"));
         rent.setFinishDate(format.parse("2022-07-07"));
         rent.setRate(0);
         rent.setClient(client1);
+        rent.setCar(car1);
 
         //Initialize field rent resource object
-        rentResource.setAmount(1000);
-        rentResource.setStartDate(format.parse("2022-07-05"));
-        rentResource.setFinishDate(format.parse("2022-07-07"));
-        rentResource.setRate(5);
+        updateRentResource.setAmount(1000);
+        updateRentResource.setStartDate(format.parse("2022-07-05"));
+        updateRentResource.setFinishDate(format.parse("2022-07-07"));
+        updateRentResource.setRate(5);
 
         rents = new ArrayList<>();
         rents.add(rent);
@@ -123,11 +131,11 @@ class RentServiceImplTest {
     @Test
     void validateThatClientCanGiveRating() throws ParseException {
         // Arrange
-        int newRate = rentResource.getRate();
+        int newRate = updateRentResource.getRate();
 
         // Act
         when(rentRepository.findById(rent.getId())).thenReturn(Optional.of(rent));
-        Rent result = rentService.updateRateClient(rent.getId(), rentResource);
+        Rent result = rentService.updateRateClient(rent.getId(), updateRentResource);
 
         // Assert
         assertEquals(newRate, rent.getRate());
@@ -150,10 +158,32 @@ class RentServiceImplTest {
     }
 
     @Test
-    void creteRent() {}
+    void creteRent() {
+        when(clientService.getByToken()).thenReturn(client1);
+        when(clientService.getById(client1.getId())).thenReturn(client1);
+        when(carService.getById(createRentResource.getCarId())).thenReturn(car1);
+
+        when(clientService.getById(client1.getId())).thenReturn(client1);
+        when(carService.getById(createRentResource.getCarId())).thenReturn(car1);
+
+        when(rentMapper.toModel(createRentResource)).thenReturn(rent);
+        when(rentRepository.save(rent)).thenReturn(rent);
+        Rent result = rentService.create(createRentResource);
+        assertEquals(rent, result);
+        verify(rentRepository).save(rent);
+    }
 
     @Test
-    void updateRent() {}
+    void updateRent() {
+       /* when(clientService.getByToken()).thenReturn(client1);
+        when(clientService.getById(client1.getId())).thenReturn(client1);
+        when(carService.getById(updateRentResource.get())).thenReturn(car1);
+        when(rentMapper.toModel(createRentResource)).thenReturn(rent);
+        when(rentRepository.save(rent)).thenReturn(rent);
+        Rent result = rentService.update(createRentResource);
+        assertEquals(rent, result);
+        verify(rentRepository).save(rent);*/
+    }
 
     @Test
     void deleteRent() {}
