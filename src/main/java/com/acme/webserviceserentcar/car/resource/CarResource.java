@@ -6,6 +6,7 @@ import lombok.*;
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,7 +25,7 @@ public class CarResource {
     private String extraInformation;
     private int rate;
     private int rentAmountDay;
-    private String imagePath;
+    private List<String> imagePath;
     private CategoryOfCar category;
     private MechanicConditions mechanicConditions;
     private boolean active;
