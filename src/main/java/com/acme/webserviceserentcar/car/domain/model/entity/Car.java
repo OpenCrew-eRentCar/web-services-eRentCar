@@ -118,4 +118,13 @@ public class Car implements Serializable {
     )
     @JsonIgnore
     private Set<Rent> rents;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(
+            targetEntity = CarComment.class,
+            mappedBy = "car",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<CarComment> comments;
 }

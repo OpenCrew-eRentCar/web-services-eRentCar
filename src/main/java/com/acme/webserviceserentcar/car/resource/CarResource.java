@@ -1,9 +1,12 @@
 package com.acme.webserviceserentcar.car.resource;
 
+import com.acme.webserviceserentcar.car.domain.model.entity.CarComment;
 import lombok.*;
 
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,5 +29,6 @@ public class CarResource {
     private MechanicConditions mechanicConditions;
     private boolean active;
     private CarModelResource carModel;
+    private Set<CarComment> comments;
     private Long clientId;
 }
