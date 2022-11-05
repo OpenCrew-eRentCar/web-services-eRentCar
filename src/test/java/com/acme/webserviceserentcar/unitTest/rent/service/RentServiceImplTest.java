@@ -45,6 +45,9 @@ class RentServiceImplTest {
     private ClientRepository clientRepository;
 
     @Mock
+    private CarRepository carRepository;
+
+    @Mock
     private ClientService clientService;
 
     @Mock
@@ -60,7 +63,7 @@ class RentServiceImplTest {
     private Client client1;
     private Car car1;
 
-    private List<Car> cars;
+    private Set<Car> cars;
     private List<Rent> rents;
 
     @BeforeEach
@@ -77,7 +80,7 @@ class RentServiceImplTest {
         car1.setId(1L);
         car1.setClient(client1);
         
-        cars = new ArrayList<>();
+        cars = new HashSet<>();
         cars.add(car1);
 
         client1.setCars((Set<Car>) cars);
@@ -160,14 +163,11 @@ class RentServiceImplTest {
     @Test
     void creteRent() {
         when(clientService.getByToken()).thenReturn(client1);
-        when(clientService.getById(client1.getId())).thenReturn(client1);
-        when(carService.getById(createRentResource.getCarId())).thenReturn(car1);
-
-        when(clientService.getById(client1.getId())).thenReturn(client1);
-        when(carService.getById(createRentResource.getCarId())).thenReturn(car1);
-
+        when(clientRepository.findById(client1.getId())).thenReturn(Optional.of(client1));
+        when(carRepository.findById(car1.getId())).thenReturn(Optional.of(car1));
         when(rentMapper.toModel(createRentResource)).thenReturn(rent);
         when(rentRepository.save(rent)).thenReturn(rent);
+
         Rent result = rentService.create(createRentResource);
         assertEquals(rent, result);
         verify(rentRepository).save(rent);

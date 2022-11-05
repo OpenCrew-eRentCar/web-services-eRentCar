@@ -3,6 +3,8 @@ package com.acme.webserviceserentcar.unitTest.client.service;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
+import com.acme.webserviceserentcar.security.domain.model.entity.User;
+import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -18,6 +20,9 @@ import static org.mockito.Mockito.when;
 class ClientServiceImplTest {
     @Mock
     private ClientRepository clientRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private Validator validator;
@@ -195,7 +200,13 @@ class ClientServiceImplTest {
         // Arrange
         Client clientBen = client;
 
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("pedrito@gmail.com");
+
         // Act
+        Mockito.doReturn(client).when(clientService).getByToken();
+        when(userRepository.findById(client.getId())).thenReturn(Optional.of(user));
         when(clientRepository.save(clientBen)).thenReturn(clientBen);
         var result = clientService.create(clientBen);
 

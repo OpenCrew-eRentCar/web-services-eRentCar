@@ -86,7 +86,7 @@ public class CarsStepDefinition {
         car.setSeating(4);
         car.setMileage(36);
         car.setManual(true);
-        car.setImagePath("https://image.com");
+        car.setImagePath(List.of("https://image.com"));
         car.setCarValueInDollars(13000);
         car.setCategory(CategoryOfCar.MINIVAN);
         car.setExtraInformation("Lunas rotas");
@@ -117,7 +117,7 @@ public class CarsStepDefinition {
             car.setSeating(4);
             car.setMileage(36);
             car.setManual(true);
-            car.setImagePath("https://image.com");
+            car.setImagePath(List.of("https://image.com"));
             car.setCarValueInDollars(13000);
             car.setCategory(CategoryOfCar.MINIVAN);
             car.setExtraInformation("Lunas rotas");
@@ -163,7 +163,7 @@ public class CarsStepDefinition {
         createCarResource.setAddress(rows.get(0).get(3));
         createCarResource.setSeating(Integer.parseInt(rows.get(0).get(4)));
         createCarResource.setMileage(Integer.parseInt(rows.get(0).get(5)));
-        createCarResource.setImagePath(rows.get(0).get(6));
+        createCarResource.setImagePath(List.of(rows.get(0).get(6)));
         createCarResource.setCarValueInDollars(Integer.parseInt(rows.get(0).get(7)));
         createCarResource.setExtraInformation(rows.get(0).get(8));
         createCarResource.setYear(Integer.parseInt(rows.get(0).get(9)));
@@ -180,7 +180,7 @@ public class CarsStepDefinition {
         car.setAddress(rows.get(0).get(3));
         car.setSeating(Integer.parseInt(rows.get(0).get(4)));
         car.setMileage(Integer.parseInt(rows.get(0).get(5)));
-        car.setImagePath(rows.get(0).get(6));
+        car.setImagePath(List.of(rows.get(0).get(6)));
         car.setCarValueInDollars(Integer.parseInt(rows.get(0).get(7)));
         car.setExtraInformation(rows.get(0).get(8));
         car.setYear(Integer.parseInt(rows.get(0).get(9)));

@@ -6,6 +6,8 @@ import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
+import com.acme.webserviceserentcar.security.domain.model.entity.User;
+import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -21,6 +23,9 @@ import static org.mockito.Mockito.when;
 class ClientServiceImplIntegrationTest {
     @Mock
     private ClientRepository clientRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private PlanService planService;
@@ -65,6 +70,12 @@ class ClientServiceImplIntegrationTest {
 
     @Test
     void createClient() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("pedrito@gmail.com");
+
+        Mockito.doReturn(client).when(clientService).getByToken();
+        when(userRepository.findById(client.getId())).thenReturn(Optional.of(user));
         when(clientRepository.save(client)).thenReturn(client);
         Client result = clientService.create(client);
         assertEquals(client, result);
