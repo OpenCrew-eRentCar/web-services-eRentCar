@@ -1,18 +1,21 @@
 package com.acme.webserviceserentcar.car.service;
 
 import com.acme.webserviceserentcar.car.domain.model.entity.Car;
+import com.acme.webserviceserentcar.car.domain.model.entity.CarComment;
 import com.acme.webserviceserentcar.car.domain.model.entity.CarModel;
 import com.acme.webserviceserentcar.car.domain.model.enums.InsuranceType;
+import com.acme.webserviceserentcar.car.domain.persistence.CarCommentRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarModelRepository;
 import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.domain.service.CarService;
+import com.acme.webserviceserentcar.car.mapping.CarCommentMapper;
 import com.acme.webserviceserentcar.car.mapping.CarMapper;
 import com.acme.webserviceserentcar.car.persistence.CarRepositoryCustom;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarCommentResource;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
 import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
-import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
@@ -23,7 +26,9 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -31,23 +36,25 @@ public class CarServiceImpl implements CarService {
     private static final String ENTITY = "Car";
     private final CarRepository carRepository;
     private final CarRepositoryCustom carRepositoryCustom;
-    private final ClientRepository clientRepository;
     private final ClientService clientService;
     private final CarModelRepository carModelRepository;
+    private final CarCommentRepository carCommentRepository;
     private final Validator validator;
     private final CarMapper carMapper;
+    private final CarCommentMapper carCommentMapper;
 
-    public CarServiceImpl(CarRepository carRepository,
-                          CarRepositoryCustom carRepositoryCustom, ClientRepository clientRepository,
+    public CarServiceImpl(CarRepository carRepository, CarRepositoryCustom carRepositoryCustom,
                           ClientService clientService, CarModelRepository carModelRepository,
-                          Validator validator, CarMapper carMapper) {
+                          CarCommentRepository carCommentRepository, Validator validator, CarMapper carMapper,
+                          CarCommentMapper carCommentMapper) {
         this.carRepository = carRepository;
         this.carRepositoryCustom = carRepositoryCustom;
-        this.clientRepository = clientRepository;
         this.clientService = clientService;
         this.carModelRepository = carModelRepository;
+        this.carCommentRepository = carCommentRepository;
         this.validator = validator;
         this.carMapper = carMapper;
+        this.carCommentMapper = carCommentMapper;
     }
 
     @Override
@@ -74,9 +81,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public boolean existThisLicensePlate(String licencePlate) {
         Car car = carRepository.findByLicensePlate(licencePlate);
-        if (car == null) {
-            return false;
-        } return true;
+        return car != null;
     }
 
     @Override
@@ -107,9 +112,9 @@ public class CarServiceImpl implements CarService {
 
         boolean result = true;
 
-        for (int i = 0; i < arrInsurance.length; i++) {
-            if (arrInsurance[i].licensePlate == licensePlate && arrInsurance[i].insuranceType == insuranceType) {
-                result = arrInsurance[i].isActive;
+        for (Insurance insurance : arrInsurance) {
+            if (Objects.equals(insurance.licensePlate, licensePlate) && insurance.insuranceType == insuranceType) {
+                result = insurance.isActive;
                 break;
             }
         }
@@ -138,6 +143,25 @@ public class CarServiceImpl implements CarService {
         car.setClient(client);
         car.setCarModel(carModel);
         car.setActive(true);
+        car.setComments(new HashSet<>());
+
+        return carRepository.save(car);
+    }
+
+    @Override
+    public Car createCarComment(Long carId, CreateCarCommentResource request) {
+        Car car = carRepository.findById(carId).orElseThrow(() -> new ResourceNotFoundException(ENTITY, carId));
+
+        Set<ConstraintViolation<CreateCarCommentResource>> violations = validator.validate(request);
+
+        if (!violations.isEmpty())
+            throw new ResourceValidationException(ENTITY, violations);
+
+        CarComment carComment = carCommentMapper.toModel(request);
+        carComment.setCar(car);
+        carComment = carCommentRepository.save(carComment);
+
+        car.getComments().add(carComment);
 
         return carRepository.save(car);
     }

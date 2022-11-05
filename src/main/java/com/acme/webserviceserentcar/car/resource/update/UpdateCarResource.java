@@ -2,12 +2,15 @@ package com.acme.webserviceserentcar.car.resource.update;
 
 import com.acme.webserviceserentcar.car.domain.model.enums.CategoryOfCar;
 import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
+import com.acme.webserviceserentcar.shared.domain.model.converter.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Convert;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,9 +47,8 @@ public class UpdateCarResource {
     private int rentAmountDay;
 
     @NotNull
-    @NotBlank
-    @Size(max = 300)
-    private String imagePath;
+    @Convert(converter = StringListConverter.class)
+    private List<String> imagePath;
 
     @NotNull
     private CategoryOfCar category;

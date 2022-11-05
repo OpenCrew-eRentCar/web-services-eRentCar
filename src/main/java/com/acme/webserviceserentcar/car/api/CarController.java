@@ -1,6 +1,7 @@
 package com.acme.webserviceserentcar.car.api;
 
 import com.acme.webserviceserentcar.car.resource.CarResource;
+import com.acme.webserviceserentcar.car.resource.create.CreateCarCommentResource;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
 import com.acme.webserviceserentcar.car.resource.searchFilters.SearchCarFilters;
 import com.acme.webserviceserentcar.car.resource.update.UpdateCarResource;
@@ -95,6 +96,19 @@ public class CarController {
     @PostMapping()
     public CarResource createCar(@Valid @RequestBody CreateCarResource request) {
         return mapper.toResource(carService.create(request));
+    }
+
+    @Operation(summary = "Create Car Comment", description = "Create Car Comment", tags = {"Cars"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Car Comment created",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CarResource.class)
+                    ))
+    })
+    @PostMapping("{carId}/comment")
+    public CarResource createCarComment(@PathVariable Long carId, @Valid @RequestBody CreateCarCommentResource request) {
+        return mapper.toResource(carService.createCarComment(carId, request));
     }
 
     @Operation(summary = "Update Car", description = "Updating Car", tags = {"Cars"})

@@ -6,6 +6,7 @@ import com.acme.webserviceserentcar.car.domain.model.enums.MechanicConditions;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.favourite.domain.model.entity.Favourite;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
+import com.acme.webserviceserentcar.shared.domain.model.converter.StringListConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -68,8 +70,8 @@ public class Car implements Serializable {
     private InsuranceType insuranceType;
 
     @NotNull
-    @NotBlank
-    private String imagePath;
+    @Convert(converter = StringListConverter.class)
+    private List<String> imagePath;
 
     @NotNull
     @Enumerated(value = EnumType.STRING)
@@ -118,4 +120,13 @@ public class Car implements Serializable {
     )
     @JsonIgnore
     private Set<Rent> rents;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(
+            targetEntity = CarComment.class,
+            mappedBy = "car",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<CarComment> comments;
 }
