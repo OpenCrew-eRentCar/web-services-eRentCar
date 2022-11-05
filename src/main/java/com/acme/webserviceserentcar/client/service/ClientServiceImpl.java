@@ -75,10 +75,10 @@ public class ClientServiceImpl implements ClientService {
             throw new IllegalArgumentException("The DNI must have 8 numbers");
 
 
-        /* User user = userRepository.findById(this.getUserIdFromAuthentication())
+        User user = userRepository.findById(this.getUserIdFromAuthentication())
                 .orElseThrow(() -> new ResourceNotFoundException("User", this.getUserIdFromAuthentication()));
 
-        request.setUser(user);*/
+        request.setUser(user);
 
         return clientRepository.save(request);
     }
