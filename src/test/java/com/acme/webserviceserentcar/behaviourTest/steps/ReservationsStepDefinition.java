@@ -34,7 +34,7 @@ public class ReservationsStepDefinition {
     private List<Rent> results;
     private List<Rent> reservations;
 
-    @And("Exist the following Reservation in the repository")
+    /*@And("Exist the following Reservation in the repository")
     public void existTheFollowingReservationInTheRepository(DataTable table) {
         List<List<String>> rows = table.cells().stream().skip(1).toList();
         reservations = new ArrayList<>();
@@ -65,5 +65,5 @@ public class ReservationsStepDefinition {
     public void iAmAUserReservation() {
         client = new Client();
         client.setId(1L);
-    }
+    }*/
 }

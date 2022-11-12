@@ -9,6 +9,7 @@ import com.acme.webserviceserentcar.car.domain.persistence.CarRepository;
 import com.acme.webserviceserentcar.car.resource.create.CreateCarResource;
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
+import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
 import com.acme.webserviceserentcar.rent.domain.model.entity.Rent;
 import com.acme.webserviceserentcar.rent.domain.persistence.RentRepository;
 import com.acme.webserviceserentcar.rent.domain.service.RentService;
@@ -37,6 +38,9 @@ public class RentsStepDefinition {
     @Mock
     private RentRepository rentRepository;
 
+    @Mock
+    private ClientServiceImpl clientService;
+
     @InjectMocks
     @Spy
     private RentServiceImpl rentService;
@@ -48,11 +52,6 @@ public class RentsStepDefinition {
     private RentMapper rentMapper;
     private CreateRentResource rent;
 
-    @Given("I am registered user for get all rents")
-    public void iAmRegisteredUser() {
-        client = new Client();
-        client.setId(1L);
-    }
 
     @Before
     public void setUp() {
@@ -67,18 +66,24 @@ public class RentsStepDefinition {
         rent.setCar(car);
     }
 
+    @Given("I am registered user for get all rents")
+    public void iAmRegisteredUser() {
+        client = new Client();
+        client.setId(1L);
+    }
+
     @Given("Exist the following Rents in the Repository")
     public void existTheFollowingRentsInTheRepository(DataTable table) {
         List<List<String>> rows = table.cells().stream().skip(1).toList();
 
         rents = new ArrayList<>();
         for (List<String> row : rows) {
+            car = new Car();
+            car.setId(Long.parseLong(row.get(2)));
+
             Rent rent = new Rent();
             rent.setId(Long.parseLong(row.get(0)));
-            rent.setStartDate(new Date());
-            rent.setFinishDate(new Date());
             rent.setAmount(Integer.parseInt(row.get(1)));
-            rent.setRate(2.0);
             rent.setClient(client);
             rent.setCar(car);
             rents.add(rent);
@@ -87,7 +92,8 @@ public class RentsStepDefinition {
 
     @When("I get all Rents")
     public void iGetAllRents() {
-        when(rentRepository.findAll()).thenReturn(rents);
+        when(clientService.getByToken()).thenReturn(client);
+        when(rentRepository.findAllByClientId(client.getId())).thenReturn(rents);
         results = rentService.getAll();
     }
 
@@ -97,7 +103,7 @@ public class RentsStepDefinition {
         assertEquals(rents, results);
     }
 
-    @When("I get Rent with id {long}")
+    /*@When("I get Rent with id {long}")
     public void iGetRentWithId(Long rentId) {
         when(rentRepository.findById(rentId))
                 .thenReturn(Optional.of(rents.get(rentId.intValue() - 1)));
@@ -168,5 +174,5 @@ public class RentsStepDefinition {
             }
         }
         assertFalse(existsRentBrand);
-    }
+    }*/
 }

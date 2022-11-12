@@ -1,11 +1,11 @@
-Feature: Rents Service
+  Feature: Rents Service
   #TODO: Implement the following Rent scenarios
   Scenario: Get All Rents
     Given I am registered user for get all rents
     And Exist the following Rents in the Repository
-      | id | amount |
-      | 1  | 2000   |
-      | 2  | 3000   |
+      | id | amount | carId |
+      | 1  | 2000   | 1     |
+      | 2  | 3000   | 2     |
     When I get all Rents
     Then I should get a list of Rents with length 2
 
