@@ -37,6 +37,9 @@ public class PlansStepDefinition {
     @Mock
     private PlanMapper planMapper;
 
+    @Mock
+    private Validator validator;
+
     @InjectMocks
     @Spy
     private PlanServiceImpl planService;
@@ -103,7 +106,7 @@ public class PlansStepDefinition {
     }
 
     @When("I update my Plan info with")
-    public void iUpdatePlanInfoWith(DataTable table){
+    public void iUpdatePlanInfoWith(DataTable table) {
         List<List<String>> rows = table.cells().stream().skip(1).toList();
 
         UpdatePlanResource updatePlanResource = new UpdatePlanResource();
@@ -111,11 +114,10 @@ public class PlansStepDefinition {
 
         Plan planUpdate = new Plan();
         planUpdate.setId(plan.getId());
-        planUpdate.setName(plan.getName());
-        planUpdate.setPrice(plan.getPrice());
+        planUpdate.setPrice(updatePlanResource.getPrice());
 
-        when(planRepository.save(planUpdate)).thenReturn(planUpdate);
         when(planRepository.findById(planUpdate.getId())).thenReturn(Optional.of(planUpdate));
+        when(planRepository.save(planUpdate)).thenReturn(planUpdate);
 
         result = planService.update(planUpdate.getId(), updatePlanResource);
     }
