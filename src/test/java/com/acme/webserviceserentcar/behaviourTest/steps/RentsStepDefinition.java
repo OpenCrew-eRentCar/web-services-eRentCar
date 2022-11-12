@@ -103,7 +103,7 @@ public class RentsStepDefinition {
         assertEquals(rents, results);
     }
 
-    /*@When("I get Rent with id {long}")
+    @When("I get Rent with id {long}")
     public void iGetRentWithId(Long rentId) {
         when(rentRepository.findById(rentId))
                 .thenReturn(Optional.of(rents.get(rentId.intValue() - 1)));
@@ -115,7 +115,7 @@ public class RentsStepDefinition {
         assertEquals(rentId, result.getId());
     }
 
-    @When("I complete my rent info in the system with data")
+    /*@When("I complete my rent info in the system with data")
     public void iCompleteMyRentInfoInTheSystemWithData(DataTable table) {
         List<List<String>> rows = table.cells().stream().skip(1).toList();
         rent = new CreateRentResource();

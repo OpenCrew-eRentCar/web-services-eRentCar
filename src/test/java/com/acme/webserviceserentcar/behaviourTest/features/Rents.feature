@@ -12,9 +12,9 @@
   Scenario: Get Rent by Id
     Given I am registered user for get all rents
     And Exist the following Rents in the Repository
-      | id | amount |
-      | 1  | 2000   |
-      | 2  | 3000   |
+      | id | amount | carId |
+      | 1  | 2000   | 1     |
+      | 2  | 3000   | 2     |
     When I get Rent with id 1
     Then I should get a Rent with id 1
 
