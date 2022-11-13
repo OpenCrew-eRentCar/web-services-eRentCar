@@ -56,7 +56,7 @@ pipeline {
 
     post {
         always {
-            mail to: "sebastianbranzapata@gmail.com;clinder150399@gmail.com",
+            mail to: "sebastianbranzapata@gmail.com, cc:clinder150399@gmail.com",
             subject: "Test Email",
             body: "Test"
         }
