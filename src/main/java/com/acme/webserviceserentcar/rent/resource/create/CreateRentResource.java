@@ -14,10 +14,15 @@ import java.util.Date;
 @With
 public class CreateRentResource {
     @NotNull
+    private boolean isRentPerDay;
+
+    @NotNull
     private Date startDate;
 
     @NotNull
     private Date finishDate;
+
+    private Long kilometers;
 
     @NotNull
     private int amount;

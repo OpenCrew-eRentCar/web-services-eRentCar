@@ -5,11 +5,15 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.ClientService;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
+import com.acme.webserviceserentcar.client.mapping.ClientMapper;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateClientResource;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
 import com.acme.webserviceserentcar.security.middleware.UserDetailsImpl;
 import com.acme.webserviceserentcar.shared.exception.ResourceNotFoundException;
 import com.acme.webserviceserentcar.shared.exception.ResourceValidationException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +29,15 @@ import java.util.Set;
 public class ClientServiceImpl implements ClientService {
     private static final String ENTITY = "Client";
     private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
     private final PlanService planService;
     private final UserRepository userRepository;
     private final Validator validator;
 
-    public ClientServiceImpl(ClientRepository clientRepository, PlanService planService, UserRepository userRepository, Validator validator) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, PlanService planService,
+                             UserRepository userRepository, Validator validator) {
         this.clientRepository = clientRepository;
+        this.clientMapper = clientMapper;
         this.planService = planService;
         this.userRepository = userRepository;
         this.validator = validator;
@@ -62,8 +69,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client create(Client request) {
-        Set<ConstraintViolation<Client>> violations = validator.validate(request);
+    public Client create(CreateClientResource request) {
+        Set<ConstraintViolation<CreateClientResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
@@ -74,13 +81,15 @@ public class ClientServiceImpl implements ClientService {
         if (!isValidDni(request.getDni()))
             throw new IllegalArgumentException("The DNI must have 8 numbers");
 
+        Long userId = getUserIdFromAuthentication();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
 
-        User user = userRepository.findById(getByToken().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", getByToken().getId()));
+        Client client = clientMapper.toModel(request);
+        client.setUser(user);
+        client.setAccumulatedKilometers(0L);
 
-        request.setUser(user);
-
-        return clientRepository.save(request);
+        return clientRepository.save(client);
     }
 
     public boolean isValidFullName(String names, String lastName) {
@@ -100,25 +109,27 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client update(Client request) {
-        Set<ConstraintViolation<Client>> violations = validator.validate(request);
+    public Client update(UpdateClientResource request) {
+        Set<ConstraintViolation<UpdateClientResource>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
         Long clientId = getByToken().getId();
 
-        return clientRepository.findById(clientId).map(client ->
-                clientRepository.save(client.withNames(request.getNames())
-                        .withLastNames(request.getLastNames())
-                        .withAddress(request.getAddress())
-                        .withCellphoneNumber(request.getCellphoneNumber())
-                        .withAverageResponsibility(request.getAverageResponsibility())
-                        .withResponseTime(request.getResponseTime())
-                        .withRate(request.getRate())
-                        .withImagePath(request.getImagePath())
-                        .withPlan(request.getPlan()))
-        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
+        return clientRepository.findById(clientId).map(client -> {
+            if (request.getAccumulatedKilometers() != null)
+                client.setAccumulatedKilometers(request.getAccumulatedKilometers());
+
+            return clientRepository.save(client.withNames(request.getNames())
+                .withLastNames(request.getLastNames())
+                .withAddress(request.getAddress())
+                .withCellphoneNumber(request.getCellphoneNumber())
+                .withAverageResponsibility(request.getAverageResponsibility())
+                .withResponseTime(request.getResponseTime())
+                .withRate(request.getRate())
+                .withImagePath(request.getImagePath()));
+        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
     }
 
     @Override
@@ -133,13 +144,21 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public void updateAccumulatedKilometers(Long kilometers) {
+        Long clientId = getByToken().getId();
+
+        clientRepository.findById(clientId).map(client ->
+                clientRepository.save(client.withAccumulatedKilometers(client.getAccumulatedKilometers() + kilometers))
+        ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
+    }
+
+    @Override
     public ResponseEntity<?> delete(Long clientId) {
         return clientRepository.findById(clientId).map(client -> {
             clientRepository.delete(client);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException(ENTITY, clientId));
     }
-
 
     @Override
     public boolean validateRecord(Long clientId){

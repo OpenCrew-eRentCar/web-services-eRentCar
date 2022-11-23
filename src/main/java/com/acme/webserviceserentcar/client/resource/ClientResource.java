@@ -18,6 +18,7 @@ public class ClientResource {
     private String lastNames;
     private String address;
     private Long cellphoneNumber;
+    private Long accumulatedKilometers;
     private int averageResponsibility;
     private int responseTime;
     private double rate;

@@ -108,6 +108,8 @@ public class RentServiceImpl implements RentService {
         rent.setClient(client);
         rent.setCar(car);
 
+        if (!rent.isRentPerDay()) clientService.updateAccumulatedKilometers(rent.getKilometers() / 10L);
+
         return rentRepository.save(rent);
     }
 
@@ -119,8 +121,10 @@ public class RentServiceImpl implements RentService {
             throw new ResourceValidationException(ENTITY, violations);
 
         return rentRepository.findById(rentId).map(rent ->
-                rentRepository.save(rent.withStartDate(request.getStartDate())
+                rentRepository.save(rent.withRentPerDay(request.isRentPerDay())
+                        .withStartDate(request.getStartDate())
                         .withFinishDate(request.getFinishDate())
+                        .withKilometers(request.getKilometers())
                         .withAmount(request.getAmount())
                         .withRate(request.getRate()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, rentId));

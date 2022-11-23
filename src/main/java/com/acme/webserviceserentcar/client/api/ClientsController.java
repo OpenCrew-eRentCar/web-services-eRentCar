@@ -79,7 +79,7 @@ public class ClientsController {
     })
     @PostMapping
     public ClientResource createClient(@Valid @RequestBody CreateClientResource request) {
-        return mapper.toResource(clientService.create(mapper.toModel(request)));
+        return mapper.toResource(clientService.create(request));
     }
 
     @Operation(summary = "Update Client", description = "Update Client", tags = {"Clients"})
@@ -92,7 +92,7 @@ public class ClientsController {
     })
     @PutMapping()
     public ClientResource updateClient(@Valid @RequestBody UpdateClientResource request) {
-        return mapper.toResource(clientService.update(mapper.toModel(request)));
+        return mapper.toResource(clientService.update(request));
     }
 
     @Operation(summary = "Update Plan Client", description = "Update Plan Client", tags = {"Clients"})

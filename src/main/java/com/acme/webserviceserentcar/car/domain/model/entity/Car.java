@@ -63,6 +63,9 @@ public class Car implements Serializable {
     private int rentAmountDay;
 
     @NotNull
+    private int rentAmountKilometer;
+
+    @NotNull
     private String licensePlate;
 
     @NotNull
