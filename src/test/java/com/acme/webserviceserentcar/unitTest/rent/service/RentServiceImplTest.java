@@ -94,6 +94,7 @@ class RentServiceImplTest {
         rent.setRate(0);
         rent.setClient(client1);
         rent.setCar(car1);
+        rent.setRentPerDay(true);
 
         //Initialize field rent resource object
         updateRentResource.setAmount(1000);
