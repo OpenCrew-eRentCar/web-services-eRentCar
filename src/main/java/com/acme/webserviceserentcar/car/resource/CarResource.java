@@ -25,6 +25,7 @@ public class CarResource {
     private String extraInformation;
     private int rate;
     private int rentAmountDay;
+    private int rentAmountKilometer;
     private List<String> imagePath;
     private CategoryOfCar category;
     private MechanicConditions mechanicConditions;

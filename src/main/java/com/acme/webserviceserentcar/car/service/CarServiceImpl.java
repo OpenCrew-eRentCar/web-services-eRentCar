@@ -185,6 +185,7 @@ public class CarServiceImpl implements CarService {
                     .withCarValueInDollars(request.getCarValueInDollars())
                     .withExtraInformation(request.getExtraInformation())
                     .withRentAmountDay(request.getRentAmountDay())
+                    .withRentAmountKilometer(request.getRentAmountKilometer())
                     .withImagePath(request.getImagePath())
                     .withCategory(request.getCategory())
                     .withMechanicCondition(request.getMechanicCondition())

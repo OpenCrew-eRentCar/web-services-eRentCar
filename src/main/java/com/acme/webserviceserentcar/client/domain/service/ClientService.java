@@ -1,6 +1,8 @@
 package com.acme.webserviceserentcar.client.domain.service;
 
 import com.acme.webserviceserentcar.client.domain.model.entity.Client;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateClientResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,10 @@ public interface ClientService {
     Page<Client> getAll(Pageable pageable);
     Client getById(Long clientId);
     Client getByToken();
-    Client create(Client request);
-
-    Client update(Client request);
+    Client create(CreateClientResource request);
+    Client update(UpdateClientResource request);
     Client updatePlan(Long planId);
+    void updateAccumulatedKilometers(Long kilometers);
     ResponseEntity<?> delete(Long clientId);
-
-
     boolean validateRecord(Long clientId);
 }

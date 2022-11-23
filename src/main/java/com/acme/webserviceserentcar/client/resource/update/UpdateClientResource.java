@@ -19,6 +19,8 @@ public class UpdateClientResource {
     @Size(max = 50)
     private String address;
 
+    private Long accumulatedKilometers;
+
     private Long cellphoneNumber;
 
     private int averageResponsibility;

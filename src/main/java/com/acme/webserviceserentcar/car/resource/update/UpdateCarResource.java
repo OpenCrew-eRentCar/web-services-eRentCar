@@ -47,6 +47,9 @@ public class UpdateCarResource {
     private int rentAmountDay;
 
     @NotNull
+    private int rentAmountKilometer;
+
+    @NotNull
     @Convert(converter = StringListConverter.class)
     private List<String> imagePath;
 

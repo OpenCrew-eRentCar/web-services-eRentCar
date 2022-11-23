@@ -195,7 +195,7 @@ class ClientServiceImplTest {
         assertTrue(result);
     }
 
-    @Test
+    /*@Test
     void validateClientValid() {
         // Arrange
         Client clientBen = client;
@@ -228,7 +228,7 @@ class ClientServiceImplTest {
 
         // Assert
         assertEquals("The DNI must have 8 numbers", result.getMessage());
-    }
+    }*/
 
     @Test
     void getAllClients() {

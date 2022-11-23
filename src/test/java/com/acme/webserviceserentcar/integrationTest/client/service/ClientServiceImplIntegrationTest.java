@@ -5,6 +5,9 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
+import com.acme.webserviceserentcar.client.mapping.ClientMapper;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateClientResource;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
@@ -23,6 +26,9 @@ import static org.mockito.Mockito.when;
 class ClientServiceImplIntegrationTest {
     @Mock
     private ClientRepository clientRepository;
+
+    @Mock
+    private ClientMapper clientMapper;
 
     @Mock
     private UserRepository userRepository;
@@ -74,10 +80,22 @@ class ClientServiceImplIntegrationTest {
         user.setId(1L);
         user.setEmail("pedrito@gmail.com");
 
+        CreateClientResource createClientResource = new CreateClientResource();
+        createClientResource.setRate(client.getRate());
+        createClientResource.setAddress(client.getAddress());
+        createClientResource.setAverageResponsibility(client.getAverageResponsibility());
+        createClientResource.setCellphoneNumber(client.getCellphoneNumber());
+        createClientResource.setImagePath(client.getImagePath());
+        createClientResource.setNames(client.getNames());
+        createClientResource.setLastNames(client.getLastNames());
+        createClientResource.setDni(client.getDni());
+
         Mockito.doReturn(client).when(clientService).getByToken();
-        when(userRepository.findById(client.getId())).thenReturn(Optional.of(user));
+        Mockito.doReturn(user.getId()).when(clientService).getUserIdFromAuthentication();
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(clientMapper.toModel(createClientResource)).thenReturn(client);
         when(clientRepository.save(client)).thenReturn(client);
-        Client result = clientService.create(client);
+        Client result = clientService.create(createClientResource);
         assertEquals(client, result);
     }
 
@@ -86,12 +104,21 @@ class ClientServiceImplIntegrationTest {
         Client clientUpdate = client;
         clientUpdate.setNames("Pedrito");
 
+        UpdateClientResource updateClientResource = new UpdateClientResource();
+        updateClientResource.setRate(client.getRate());
+        updateClientResource.setAddress(client.getAddress());
+        updateClientResource.setAverageResponsibility(client.getAverageResponsibility());
+        updateClientResource.setCellphoneNumber(client.getCellphoneNumber());
+        updateClientResource.setImagePath(client.getImagePath());
+        updateClientResource.setNames(client.getNames());
+        updateClientResource.setLastNames(client.getLastNames());
+
         Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
         when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
         when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
         when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
 
-        Client result = clientService.update(clientUpdate);
+        Client result = clientService.update(updateClientResource);
 
         assertEquals(clientUpdate, result);
     }

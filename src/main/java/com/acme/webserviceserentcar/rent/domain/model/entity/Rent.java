@@ -23,10 +23,15 @@ public class Rent implements Serializable {
     private Long id;
 
     @NotNull
+    private boolean isRentPerDay;
+
+    @NotNull
     private Date startDate;
 
     @NotNull
     private Date finishDate;
+
+    private Long kilometers;
 
     @NotNull
     private int amount;

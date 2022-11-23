@@ -41,12 +41,17 @@ public class  Client implements Serializable {
     @NotNull
     private Long cellphoneNumber;
 
+    @NotNull
+    private Long accumulatedKilometers;
+
     private int averageResponsibility;
 
     private int responseTime;
 
     private double rate;
+
     private double record;
+
     private double minRecordExpected;
 
     @NotNull

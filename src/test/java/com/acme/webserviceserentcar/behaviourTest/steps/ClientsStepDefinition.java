@@ -5,6 +5,8 @@ import com.acme.webserviceserentcar.client.domain.model.entity.Plan;
 import com.acme.webserviceserentcar.client.domain.model.enums.PlanName;
 import com.acme.webserviceserentcar.client.domain.persistence.ClientRepository;
 import com.acme.webserviceserentcar.client.domain.service.PlanService;
+import com.acme.webserviceserentcar.client.resource.create.CreateClientResource;
+import com.acme.webserviceserentcar.client.resource.update.UpdateClientResource;
 import com.acme.webserviceserentcar.client.service.ClientServiceImpl;
 import com.acme.webserviceserentcar.security.domain.model.entity.User;
 import com.acme.webserviceserentcar.security.domain.persistence.UserRepository;
@@ -114,7 +116,10 @@ public class ClientsStepDefinition {
         client.setUser(user);
 
         when(clientRepository.save(client)).thenReturn(client);
-        result = clientService.create(client);
+        result = clientService.create(new CreateClientResource()
+                .withNames(client.getNames())
+                .withLastNames(client.getLastNames())
+                .withDni(client.getDni()));
     }
 
     @Given("I am a Client \\(Client)")
@@ -130,7 +135,7 @@ public class ClientsStepDefinition {
     public void iUpdateMyDataWith(DataTable table) {
         List<List<String>> rows = table.cells().stream().skip(1).toList();
 
-        Client clientUpdate = client;
+        /*Client clientUpdate = client;
         clientUpdate.setId(Long.parseLong(rows.get(0).get(0)));
         clientUpdate.setNames(rows.get(0).get(1));
 
@@ -140,6 +145,21 @@ public class ClientsStepDefinition {
         when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
 
         result = clientService.update(clientUpdate);
+        */
+
+        Client clientUpdate = client;
+        clientUpdate.setId(Long.parseLong(rows.get(0).get(0)));
+        clientUpdate.setNames(rows.get(0).get(1));
+
+        UpdateClientResource updateClientResource = new UpdateClientResource();
+        updateClientResource.setNames(rows.get(0).get(1));
+
+        Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
+        when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
+
+        result = clientService.update(updateClientResource);
     }
 
     @Then("I should get a Client with id {long} and names {string}")
@@ -176,12 +196,15 @@ public class ClientsStepDefinition {
         Client clientUpdate = client;
         clientUpdate.setPlan(plan);
 
+        UpdateClientResource updateClientResource = new UpdateClientResource();
+        updateClientResource.setNames(client.getNames());
+
         Mockito.doReturn(client).when(clientService).getByToken(); //Spy the method
         when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
         when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
         when(clientRepository.save(clientUpdate)).thenReturn(clientUpdate);
 
-        result = clientService.update(clientUpdate);
+        result = clientService.update(updateClientResource);
     }
 
     @Then("I should get a Client with id {long} and planId {long}")

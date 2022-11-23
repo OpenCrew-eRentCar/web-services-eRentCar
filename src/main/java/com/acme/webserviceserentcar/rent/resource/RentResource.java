@@ -12,8 +12,10 @@ import java.util.Date;
 @With
 public class RentResource {
     private Long id;
+    private boolean isRentPerDay;
     private Date startDate;
     private Date finishDate;
+    private Long kilometers;
     private int amount;
     private double rate;
     private Long clientId;
